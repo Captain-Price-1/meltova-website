@@ -1704,29 +1704,117 @@ body.no-scroll { overflow: hidden; }
   padding: 22px 26px calc(22px + env(safe-area-inset-bottom));
   background: var(--cream);
 }
-.cart__total {
+/* The two panes, your box and then where it goes. */
+.cart__step {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.cart__step[hidden] { display: none; }
+
+/* The optional cold pack. */
+.coldpack {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 4px 0 20px;
+  padding: 14px 16px;
+  border: 1px solid var(--cream-soft);
+  border-radius: var(--radius-card);
+  background: var(--cream);
+  cursor: pointer;
+  transition: border-color .25s ease, background .25s ease;
+}
+.coldpack:hover { border-color: var(--gold); }
+.coldpack input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.coldpack__box {
+  flex: 0 0 auto;
+  width: 22px; height: 22px;
+  margin-top: 1px;
+  border: 1px solid var(--brown);
+  border-radius: 4px;
+  background: var(--paper);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s ease, border-color .2s ease;
+}
+.coldpack__box svg { width: 13px; height: 13px; opacity: 0; transition: opacity .2s ease; }
+.coldpack input:checked + .coldpack__box { background: var(--brown); border-color: var(--brown); }
+.coldpack input:checked + .coldpack__box svg { opacity: 1; color: #fff; }
+.coldpack input:focus-visible + .coldpack__box { outline: 3px solid var(--gold); outline-offset: 3px; }
+.coldpack__text { font-size: 13px; line-height: 1.55; }
+.coldpack__text b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--cocoa-text);
+  margin-bottom: 2px;
+}
+
+/* Subtotal, delivery, cold pack, total. */
+.sums { margin: 0 0 10px; }
+.sums__row {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 8px;
+  padding: 3px 0;
 }
-.cart__total span {
+.sums__row dt { font-size: 13px; color: var(--body-text); }
+.sums__row dd { margin: 0; font-size: 14px; color: var(--cocoa-text); }
+.sums__row--total {
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--cream-soft);
+}
+.sums__row--total dt {
   font-size: 11px;
   letter-spacing: .2em;
   text-transform: uppercase;
   color: var(--gold-text);
 }
-.cart__total b {
+.sums__row--total dd {
   font-family: var(--font-display);
   font-size: 27px;
   font-weight: 700;
   color: var(--cocoa-text);
 }
+
 .cart__note { font-size: 12.5px; line-height: 1.6; margin-bottom: 16px; }
-.cart__send, .cart__keep { width: 100%; }
+.cart__note.is-warning { color: var(--gold-text); font-weight: 400; }
+
+.cart__send, .cart__keep, .cart__next { width: 100%; }
 .cart__keep { margin-top: 10px; }
-.cart.is-empty .cart__send { opacity: .45; pointer-events: none; }
+.cart__next:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+.cart__next:disabled::before { display: none; }
+.cart.is-empty .cart__next { opacity: .4; pointer-events: none; }
+
+.cart__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 18px 0 6px;
+  padding: 10px 0;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gold-text);
+  transition: color .2s ease;
+}
+.cart__back:hover { color: var(--cocoa-text); }
+.cart__back svg {
+  width: 15px; height: 15px;
+  fill: none; stroke: currentColor;
+  stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* The delivery form sits in the narrow panel, so it stacks. */
+#delivery-form .fields { grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 0; }
+#delivery-form .field { margin-bottom: 14px; }
+#delivery-form label { margin-bottom: 6px; }
 
 @media (max-width: 480px) {
   .cart__head, .cart__body, .cart__foot { padding-left: 18px; padding-right: 18px; }
@@ -1798,4 +1886,15 @@ body.no-scroll { overflow: hidden; }
 
 @media (max-width: 768px) {
   .boxpick .chip { min-width: 44px; min-height: 44px; }
+}
+
+/* 19. Delivery step: tap size and readable labels on a phone ============= */
+
+.cart__back { padding: 13px 0; }
+
+@media (max-width: 768px) {
+  /* These are filled in on a phone, so the labels step up from 10px. */
+  .field label { font-size: 12px; letter-spacing: .14em; }
+  .sums__row dt, .sums__row dd { font-size: 15px; }
+  .sums__row--total dt { font-size: 12px; }
 }

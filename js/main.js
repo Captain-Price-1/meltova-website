@@ -28,6 +28,8 @@
   var WHATSAPP_NUMBER = "917337070931";
   var CART_KEY = "meltova.cart.v1";
   var WISH_KEY = "meltova.wishlist.v1";
+  var COLD_KEY = "meltova.coldpack.v1";
+  var ADDR_KEY = "meltova.delivery.v1";
   var RUPEE = "₹";
 
   /* Meltova sells bites in three box sizes and nothing else. A bite line in
@@ -204,30 +206,133 @@
     paintCart();
   }
 
-  /* 6. Cart drawer ==================================================== */
+  /* 6. Your box: totals, the minimum, and the two steps ================ */
+
+  /* ==================================================================
+     OWNER SETTINGS. Change a price here and the whole box follows.
+     ================================================================== */
+  var MIN_ORDER = 399;   /* nothing smaller than this can be sent */
+  var SHIP_FEE  = 99;    /* flat, anywhere in India */
+  var FREE_OVER = 1499;  /* delivery is free above this, counting goods only */
+  var COLD_PACK = 99;    /* optional, keeps the chocolate firm in warm weather */
 
   var cartEl = $("#cart");
   var backdrop = $(".cart-backdrop");
   var itemsEl = $(".cart__items");
   var emptyEl = $(".cart__empty");
-  var totalEl = $("[data-cart-total]");
   var countEls = $$("[data-cart-count]");
   var openBtn = $("[data-cart-open]");
+  var nextBtn = $(".cart__next");
+  var backBtn = $(".cart__back");
   var sendBtn = $(".cart__send");
+  var coldBox = $("#cold-pack");
+  var noteEl = $("[data-ship-note]");
+  var deliveryForm = $("#delivery-form");
   var lastFocus = null;
 
-  function cartMessage() {
+  var coldWanted = readStore(COLD_KEY, false) === true;
+  if (coldBox) { coldBox.checked = coldWanted; }
+
+  function goodsTotal() { return cartTotal(); }
+  function shippingCost() { return goodsTotal() >= FREE_OVER ? 0 : SHIP_FEE; }
+  function coldCost() { return coldWanted ? COLD_PACK : 0; }
+  function grandTotal() { return goodsTotal() + shippingCost() + coldCost(); }
+  function shortOfMinimum() { return Math.max(0, MIN_ORDER - goodsTotal()); }
+
+  /* 6a. The delivery details, remembered on this device only =========== */
+
+  var DELIVERY_FIELDS = [
+    { id: "d-name", key: "name", ask: "Please tell us your name." },
+    { id: "d-phone", key: "phone", ask: "Please add a phone or WhatsApp number.",
+      test: function (v) { return v.replace(/[^0-9]/g, "").length >= 10; },
+      bad: "That number looks too short. Please check it." },
+    { id: "d-address", key: "address", ask: "Please add the full address." },
+    { id: "d-city", key: "city", ask: "Please add the city." },
+    { id: "d-pin", key: "pin", ask: "Please add the pincode.",
+      test: function (v) { return /^[0-9]{6}$/.test(v); },
+      bad: "An Indian pincode is six digits." },
+    { id: "d-date", key: "date", optional: true },
+    { id: "d-note", key: "note", optional: true }
+  ];
+
+  function fieldEl(f) { return document.getElementById(f.id); }
+
+  function readDelivery() {
+    var out = {};
+    DELIVERY_FIELDS.forEach(function (f) {
+      var el = fieldEl(f);
+      out[f.key] = el ? el.value.trim() : "";
+    });
+    return out;
+  }
+
+  function setFieldError(el, message) {
+    var box = el.parentNode.querySelector(".err");
+    if (box) { box.textContent = message || ""; }
+    el.setAttribute("aria-invalid", message ? "true" : "false");
+  }
+
+  function checkDelivery() {
+    var firstBad = null;
+    DELIVERY_FIELDS.forEach(function (f) {
+      var el = fieldEl(f);
+      if (!el) { return; }
+      var value = el.value.trim();
+      var problem = "";
+      if (!f.optional && !value) { problem = f.ask; }
+      else if (value && f.test && !f.test(value)) { problem = f.bad; }
+      setFieldError(el, problem);
+      if (problem && !firstBad) { firstBad = el; }
+    });
+    return firstBad;
+  }
+
+  if (deliveryForm) {
+    var saved = readStore(ADDR_KEY, {});
+    DELIVERY_FIELDS.forEach(function (f) {
+      var el = fieldEl(f);
+      if (el && saved && typeof saved[f.key] === "string") { el.value = saved[f.key]; }
+      if (!el) { return; }
+      el.addEventListener("input", function () {
+        if (el.getAttribute("aria-invalid") === "true") { setFieldError(el, ""); }
+        writeStore(ADDR_KEY, readDelivery());
+      });
+    });
+  }
+
+  /* 6b. The message that lands in WhatsApp ============================= */
+
+  function orderMessage() {
     if (!cart.length) { return "Hi Meltova, I'd like to order"; }
+
     var lines = ["Hi Meltova, I'd like to order:", ""];
     cart.forEach(function (line) {
       lines.push((line.box ? "Box of " + line.qty + " " : line.qty + " x ") +
                  line.name + " (" + money(line.price) + " " + line.unit + ") = " +
                  money(line.qty * line.price));
     });
+
     lines.push("");
-    lines.push("Estimated total: " + money(cartTotal()));
+    lines.push("Subtotal: " + money(goodsTotal()));
+    lines.push("Delivery: " + (shippingCost() ? money(shippingCost()) : "free"));
+    if (coldWanted) { lines.push("Cold pack: " + money(COLD_PACK)); }
+    lines.push("Total: " + money(grandTotal()));
+
+    var d = readDelivery();
+    if (d.name || d.address) {
+      lines.push("");
+      lines.push("Deliver to:");
+      if (d.name) { lines.push(d.name); }
+      if (d.phone) { lines.push(d.phone); }
+      if (d.address) { lines.push(d.address); }
+      if (d.city || d.pin) { lines.push((d.city + " " + d.pin).trim()); }
+      if (d.date) { lines.push("Needed by: " + d.date); }
+      if (d.note) { lines.push("Note: " + d.note); }
+    }
     return lines.join("\n");
   }
+
+  /* 6c. Painting ======================================================= */
 
   function boxPicker(line) {
     return '<fieldset class="boxpick">' +
@@ -270,49 +375,49 @@
         count ? "Your box, " + count + (count === 1 ? " item" : " items") : "Your box, empty");
     }
 
-    if (!itemsEl) { return; }
+    if (itemsEl) {
+      itemsEl.innerHTML = "";
+      cart.forEach(function (line, index) {
+        var li = document.createElement("li");
+        li.className = "cart-line";
+        li.style.setProperty("--i", index);
+        li.innerHTML =
+          '<img class="cart-line__img" src="assets/img/' + line.img + '" alt="" width="80" height="80">' +
+          '<div class="cart-line__body">' +
+            '<p class="cart-line__name">' + line.name + '</p>' +
+            '<p class="cart-line__meta">' + money(line.price) + ' ' + line.unit + '</p>' +
+            (line.box ? boxPicker(line) : stepper(line)) +
+          '</div>' +
+          '<div class="cart-line__end">' +
+            '<p class="cart-line__sum">' + money(line.qty * line.price) + '</p>' +
+            '<button type="button" class="cart-line__remove" data-remove aria-label="Remove ' + line.name + '">Remove</button>' +
+          '</div>';
 
-    itemsEl.innerHTML = "";
-    cart.forEach(function (line, index) {
-      var li = document.createElement("li");
-      li.className = "cart-line";
-      li.style.setProperty("--i", index);
-      li.innerHTML =
-        '<img class="cart-line__img" src="assets/img/' + line.img + '" alt="" width="80" height="80">' +
-        '<div class="cart-line__body">' +
-          '<p class="cart-line__name">' + line.name + '</p>' +
-          '<p class="cart-line__meta">' + money(line.price) + ' ' + line.unit + '</p>' +
-          (line.box ? boxPicker(line) : stepper(line)) +
-        '</div>' +
-        '<div class="cart-line__end">' +
-          '<p class="cart-line__sum">' + money(line.qty * line.price) + '</p>' +
-          '<button type="button" class="cart-line__remove" data-remove aria-label="Remove ' + line.name + '">Remove</button>' +
-        '</div>';
+        var picker = li.querySelector(".boxpick");
+        if (picker) {
+          paintChips(picker);
+          picker.addEventListener("change", function (e) {
+            line.qty = parseInt(e.target.value, 10) || BOX_SIZES[0];
+            saveCart();
+          });
+        }
 
-      var picker = li.querySelector(".boxpick");
-      if (picker) {
-        paintChips(picker);
-        picker.addEventListener("change", function (e) {
-          line.qty = parseInt(e.target.value, 10) || BOX_SIZES[0];
-          saveCart();
+        li.querySelectorAll("[data-step]").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            line.qty += parseInt(btn.getAttribute("data-step"), 10);
+            if (line.qty < 1) { cart.splice(cart.indexOf(line), 1); }
+            saveCart();
+          });
         });
-      }
-
-      li.querySelectorAll("[data-step]").forEach(function (btn) {
-        btn.addEventListener("click", function () {
-          line.qty += parseInt(btn.getAttribute("data-step"), 10);
-          if (line.qty < 1) { cart.splice(cart.indexOf(line), 1); }
+        li.querySelector("[data-remove]").addEventListener("click", function () {
+          cart.splice(cart.indexOf(line), 1);
           saveCart();
+          toast("Removed from your box.");
         });
-      });
-      li.querySelector("[data-remove]").addEventListener("click", function () {
-        cart.splice(cart.indexOf(line), 1);
-        saveCart();
-        toast("Removed from your box.");
-      });
 
-      itemsEl.appendChild(li);
-    });
+        itemsEl.appendChild(li);
+      });
+    }
 
     if (focusId) {
       var refocus = document.getElementById(focusId);
@@ -320,17 +425,100 @@
     }
 
     if (emptyEl) { emptyEl.hidden = cart.length > 0; }
-    if (totalEl) { totalEl.textContent = money(cartTotal()); }
     if (cartEl) { cartEl.classList.toggle("is-empty", cart.length === 0); }
-    if (sendBtn) {
-      sendBtn.href = "https://wa.me/" + WHATSAPP_NUMBER +
-                     "?text=" + encodeURIComponent(cartMessage());
+
+    $$("[data-sum-goods]").forEach(function (el) { el.textContent = money(goodsTotal()); });
+    $$("[data-sum-ship]").forEach(function (el) {
+      el.textContent = shippingCost() ? money(shippingCost()) : "Free";
+    });
+    $$("[data-sum-cold]").forEach(function (el) { el.textContent = money(COLD_PACK); });
+    $$("[data-cold-row]").forEach(function (el) { el.hidden = !coldWanted; });
+    $$("[data-sum-total]").forEach(function (el) { el.textContent = money(grandTotal()); });
+
+    var short = shortOfMinimum();
+    if (nextBtn) {
+      nextBtn.disabled = cart.length === 0 || short > 0;
     }
+
+    if (noteEl) {
+      if (!cart.length) {
+        noteEl.textContent = "Delivery is " + money(SHIP_FEE) +
+          " anywhere in India, and free above " + money(FREE_OVER) + ".";
+      } else if (short > 0) {
+        noteEl.textContent = "Add " + money(short) + " more to reach the " +
+          money(MIN_ORDER) + " minimum order.";
+      } else if (shippingCost() === 0) {
+        noteEl.textContent = "Delivery is free on this order." +
+          (coldWanted ? " The cold pack is charged separately." : "");
+      } else {
+        noteEl.textContent = "Add " + money(FREE_OVER - goodsTotal()) +
+          " more and delivery is free.";
+      }
+      noteEl.classList.toggle("is-warning", short > 0);
+    }
+  }
+
+  if (coldBox) {
+    coldBox.addEventListener("change", function () {
+      coldWanted = coldBox.checked;
+      writeStore(COLD_KEY, coldWanted);
+      paintCart();
+    });
+  }
+
+  /* 6d. Opening, closing and stepping ================================== */
+
+  function showStep(name) {
+    $$(".cart__step", cartEl).forEach(function (step) {
+      step.hidden = step.getAttribute("data-step") !== name;
+    });
+    var body = $(".cart__step[data-step='" + name + "'] .cart__body", cartEl);
+    if (body) { body.scrollTop = 0; }
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", function () {
+      if (shortOfMinimum() > 0 || !cart.length) { return; }
+      showStep("details");
+      var first = $("#d-name");
+      if (first) { first.focus(); }
+    });
+  }
+
+  if (backBtn) {
+    backBtn.addEventListener("click", function () {
+      showStep("box");
+      if (nextBtn) { nextBtn.focus(); }
+    });
+  }
+
+  if (sendBtn) {
+    sendBtn.addEventListener("click", function () {
+      if (!cart.length) { return; }
+      if (shortOfMinimum() > 0) {
+        showStep("box");
+        toast("The minimum order is " + money(MIN_ORDER) + ".");
+        return;
+      }
+      var bad = checkDelivery();
+      if (bad) {
+        bad.focus();
+        toast("Please fill the highlighted fields.");
+        return;
+      }
+      writeStore(ADDR_KEY, readDelivery());
+      var url = "https://wa.me/" + WHATSAPP_NUMBER +
+                "?text=" + encodeURIComponent(orderMessage());
+      var win = window.open(url, "_blank", "noopener");
+      if (win) { toast("Opening WhatsApp with your order."); }
+      else { window.location.href = url; }
+    });
   }
 
   function openCart() {
     if (!cartEl) { return; }
     lastFocus = document.activeElement;
+    showStep("box");
     cartEl.classList.add("is-open");
     cartEl.setAttribute("aria-hidden", "false");
     if (backdrop) { backdrop.hidden = false; }

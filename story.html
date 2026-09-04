@@ -9,14 +9,15 @@
 <link rel="apple-touch-icon" href="assets/img/favicon.png">
 <meta name="theme-color" content="#15100b">
 
-<!-- Link previews. These point at the live GitHub Pages address. If the site
-     later moves to its own domain, update the two tags below to match. -->
+<!-- Link previews. TODO owner: replace [https://your-domain.com] with the real
+     web address once the site is live. Both tags below need the full address,
+     starting with https, or the preview image will not load. -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Meltova, The Chocolate Lane">
 <meta property="og:title" content="Our Story | Meltova, The Chocolate Lane">
 <meta property="og:description" content="How Meltova began, in one saucepan at home, and grew into boxes that travel across India. Still tempered by hand, in small batches.">
-<meta property="og:url" content="https://captain-price-1.github.io/meltova-website/story.html">
-<meta property="og:image" content="https://captain-price-1.github.io/meltova-website/assets/img/og-image.jpg">
+<meta property="og:url" content="[https://your-domain.com]/story.html">
+<meta property="og:image" content="[https://your-domain.com]/assets/img/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Our Story | Meltova, The Chocolate Lane">
 <meta name="twitter:description" content="How Meltova began, in one saucepan at home, and grew into boxes that travel across India. Still tempered by hand, in small batches.">
@@ -240,20 +241,89 @@
     <button type="button" class="cart__close" data-cart-close aria-label="Close your box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg></button>
   </div>
 
-  <div class="cart__body">
-    <p class="cart__empty">Nothing in your box yet. Add a few chocolates and send the whole list to WhatsApp in one message.</p>
-    <ul class="cart__items" aria-live="polite"></ul>
-  </div>
+  <!-- Step one: what is in the box -->
+  <section class="cart__step" data-step="box" aria-label="Your box">
+    <div class="cart__body">
+      <p class="cart__empty">Nothing in your box yet. Add a few chocolates and send the whole list to WhatsApp in one message.</p>
+      <ul class="cart__items" aria-live="polite"></ul>
 
-  <div class="cart__foot">
-    <div class="cart__total">
-      <span>Estimated total</span>
-      <b data-cart-total>&#8377;0</b>
+      <label class="coldpack" for="cold-pack">
+        <input type="checkbox" id="cold-pack">
+        <span class="coldpack__box" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="coldpack__text">
+          <b>Add a cold pack, &#8377;99</b>
+          Keeps the chocolate firm on the way. We recommend it from April to September.
+        </span>
+      </label>
     </div>
-    <p class="cart__note">Bites are priced by the piece. We confirm the box size, packing and delivery cost when we reply on WhatsApp.</p>
-    <a class="btn btn--brown cart__send" href="https://wa.me/917337070931?text=Hi%20Meltova%2C%20I%27d%20like%20to%20order" target="_blank" rel="noopener">Send this order on WhatsApp</a>
-    <button type="button" class="btn btn--ghost-cream cart__keep" data-cart-close>Keep browsing</button>
-  </div>
+
+    <div class="cart__foot">
+      <dl class="sums">
+        <div class="sums__row"><dt>Subtotal</dt><dd data-sum-goods>&#8377;0</dd></div>
+        <div class="sums__row"><dt>Delivery</dt><dd data-sum-ship>&#8377;99</dd></div>
+        <div class="sums__row" data-cold-row hidden><dt>Cold pack</dt><dd data-sum-cold>&#8377;99</dd></div>
+        <div class="sums__row sums__row--total"><dt>Total</dt><dd data-sum-total>&#8377;0</dd></div>
+      </dl>
+      <p class="cart__note" data-ship-note></p>
+      <button type="button" class="btn btn--brown cart__next">Continue to delivery details</button>
+      <button type="button" class="btn btn--ghost-cream cart__keep" data-cart-close>Keep browsing</button>
+    </div>
+  </section>
+
+  <!-- Step two: where it goes -->
+  <section class="cart__step" data-step="details" aria-label="Delivery details" hidden>
+    <div class="cart__body">
+      <button type="button" class="cart__back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H6M11 18l-6-6 6-6"/></svg> Back to your box</button>
+
+      <form id="delivery-form" novalidate>
+        <div class="field">
+          <label for="d-name">Your name</label>
+          <input id="d-name" name="dname" type="text" placeholder="Anita Sharma" autocomplete="name" required>
+          <p class="err" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="d-phone">Phone or WhatsApp</label>
+          <input id="d-phone" name="dphone" type="tel" inputmode="numeric" placeholder="98xxxxxxxx" autocomplete="tel" required>
+          <p class="err" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="d-address">Full address, with the flat and street</label>
+          <textarea id="d-address" name="daddress" rows="3" placeholder="Flat 4B, 12 MG Road, near the post office" autocomplete="street-address" required></textarea>
+          <p class="err" aria-live="polite"></p>
+        </div>
+        <div class="fields">
+          <div class="field">
+            <label for="d-city">City</label>
+            <input id="d-city" name="dcity" type="text" placeholder="Mumbai" autocomplete="address-level2" required>
+            <p class="err" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="d-pin">Pincode</label>
+            <input id="d-pin" name="dpin" type="text" inputmode="numeric" maxlength="6" placeholder="400001" autocomplete="postal-code" required>
+            <p class="err" aria-live="polite"></p>
+          </div>
+        </div>
+        <div class="field">
+          <label for="d-date">Date you need it, if any</label>
+          <input id="d-date" name="ddate" type="text" placeholder="14 October" autocomplete="off">
+          <p class="err" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="d-note">Anything else</label>
+          <textarea id="d-note" name="dnote" rows="2" placeholder="Gift wrap, a message card, a landmark for the courier"></textarea>
+          <p class="err" aria-live="polite"></p>
+        </div>
+      </form>
+    </div>
+
+    <div class="cart__foot">
+      <dl class="sums">
+        <div class="sums__row sums__row--total"><dt>Total</dt><dd data-sum-total>&#8377;0</dd></div>
+      </dl>
+      <p class="cart__note">We reply on WhatsApp to confirm the date and take payment. Nothing is charged here.</p>
+      <button type="button" class="btn btn--brown cart__send">Send order on WhatsApp</button>
+    </div>
+  </section>
 </aside>
 
 <button type="button" class="to-top" aria-label="Back to top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V6M6 11.5 12 5.5l6 6"/></svg></button>

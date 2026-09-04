@@ -117,8 +117,7 @@ comment next to it. Search the file for the text in the first column.
 | `[7 days]` | `contact.html` | Notice needed for weddings, festivals and bulk |
 | `[courier]` | `contact.html` | The courier used for shipping |
 | `[2 to 4 days]` | `contact.html` | Usual delivery time |
-| `[Minimum order]` | `contact.html` | The minimum order, if there is one |
-| `[How you pack for warm months, and which cities you pause for]` | `contact.html` | The summer packing answer |
+| `[Which cities you pause for in peak summer]` | `contact.html` | The zones you stop shipping to in the hottest weeks |
 | `[Month, year]` | `menu.html` | When prices were last changed |
 | `[Facebook URL]` | every page | The Facebook page address |
 | `[YouTube URL]` | every page | The YouTube channel address |
@@ -182,24 +181,74 @@ not by the piece. Those have no size buttons, and their line in the panel has a
 plain plus and minus counter.
 
 Inside the panel they can change a box size, count bars up or down, remove a line,
-and see a running total. The single button at the bottom, **Send this order on WhatsApp**, opens
+tick the cold pack, and see the full total with delivery.
+
+### The ordering rules
+
+| Rule | Value |
+|---|---|
+| Minimum order | ₹399 |
+| Delivery | ₹99 flat, anywhere in India |
+| Free delivery | on orders above ₹1,499 |
+| Cold pack | ₹99, optional, ticked by the customer |
+
+Below ₹399 the Continue button is switched off and the panel says how much more
+is needed. The note under the total also tells the customer how much further to go
+for free delivery, which nudges the order up on its own.
+
+Free delivery is worked out on the chocolate alone. The cold pack is an add on,
+so it is still charged on a free delivery order.
+
+**To change any of these four numbers**, edit the block marked `OWNER SETTINGS`
+near the middle of `js/main.js`:
+
+```js
+var MIN_ORDER = 399;
+var SHIP_FEE  = 99;
+var FREE_OVER = 1499;
+var COLD_PACK = 99;
+```
+
+Then update the wording in the "Is there a minimum order?" answer on
+`contact.html` so the page and the code agree.
+
+### Delivery details
+
+Pressing Continue moves the panel to a second step that asks for name, phone,
+full address, city, pincode, the date it is needed and any note. Name, phone,
+address, city and pincode are required. The pincode must be six digits and the
+phone at least ten, and both are checked before anything is sent.
+
+The details are saved in that visitor's own browser, so a returning customer does
+not retype their address. The single button at the bottom, **Send this order on WhatsApp**, opens
 WhatsApp with the whole order already written out, like this:
 
 ```
 Hi Meltova, I'd like to order:
 
 Box of 12 Kunafa bites (₹35 per piece) = ₹420
-1 x Nutella bar (₹399 per bar) = ₹399
+2 x Biscoff bar (₹499 per bar) = ₹998
 
-Estimated total: ₹819
+Subtotal: ₹1,418
+Delivery: ₹99
+Cold pack: ₹99
+Total: ₹1,616
+
+Deliver to:
+Anita Sharma
+9876543210
+Flat 4B, 12 MG Road
+Mumbai 400001
+Needed by: 14 October
+Note: Please add a message card
 ```
 
 A few things worth knowing:
 
 * The box is saved in the visitor's own browser, so it survives moving between
   pages and closing the tab. Nothing is sent anywhere until they press the button.
-* The total is called an **estimated** total on purpose. Packing and delivery are
-  settled in the WhatsApp reply.
+* Nothing is charged on the site. You confirm the date and take payment in the
+  WhatsApp conversation.
 * A box saved before the sizes changed is tidied up on the next visit. Anything
   that is no longer a real size is moved to the nearest one that is.
 * The heart on each card saves a chocolate to a private list, also in that
