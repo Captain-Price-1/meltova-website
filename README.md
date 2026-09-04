@@ -189,7 +189,7 @@ tick the cold pack, and see the full total with delivery.
 |---|---|
 | Minimum order | ₹399 |
 | Delivery | ₹99 flat, anywhere in India |
-| Free delivery | on orders above ₹1,499 |
+| Free delivery | on orders above ₹999 |
 | Cold pack | ₹99, optional, ticked by the customer |
 
 Below ₹399 the Continue button is switched off and the panel says how much more
@@ -205,7 +205,7 @@ near the middle of `js/main.js`:
 ```js
 var MIN_ORDER = 399;
 var SHIP_FEE  = 99;
-var FREE_OVER = 1499;
+var FREE_OVER = 999;
 var COLD_PACK = 99;
 ```
 

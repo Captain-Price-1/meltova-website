@@ -212,7 +212,8 @@
      ================================================================== */
   var MIN_ORDER = 399;   /* nothing smaller than this can be sent */
   var SHIP_FEE  = 99;    /* flat, anywhere in India */
-  var FREE_OVER = 1499;  /* delivery is free above this, counting goods only */
+  var FREE_OVER = 999;   /* delivery is free at this and above. Below it, the
+                            flat SHIP_FEE applies. */
   var COLD_PACK = 99;    /* optional, keeps the chocolate firm in warm weather */
 
   var cartEl = $("#cart");
