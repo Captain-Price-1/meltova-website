@@ -28,7 +28,6 @@
   var WHATSAPP_NUMBER = "917337070931";
   var CART_KEY = "meltova.cart.v1";
   var WISH_KEY = "meltova.wishlist.v1";
-  var COLD_KEY = "meltova.coldpack.v1";
   var ADDR_KEY = "meltova.delivery.v1";
   var RUPEE = "₹";
 
@@ -230,8 +229,21 @@
   var deliveryForm = $("#delivery-form");
   var lastFocus = null;
 
-  var coldWanted = readStore(COLD_KEY, false) === true;
-  if (coldBox) { coldBox.checked = coldWanted; }
+  /* The cold pack starts off on every visit. An address is helpful to
+     remember, a charge is not: nobody should open their box and find 99
+     rupees added that they did not tick today. */
+  var coldWanted = false;
+
+  /* The tick is painted here as well as in CSS. A ":checked + label" rule is
+     not repainted reliably by every engine when the state is set from script,
+     which would leave an empty box next to a charge. */
+  function paintCold() {
+    if (!coldBox) { return; }
+    coldBox.checked = coldWanted;
+    var wrap = coldBox.closest(".coldpack");
+    if (wrap) { wrap.classList.toggle("is-on", coldWanted); }
+  }
+  paintCold();
 
   function goodsTotal() { return cartTotal(); }
   function shippingCost() { return goodsTotal() >= FREE_OVER ? 0 : SHIP_FEE; }
@@ -445,8 +457,8 @@
         noteEl.textContent = "Delivery is " + money(SHIP_FEE) +
           " anywhere in India, and free above " + money(FREE_OVER) + ".";
       } else if (short > 0) {
-        noteEl.textContent = "Add " + money(short) + " more to reach the " +
-          money(MIN_ORDER) + " minimum order.";
+        noteEl.textContent = "Add " + money(short) + " more of chocolate. The " +
+          money(MIN_ORDER) + " minimum is on the chocolate, before delivery.";
       } else if (shippingCost() === 0) {
         noteEl.textContent = "Delivery is free on this order." +
           (coldWanted ? " The cold pack is charged separately." : "");
@@ -461,7 +473,7 @@
   if (coldBox) {
     coldBox.addEventListener("change", function () {
       coldWanted = coldBox.checked;
-      writeStore(COLD_KEY, coldWanted);
+      paintCold();
       paintCart();
     });
   }

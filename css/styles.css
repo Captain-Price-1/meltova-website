@@ -1741,8 +1741,10 @@ body.no-scroll { overflow: hidden; }
   transition: background .2s ease, border-color .2s ease;
 }
 .coldpack__box svg { width: 13px; height: 13px; opacity: 0; transition: opacity .2s ease; }
-.coldpack input:checked + .coldpack__box { background: var(--brown); border-color: var(--brown); }
-.coldpack input:checked + .coldpack__box svg { opacity: 1; color: #fff; }
+.coldpack input:checked + .coldpack__box,
+.coldpack.is-on .coldpack__box { background: var(--brown); border-color: var(--brown); }
+.coldpack input:checked + .coldpack__box svg,
+.coldpack.is-on .coldpack__box svg { opacity: 1; color: #fff; }
 .coldpack input:focus-visible + .coldpack__box { outline: 3px solid var(--gold); outline-offset: 3px; }
 .coldpack__text { font-size: 13px; line-height: 1.55; }
 .coldpack__text b {
