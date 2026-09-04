@@ -93,6 +93,11 @@ ul { margin: 0; padding: 0; list-style: none; }
 /* The header is sticky, so anchor jumps need room above the target. */
 [id] { scroll-margin-top: 92px; }
 
+/* The hidden attribute is display:none in the browser's own stylesheet, which
+   any class carrying a display of its own quietly beats. Scripts here toggle
+   el.hidden to show and hide rows, so it has to win. */
+[hidden] { display: none !important; }
+
 /* Visible focus for every interactive element. */
 a:focus-visible,
 button:focus-visible,
