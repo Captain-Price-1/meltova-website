@@ -68,6 +68,16 @@ change. The names map to the menu like this:
 Photos work best as square or landscape JPEGs about 800 to 1200 pixels wide, saved
 at around 70 to 80 percent quality so pages stay fast.
 
+### Where the stock photos come from
+
+Most photos are Meltova's own. The ones that are not are free licence stock, free
+to use commercially with no attribution required:
+
+* `bar-biscoff.jpg` from Pexels, photo 29066517, https://www.pexels.com/photo/29066517/
+
+Replace it with your own Biscoff bar photo when you have one. Keep the file name
+and it will appear everywhere at once.
+
 **Important:** the photos supplied with this build are free licence stock images
 used so the design looks real. Replace them with the owner's own product photos
 before the site goes live.
