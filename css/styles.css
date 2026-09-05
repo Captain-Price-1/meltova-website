@@ -1930,3 +1930,7 @@ body.no-scroll { overflow: hidden; }
 @media (max-width: 768px) {
   .customise figcaption { font-size: 15px; }
 }
+
+/* 21. A single detail card sits at its natural width ===================== */
+
+.mini-grid--one { grid-template-columns: minmax(0, 320px); }

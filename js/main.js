@@ -211,9 +211,10 @@
      OWNER SETTINGS. Change a price here and the whole box follows.
      ================================================================== */
   var MIN_ORDER = 399;   /* nothing smaller than this can be sent */
-  var SHIP_FEE  = 99;    /* flat, anywhere in India */
-  var FREE_OVER = 999;   /* delivery is free at this and above. Below it, the
-                            flat SHIP_FEE applies. */
+  var SHIP_FEE  = 140;   /* flat, the same anywhere in India */
+  var FREE_OVER = null;  /* null means there is no free delivery tier, so the
+                            flat SHIP_FEE is added to every order. Set a number
+                            here to bring one back, e.g. 1499. */
   var COLD_PACK = 99;    /* optional, keeps the chocolate firm in warm weather */
 
   var cartEl = $("#cart");
@@ -247,7 +248,9 @@
   paintCold();
 
   function goodsTotal() { return cartTotal(); }
-  function shippingCost() { return goodsTotal() >= FREE_OVER ? 0 : SHIP_FEE; }
+  function shippingCost() {
+    return (FREE_OVER !== null && goodsTotal() >= FREE_OVER) ? 0 : SHIP_FEE;
+  }
   function coldCost() { return coldWanted ? COLD_PACK : 0; }
   function grandTotal() { return goodsTotal() + shippingCost() + coldCost(); }
   function shortOfMinimum() { return Math.max(0, MIN_ORDER - goodsTotal()); }
@@ -455,8 +458,8 @@
 
     if (noteEl) {
       if (!cart.length) {
-        noteEl.textContent = "Delivery is " + money(SHIP_FEE) +
-          " anywhere in India, and free above " + money(FREE_OVER) + ".";
+        noteEl.textContent = "Delivery is " + money(SHIP_FEE) + " anywhere in India" +
+          (FREE_OVER === null ? "." : ", and free above " + money(FREE_OVER) + ".");
       } else if (short > 0) {
         noteEl.textContent = "Add " + money(short) + " more of chocolate. The " +
           money(MIN_ORDER) + " minimum is on the chocolate, before delivery.";
@@ -464,8 +467,9 @@
         noteEl.textContent = "Delivery is free on this order." +
           (coldWanted ? " The cold pack is charged separately." : "");
       } else {
-        noteEl.textContent = "Add " + money(FREE_OVER - goodsTotal()) +
-          " more and delivery is free.";
+        noteEl.textContent = FREE_OVER === null
+          ? "Delivery is " + money(SHIP_FEE) + ", the same anywhere in India."
+          : "Add " + money(FREE_OVER - goodsTotal()) + " more and delivery is free.";
       }
       noteEl.classList.toggle("is-warning", short > 0);
     }

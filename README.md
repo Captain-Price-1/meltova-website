@@ -120,9 +120,6 @@ comment next to it. Search the file for the text in the first column.
 
 | Placeholder | File | What it is |
 |---|---|---|
-| `[Your city]` | `contact.html` | The city the kitchen is in |
-| `[Days], [hours]` | `contact.html` | The days and hours orders are taken |
-| `[time]` | `contact.html` | How quickly messages are normally answered |
 | `[2 days]` | `contact.html` | Notice needed for a regular box |
 | `[7 days]` | `contact.html` | Notice needed for weddings, festivals and bulk |
 | `[courier]` | `contact.html` | The courier used for shipping |
@@ -198,8 +195,8 @@ tick the cold pack, and see the full total with delivery.
 | Rule | Value |
 |---|---|
 | Minimum order | ₹399 |
-| Delivery | ₹99 flat, anywhere in India |
-| Free delivery | on orders above ₹999 |
+| Delivery | ₹140 flat, anywhere in India |
+| Free delivery | none, ₹140 is added to every order |
 | Cold pack | ₹99, optional, ticked by the customer |
 
 Below ₹399 the Continue button is switched off and the panel says how much more
@@ -214,8 +211,8 @@ near the middle of `js/main.js`:
 
 ```js
 var MIN_ORDER = 399;
-var SHIP_FEE  = 99;
-var FREE_OVER = 999;
+var SHIP_FEE  = 140;
+var FREE_OVER = null;
 var COLD_PACK = 99;
 ```
 
