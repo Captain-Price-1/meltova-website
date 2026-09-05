@@ -1906,11 +1906,27 @@ body.no-scroll { overflow: hidden; }
   .sums__row--total dt { font-size: 12px; }
 }
 
-/* 20. Bands whose photo carries its own lettering ======================== */
+/* 20. Customise showcase ================================================= */
 
-/* The customise photo is a row of printed bars, so it is full of words. Pushed
-   back with a heavier overlay and a soft blur, it reads as texture and the
-   heading stays the only text on the band. The blurred edges are hidden by
-   the band's overflow and the layer's negative inset. */
-.band--soft .band__bg { filter: blur(2.5px) saturate(1.1); }
-.band--soft::before { background: rgba(21, 16, 11, .86); }
+/* The whole point of this section is to show what a custom bar can look like,
+   so the grid is a real image on the page rather than a background behind
+   text. Nothing is dimmed and nothing is cropped away. */
+.customise { margin: 0; text-align: center; }
+.customise img {
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-md);
+}
+.customise figcaption {
+  max-width: 60ch;
+  margin: 18px auto 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--body-text);
+}
+
+@media (max-width: 768px) {
+  .customise figcaption { font-size: 15px; }
+}
