@@ -1905,3 +1905,12 @@ body.no-scroll { overflow: hidden; }
   .sums__row dt, .sums__row dd { font-size: 15px; }
   .sums__row--total dt { font-size: 12px; }
 }
+
+/* 20. Bands whose photo carries its own lettering ======================== */
+
+/* The customise photo is a row of printed bars, so it is full of words. Pushed
+   back with a heavier overlay and a soft blur, it reads as texture and the
+   heading stays the only text on the band. The blurred edges are hidden by
+   the band's overflow and the layer's negative inset. */
+.band--soft .band__bg { filter: blur(2.5px) saturate(1.1); }
+.band--soft::before { background: rgba(21, 16, 11, .86); }
