@@ -150,9 +150,24 @@
   window.addEventListener("resize", requestScroll);
   requestScroll();
 
+  /* One place that knows how to move the page, however the browser behaves. */
+  function scrollPageTo(top) {
+    var startY = window.scrollY;
+    window.scrollTo({ top: top, behavior: reduceMotion ? "auto" : "smooth" });
+    window.setTimeout(function () {
+      if (Math.abs(window.scrollY - startY) < 4 && Math.abs(startY - top) > 4) {
+        var root = document.documentElement;
+        var previous = root.style.scrollBehavior;
+        root.style.scrollBehavior = "auto";
+        window.scrollTo(0, top);
+        root.style.scrollBehavior = previous;
+      }
+    }, reduceMotion ? 0 : 520);
+  }
+
   if (toTop) {
     toTop.addEventListener("click", function () {
-      window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+      scrollPageTo(0);
     });
   }
 
@@ -217,19 +232,15 @@
                             here to bring one back, e.g. 1499. */
   var COLD_PACK = 99;    /* optional, keeps the chocolate firm in warm weather */
 
-  var cartEl = $("#cart");
-  var backdrop = $(".cart-backdrop");
   var itemsEl = $(".cart__items");
   var emptyEl = $(".cart__empty");
   var countEls = $$("[data-cart-count]");
-  var openBtn = $("[data-cart-open]");
+  var cartLink = $(".icon-btn--cart");
   var nextBtn = $(".cart__next");
-  var backBtn = $(".cart__back");
   var sendBtn = $(".cart__send");
   var coldBox = $("#cold-pack");
   var noteEl = $("[data-ship-note]");
   var deliveryForm = $("#delivery-form");
-  var lastFocus = null;
 
   /* The cold pack starts off on every visit. An address is helpful to
      remember, a charge is not: nobody should open their box and find 99
@@ -386,8 +397,8 @@
       }
     });
 
-    if (openBtn) {
-      openBtn.setAttribute("aria-label",
+    if (cartLink) {
+      cartLink.setAttribute("aria-label",
         count ? "Your box, " + count + (count === 1 ? " item" : " items") : "Your box, empty");
     }
 
@@ -441,7 +452,7 @@
     }
 
     if (emptyEl) { emptyEl.hidden = cart.length > 0; }
-    if (cartEl) { cartEl.classList.toggle("is-empty", cart.length === 0); }
+    document.body.classList.toggle("box-empty", cart.length === 0);
 
     $$("[data-sum-goods]").forEach(function (el) { el.textContent = money(goodsTotal()); });
     $$("[data-sum-ship]").forEach(function (el) {
@@ -483,29 +494,42 @@
     });
   }
 
-  /* 6d. Opening, closing and stepping ================================== */
+  /* 6d. Moving between the box and the details ======================== */
 
-  function showStep(name) {
-    $$(".cart__step", cartEl).forEach(function (step) {
-      step.hidden = step.getAttribute("data-step") !== name;
-    });
-    var body = $(".cart__step[data-step='" + name + "'] .cart__body", cartEl);
-    if (body) { body.scrollTop = 0; }
-  }
-
+  /* The cart is a page now, not a drawer, so there is nothing to open or
+     close. Continue simply carries you down to the form. */
   if (nextBtn) {
     nextBtn.addEventListener("click", function () {
       if (shortOfMinimum() > 0 || !cart.length) { return; }
-      showStep("details");
-      var first = $("#d-name");
-      if (first) { first.focus(); }
-    });
-  }
 
-  if (backBtn) {
-    backBtn.addEventListener("click", function () {
-      showStep("box");
-      if (nextBtn) { nextBtn.focus(); }
+      var details = document.getElementById("details");
+      var first = $("#d-name");
+      if (!details) { return; }
+
+      var startY = window.scrollY;
+      var target = details.getBoundingClientRect().top + startY - 80;
+      window.scrollTo({ top: target, behavior: reduceMotion ? "auto" : "smooth" });
+
+      window.setTimeout(function () {
+        /* Not every browser honours a smooth scroll request. If nothing has
+           moved by now, jump there instead. A form the visitor cannot see is
+           worse than a lost animation. */
+        if (Math.abs(window.scrollY - startY) < 4) {
+          /* behavior "auto" defers to the CSS, which is smooth here, so it
+             would stall the same way. Turning the CSS off for the one call is
+             the only way to guarantee an instant jump in every browser. */
+          var root = document.documentElement;
+          var previous = root.style.scrollBehavior;
+          root.style.scrollBehavior = "auto";
+          window.scrollTo(0, target);
+          root.style.scrollBehavior = previous;
+        }
+        if (first) {
+          var box = first.getBoundingClientRect();
+          var onScreen = box.top >= 0 && box.bottom <= window.innerHeight;
+          first.focus({ preventScroll: onScreen });
+        }
+      }, reduceMotion ? 0 : 520);
     });
   }
 
@@ -513,8 +537,8 @@
     sendBtn.addEventListener("click", function () {
       if (!cart.length) { return; }
       if (shortOfMinimum() > 0) {
-        showStep("box");
         toast("The minimum order is " + money(MIN_ORDER) + ".");
+        scrollPageTo(0);
         return;
       }
       var bad = checkDelivery();
@@ -531,55 +555,6 @@
       else { window.location.href = url; }
     });
   }
-
-  function openCart() {
-    if (!cartEl) { return; }
-    lastFocus = document.activeElement;
-    showStep("box");
-    cartEl.classList.add("is-open");
-    cartEl.setAttribute("aria-hidden", "false");
-    if (backdrop) { backdrop.hidden = false; }
-    document.body.classList.add("no-scroll");
-    if (openBtn) { openBtn.setAttribute("aria-expanded", "true"); }
-    var focusable = $(".cart__close", cartEl);
-    if (focusable) { focusable.focus(); }
-  }
-
-  function closeCart() {
-    if (!cartEl) { return; }
-    cartEl.classList.remove("is-open");
-    cartEl.setAttribute("aria-hidden", "true");
-    if (backdrop) { backdrop.hidden = true; }
-    document.body.classList.remove("no-scroll");
-    if (openBtn) { openBtn.setAttribute("aria-expanded", "false"); }
-    if (lastFocus && lastFocus.focus) { lastFocus.focus(); }
-  }
-
-  if (openBtn) { openBtn.addEventListener("click", openCart); }
-  $$("[data-cart-close]").forEach(function (el) {
-    el.addEventListener("click", closeCart);
-  });
-
-  /* Escape closes whichever layer is open, and Tab stays inside the cart. */
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") {
-      if (cartEl && cartEl.classList.contains("is-open")) { closeCart(); return; }
-      if (drawer && drawer.classList.contains("is-open")) {
-        drawer.classList.remove("is-open");
-        burger.setAttribute("aria-expanded", "false");
-        burger.focus();
-      }
-      return;
-    }
-    if (e.key !== "Tab" || !cartEl || !cartEl.classList.contains("is-open")) { return; }
-    var stops = $$("a[href], button:not([disabled]), input, textarea", cartEl)
-      .filter(function (el) { return el.offsetParent !== null; });
-    if (!stops.length) { return; }
-    var first = stops[0];
-    var last = stops[stops.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-  });
 
   /* 7. Add to cart ==================================================== */
 

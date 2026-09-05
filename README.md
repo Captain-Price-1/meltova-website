@@ -170,8 +170,11 @@ then a second one for `7337070931` to catch the text version.
 
 ## Your box, the cart
 
-Every chocolate has an **Add to cart** button. What the visitor adds is collected in
-a slide out panel called **Your Box**, opened from the bag icon in the header.
+Every chocolate has an **Add to cart** button. What the visitor adds is collected on
+a page of its own, **cart.html**, reached from the bag icon in the header. It was a
+slide out panel before, which left the chocolates squeezed between a fixed heading
+and the totals. A page gives the list room, and keeps the running total beside it
+on a card that follows you down the screen.
 
 **Bites are sold in boxes of 4, 6 or 12. Those are the only sizes.** Every bite
 card, on the menu and on the home page, carries that choice as a small row of
@@ -221,7 +224,7 @@ Then update the wording in the "Is there a minimum order?" answer on
 
 ### Delivery details
 
-Pressing Continue moves the panel to a second step that asks for name, phone,
+Pressing Continue carries you down to the delivery section, which asks for name, phone,
 full address, city, pincode, the date it is needed and any note. Name, phone,
 address, city and pincode are required. The pincode must be six digits and the
 phone at least ten, and both are checked before anything is sent.
