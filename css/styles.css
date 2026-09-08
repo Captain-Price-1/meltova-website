@@ -619,8 +619,8 @@ select:focus-visible {
 /* 7b. Category tiles */
 .cats {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 26px;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
 }
 .cat { display: block; text-align: center; }
 .cat__blob {
@@ -1903,3 +1903,103 @@ body.box-empty #details { display: none; }
 /* 21. A single detail card sits at its natural width ===================== */
 
 .mini-grid--one { grid-template-columns: minmax(0, 320px); }
+
+/* 22. Showcase, gallery and flavour list ================================= */
+
+/* A product that is one thing rather than a grid of cards: a photo, the price,
+   and the words that explain it. */
+.showcase {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 56px);
+  align-items: center;
+}
+.showcase--wide { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); }
+
+.showcase__media img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-md);
+}
+/* The modak flavour chart is a diagram, so it must be shown whole, not cropped. */
+.showcase--wide .showcase__media img { aspect-ratio: auto; object-fit: contain; }
+.showcase__body p:not([class]) { font-size: 15px; }
+
+.showcase__price {
+  font-family: var(--font-display);
+  font-size: clamp(34px, 4vw, 46px);
+  font-weight: 700;
+  color: var(--gold-text);
+  line-height: 1;
+  margin-bottom: 16px;
+}
+.showcase__price span {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--body-text);
+}
+
+.showcase__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 24px;
+}
+.showcase__cta .btn { min-height: 48px; }
+.showcase .chips { justify-content: flex-start; margin: 18px 0 0; }
+
+/* The eleven modak flavours, in two readable columns. */
+.flavourlist {
+  columns: 2;
+  column-gap: 30px;
+  margin: 18px 0 0;
+}
+.flavourlist li {
+  break-inside: avoid;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--cream-soft);
+}
+.flavourlist b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--cocoa-text);
+}
+.flavourlist span { font-size: 13px; color: var(--body-text); }
+
+/* A row of photos that reflows on its own. */
+.gallery {
+  display: grid;
+  /* Capped so a gallery of two does not blow up to half the page each. */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 330px));
+  justify-content: center;
+  gap: clamp(14px, 1.6vw, 22px);
+  margin-top: clamp(30px, 4vw, 48px);
+}
+.gallery img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  transition: transform .5s var(--ease-soft), box-shadow .4s ease;
+}
+.gallery img:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+
+@media (max-width: 900px) {
+  .showcase, .showcase--wide { grid-template-columns: 1fr; }
+  .showcase__media { order: -1; }
+}
+
+@media (max-width: 560px) {
+  .flavourlist { columns: 1; }
+  .gallery { grid-template-columns: repeat(2, 1fr); }
+}
