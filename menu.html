@@ -9,18 +9,23 @@
 <link rel="apple-touch-icon" href="assets/img/favicon.png">
 <meta name="theme-color" content="#15100b">
 
-<!-- Link previews. TODO owner: replace [https://your-domain.com] with the real
-     web address once the site is live. Both tags below need the full address,
-     starting with https, or the preview image will not load. -->
+<link rel="canonical" href="https://captain-price-1.github.io/meltova-website/menu.html">
+
+<!-- Link previews, which is what a customer sees when this address is pasted
+     into WhatsApp or Instagram. Both tags need the full address, starting with
+     https, or the preview image does not load. TODO owner: if the site later
+     moves to its own web address, change SITE_URL in gen_chrome.py and rebuild. -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Meltova, The Chocolate Lane">
 <meta property="og:title" content="The Menu and Prices | Meltova, The Chocolate Lane">
 <meta property="og:description" content="The full Meltova menu with prices. Fourteen flavoured bites, plain bites, exotic nut crush and premium bar fills. Order on WhatsApp.">
-<meta property="og:url" content="[https://your-domain.com]/menu.html">
-<meta property="og:image" content="[https://your-domain.com]/assets/img/og-image.jpg">
+<meta property="og:url" content="https://captain-price-1.github.io/meltova-website/menu.html">
+<meta property="og:image" content="https://captain-price-1.github.io/meltova-website/assets/img/og-image.jpg">
+<meta property="og:image:alt" content="Handmade Meltova chocolates in a gift box">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The Menu and Prices | Meltova, The Chocolate Lane">
 <meta name="twitter:description" content="The full Meltova menu with prices. Fourteen flavoured bites, plain bites, exotic nut crush and premium bar fills. Order on WhatsApp.">
+<meta name="twitter:image" content="https://captain-price-1.github.io/meltova-website/assets/img/og-image.jpg">
 
 <script>document.documentElement.className += " js";</script>
 
@@ -89,6 +94,24 @@
   </div>
 </section>
 
+<!-- Jump to a section, phones only -->
+<nav class="jump" aria-label="Jump to a section">
+  <div class="shell">
+    <p class="jump__label">Jump to</p>
+    <ul>
+      <li><a href="#flavoured-bites">Flavoured</a></li>
+      <li><a href="#plain-bites">Plain</a></li>
+      <li><a href="#custom-bites">Customised</a></li>
+      <li><a href="#nut-crush">Nut Crush</a></li>
+      <li><a href="#modaks">Modaks</a></li>
+      <li><a href="#big-bites">Big Bites</a></li>
+      <li><a href="#customise">Custom Bar</a></li>
+      <li><a href="#bar-fills">Bar Fills</a></li>
+      <li><a href="#gift-boxes">Gifting</a></li>
+    </ul>
+  </div>
+</nav>
+
 <!-- Flavoured bites -->
 <section class="section" id="flavoured-bites" aria-labelledby="flav-h">
   <div class="shell">
@@ -105,11 +128,11 @@
               <button type="button" class="card__heart" data-wish="bite-rose" aria-pressed="false" aria-label="Save Rose to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Rose</h3>
               <p class="card__desc">Rose petal ganache in a dark shell</p>
               <p class="card__price">&#8377;25<span class="unit">per piece</span></p>
-              <fieldset class="chips"><legend class="sr-only">Box size for Rose bites</legend><input class="chip__input" type="radio" id="box-bite-rose-4" name="box-bite-rose" value="4"><label class="chip" for="box-bite-rose-4">4</label><input class="chip__input" type="radio" id="box-bite-rose-6" name="box-bite-rose" value="6" checked><label class="chip" for="box-bite-rose-6">6</label><input class="chip__input" type="radio" id="box-bite-rose-12" name="box-bite-rose" value="12"><label class="chip" for="box-bite-rose-12">12</label></fieldset>
+              <fieldset class="chips"><legend class="sr-only">Box size for Rose bites</legend><span class="chips__cap" aria-hidden="true">Box</span><input class="chip__input" type="radio" id="box-bite-rose-4" name="box-bite-rose" value="4"><label class="chip" for="box-bite-rose-4">4</label><input class="chip__input" type="radio" id="box-bite-rose-6" name="box-bite-rose" value="6" checked><label class="chip" for="box-bite-rose-6">6</label><input class="chip__input" type="radio" id="box-bite-rose-12" name="box-bite-rose" value="12"><label class="chip" for="box-bite-rose-12">12</label></fieldset>
               <div class="card__cta">
                 <button type="button" class="btn btn--ghost-cream card__add"
                   data-id="bite-rose" data-name="Rose bites" data-price="25"
@@ -128,11 +151,11 @@
               <button type="button" class="card__heart" data-wish="bite-pista" aria-pressed="false" aria-label="Save Pista to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Pista</h3>
               <p class="card__desc">Roasted pistachio, ground fresh</p>
               <p class="card__price">&#8377;25<span class="unit">per piece</span></p>
-              <fieldset class="chips"><legend class="sr-only">Box size for Pista bites</legend><input class="chip__input" type="radio" id="box-bite-pista-4" name="box-bite-pista" value="4"><label class="chip" for="box-bite-pista-4">4</label><input class="chip__input" type="radio" id="box-bite-pista-6" name="box-bite-pista" value="6" checked><label class="chip" for="box-bite-pista-6">6</label><input class="chip__input" type="radio" id="box-bite-pista-12" name="box-bite-pista" value="12"><label class="chip" for="box-bite-pista-12">12</label></fieldset>
+              <fieldset class="chips"><legend class="sr-only">Box size for Pista bites</legend><span class="chips__cap" aria-hidden="true">Box</span><input class="chip__input" type="radio" id="box-bite-pista-4" name="box-bite-pista" value="4"><label class="chip" for="box-bite-pista-4">4</label><input class="chip__input" type="radio" id="box-bite-pista-6" name="box-bite-pista" value="6" checked><label class="chip" for="box-bite-pista-6">6</label><input class="chip__input" type="radio" id="box-bite-pista-12" name="box-bite-pista" value="12"><label class="chip" for="box-bite-pista-12">12</label></fieldset>
               <div class="card__cta">
                 <button type="button" class="btn btn--ghost-cream card__add"
                   data-id="bite-pista" data-name="Pista bites" data-price="25"
@@ -151,11 +174,11 @@
               <button type="button" class="card__heart" data-wish="bite-mango" aria-pressed="false" aria-label="Save Mango to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Mango</h3>
               <p class="card__desc">Alphonso mango, soft centre</p>
               <p class="card__price">&#8377;25<span class="unit">per piece</span></p>
-              <fieldset class="chips"><legend class="sr-only">Box size for Mango bites</legend><input class="chip__input" type="radio" id="box-bite-mango-4" name="box-bite-mango" value="4"><label class="chip" for="box-bite-mango-4">4</label><input class="chip__input" type="radio" id="box-bite-mango-6" name="box-bite-mango" value="6" checked><label class="chip" for="box-bite-mango-6">6</label><input class="chip__input" type="radio" id="box-bite-mango-12" name="box-bite-mango" value="12"><label class="chip" for="box-bite-mango-12">12</label></fieldset>
+              <fieldset class="chips"><legend class="sr-only">Box size for Mango bites</legend><span class="chips__cap" aria-hidden="true">Box</span><input class="chip__input" type="radio" id="box-bite-mango-4" name="box-bite-mango" value="4"><label class="chip" for="box-bite-mango-4">4</label><input class="chip__input" type="radio" id="box-bite-mango-6" name="box-bite-mango" value="6" checked><label class="chip" for="box-bite-mango-6">6</label><input class="chip__input" type="radio" id="box-bite-mango-12" name="box-bite-mango" value="12"><label class="chip" for="box-bite-mango-12">12</label></fieldset>
               <div class="card__cta">
                 <button type="button" class="btn btn--ghost-cream card__add"
                   data-id="bite-mango" data-name="Mango bites" data-price="25"
@@ -174,11 +197,11 @@
               <button type="button" class="card__heart" data-wish="bite-strawberry" aria-pressed="false" aria-label="Save Strawberry to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Strawberry</h3>
               <p class="card__desc">Real strawberry, dark coat</p>
               <p class="card__price">&#8377;25<span class="unit">per piece</span></p>
-              <fieldset class="chips"><legend class="sr-only">Box size for Strawberry bites</legend><input class="chip__input" type="radio" id="box-bite-strawberry-4" name="box-bite-strawberry" value="4"><label class="chip" for="box-bite-strawberry-4">4</label><input class="chip__input" type="radio" id="box-bite-strawberry-6" name="box-bite-strawberry" value="6" checked><label class="chip" for="box-bite-strawberry-6">6</label><input class="chip__input" type="radio" id="box-bite-strawberry-12" name="box-bite-strawberry" value="12"><label class="chip" for="box-bite-strawberry-12">12</label></fieldset>
+              <fieldset class="chips"><legend class="sr-only">Box size for Strawberry bites</legend><span class="chips__cap" aria-hidden="true">Box</span><input class="chip__input" type="radio" id="box-bite-strawberry-4" name="box-bite-strawberry" value="4"><label class="chip" for="box-bite-strawberry-4">4</label><input class="chip__input" type="radio" id="box-bite-strawberry-6" name="box-bite-strawberry" value="6" checked><label class="chip" for="box-bite-strawberry-6">6</label><input class="chip__input" type="radio" id="box-bite-strawberry-12" name="box-bite-strawberry" value="12"><label class="chip" for="box-bite-strawberry-12">12</label></fieldset>
               <div class="card__cta">
                 <button type="button" class="btn btn--ghost-cream card__add"
                   data-id="bite-strawberry" data-name="Strawberry bites" data-price="25"
@@ -197,11 +220,11 @@
               <button type="button" class="card__heart" data-wish="bite-rasmalai" aria-pressed="false" aria-label="Save Rasmalai to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Rasmalai</h3>
               <p class="card__desc">Saffron and cardamom, white shell</p>
               <p class="card__price">&#8377;25<span class="unit">per piece</span></p>
-              <fieldset class="chips"><legend class="sr-only">Box size for Rasmalai bites</legend><input class="chip__input" type="radio" id="box-bite-rasmalai-4" name="box-bite-rasmalai" value="4"><label class="chip" for="box-bite-rasmalai-4">4</label><input class="chip__input" type="radio" id="box-bite-rasmalai-6" name="box-bite-rasmalai" value="6" checked><label class="chip" for="box-bite-rasmalai-6">6</label><input class="chip__input" type="radio" id="box-bite-rasmalai-12" name="box-bite-rasmalai" value="12"><label class="chip" for="box-bite-rasmalai-12">12</label></fieldset>
+              <fieldset class="chips"><legend class="sr-only">Box size for Rasmalai bites</legend><span class="chips__cap" aria-hidden="true">Box</span><input class="chip__input" type="radio" id="box-bite-rasmalai-4" name="box-bite-rasmalai" value="4"><label class="chip" for="box-bite-rasmalai-4">4</label><input class="chip__input" type="radio" id="box-bite-rasmalai-6" name="box-bite-rasmalai" value="6" checked><label class="chip" for="box-bite-rasmalai-6">6</label><input class="chip__input" type="radio" id="box-bite-rasmalai-12" name="box-bite-rasmalai" value="12"><label class="chip" for="box-bite-rasmalai-12">12</label></fieldset>
               <div class="card__cta">
                 <button type="button" class="btn btn--ghost-cream card__add"
                   data-id="bite-rasmalai" data-name="Rasmalai bites" data-price="25"
@@ -220,11 +243,11 @@
               <button type="button" class="card__heart" data-wish="bite-paan" aria-pressed="false" aria-label="Save Paan to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Paan</h3>
               <p class="card__desc">Gulkand and betel, a classic</p>
               <p class="card__price">&#8377;25<span class="unit">per piece</span></p>
-              <fieldset class="chips"><legend class="sr-only">Box size for Paan bites</legend><input class="chip__input" type="radio" id="box-bite-paan-4" name="box-bite-paan" value="4"><label class="chip" for="box-bite-paan-4">4</label><input class="chip__input" type="radio" id="box-bite-paan-6" name="box-bite-paan" value="6" checked><label class="chip" for="box-bite-paan-6">6</label><input class="chip__input" type="radio" id="box-bite-paan-12" name="box-bite-paan" value="12"><label class="chip" for="box-bite-paan-12">12</label></fieldset>
+              <fieldset class="chips"><legend class="sr-only">Box size for Paan bites</legend><span class="chips__cap" aria-hidden="true">Box</span><input class="chip__input" type="radio" id="box-bite-paan-4" name="box-bite-paan" value="4"><label class="chip" for="box-bite-paan-4">4</label><input class="chip__input" type="radio" id="box-bite-paan-6" name="box-bite-paan" value="6" checked><label class="chip" for="box-bite-paan-6">6</label><input class="chip__input" type="radio" id="box-bite-paan-12" name="box-bite-paan" value="12"><label class="chip" for="box-bite-paan-12">12</label></fieldset>
               <div class="card__cta">
                 <button type="button" class="btn btn--ghost-cream card__add"
                   data-id="bite-paan" data-name="Paan bites" data-price="25"
@@ -243,11 +266,11 @@
               <button type="button" class="card__heart" data-wish="bite-date" aria-pressed="false" aria-label="Save Date to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Date</h3>
               <p class="card__desc">Stuffed date, no added sugar</p>
               <p class="card__price">&#8377;25<span class="unit">per piece</span></p>
-              <fieldset class="chips"><legend class="sr-only">Box size for Date bites</legend><input class="chip__input" type="radio" id="box-bite-date-4" name="box-bite-date" value="4"><label class="chip" for="box-bite-date-4">4</label><input class="chip__input" type="radio" id="box-bite-date-6" name="box-bite-date" value="6" checked><label class="chip" for="box-bite-date-6">6</label><input class="chip__input" type="radio" id="box-bite-date-12" name="box-bite-date" value="12"><label class="chip" for="box-bite-date-12">12</label></fieldset>
+              <fieldset class="chips"><legend class="sr-only">Box size for Date bites</legend><span class="chips__cap" aria-hidden="true">Box</span><input class="chip__input" type="radio" id="box-bite-date-4" name="box-bite-date" value="4"><label class="chip" for="box-bite-date-4">4</label><input class="chip__input" type="radio" id="box-bite-date-6" name="box-bite-date" value="6" checked><label class="chip" for="box-bite-date-6">6</label><input class="chip__input" type="radio" id="box-bite-date-12" name="box-bite-date" value="12"><label class="chip" for="box-bite-date-12">12</label></fieldset>
               <div class="card__cta">
                 <button type="button" class="btn btn--ghost-cream card__add"
                   data-id="bite-date" data-name="Date bites" data-price="25"
@@ -266,11 +289,11 @@
               <button type="button" class="card__heart" data-wish="bite-dryfruits" aria-pressed="false" aria-label="Save Dry Fruits to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Dry Fruits</h3>
               <p class="card__desc">Almond, cashew and raisin</p>
               <p class="card__price">&#8377;25<span class="unit">per piece</span></p>
-              <fieldset class="chips"><legend class="sr-only">Box size for Dry Fruits bites</legend><input class="chip__input" type="radio" id="box-bite-dryfruits-4" name="box-bite-dryfruits" value="4"><label class="chip" for="box-bite-dryfruits-4">4</label><input class="chip__input" type="radio" id="box-bite-dryfruits-6" name="box-bite-dryfruits" value="6" checked><label class="chip" for="box-bite-dryfruits-6">6</label><input class="chip__input" type="radio" id="box-bite-dryfruits-12" name="box-bite-dryfruits" value="12"><label class="chip" for="box-bite-dryfruits-12">12</label></fieldset>
+              <fieldset class="chips"><legend class="sr-only">Box size for Dry Fruits bites</legend><span class="chips__cap" aria-hidden="true">Box</span><input class="chip__input" type="radio" id="box-bite-dryfruits-4" name="box-bite-dryfruits" value="4"><label class="chip" for="box-bite-dryfruits-4">4</label><input class="chip__input" type="radio" id="box-bite-dryfruits-6" name="box-bite-dryfruits" value="6" checked><label class="chip" for="box-bite-dryfruits-6">6</label><input class="chip__input" type="radio" id="box-bite-dryfruits-12" name="box-bite-dryfruits" value="12"><label class="chip" for="box-bite-dryfruits-12">12</label></fieldset>
               <div class="card__cta">
                 <button type="button" class="btn btn--ghost-cream card__add"
                   data-id="bite-dryfruits" data-name="Dry Fruits bites" data-price="25"
@@ -289,11 +312,11 @@
               <button type="button" class="card__heart" data-wish="bite-caramel" aria-pressed="false" aria-label="Save Caramel to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Caramel</h3>
               <p class="card__desc">Slow salted caramel centre</p>
               <p class="card__price">&#8377;25<span class="unit">per piece</span></p>
-              <fieldset class="chips"><legend class="sr-only">Box size for Caramel bites</legend><input class="chip__input" type="radio" id="box-bite-caramel-4" name="box-bite-caramel" value="4"><label class="chip" for="box-bite-caramel-4">4</label><input class="chip__input" type="radio" id="box-bite-caramel-6" name="box-bite-caramel" value="6" checked><label class="chip" for="box-bite-caramel-6">6</label><input class="chip__input" type="radio" id="box-bite-caramel-12" name="box-bite-caramel" value="12"><label class="chip" for="box-bite-caramel-12">12</label></fieldset>
+              <fieldset class="chips"><legend class="sr-only">Box size for Caramel bites</legend><span class="chips__cap" aria-hidden="true">Box</span><input class="chip__input" type="radio" id="box-bite-caramel-4" name="box-bite-caramel" value="4"><label class="chip" for="box-bite-caramel-4">4</label><input class="chip__input" type="radio" id="box-bite-caramel-6" name="box-bite-caramel" value="6" checked><label class="chip" for="box-bite-caramel-6">6</label><input class="chip__input" type="radio" id="box-bite-caramel-12" name="box-bite-caramel" value="12"><label class="chip" for="box-bite-caramel-12">12</label></fieldset>
               <div class="card__cta">
                 <button type="button" class="btn btn--ghost-cream card__add"
                   data-id="bite-caramel" data-name="Caramel bites" data-price="25"
@@ -312,11 +335,11 @@
               <button type="button" class="card__heart" data-wish="bite-oreo" aria-pressed="false" aria-label="Save Oreo to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Oreo</h3>
               <p class="card__desc">Crushed cookie and cream</p>
               <p class="card__price">&#8377;25<span class="unit">per piece</span></p>
-              <fieldset class="chips"><legend class="sr-only">Box size for Oreo bites</legend><input class="chip__input" type="radio" id="box-bite-oreo-4" name="box-bite-oreo" value="4"><label class="chip" for="box-bite-oreo-4">4</label><input class="chip__input" type="radio" id="box-bite-oreo-6" name="box-bite-oreo" value="6" checked><label class="chip" for="box-bite-oreo-6">6</label><input class="chip__input" type="radio" id="box-bite-oreo-12" name="box-bite-oreo" value="12"><label class="chip" for="box-bite-oreo-12">12</label></fieldset>
+              <fieldset class="chips"><legend class="sr-only">Box size for Oreo bites</legend><span class="chips__cap" aria-hidden="true">Box</span><input class="chip__input" type="radio" id="box-bite-oreo-4" name="box-bite-oreo" value="4"><label class="chip" for="box-bite-oreo-4">4</label><input class="chip__input" type="radio" id="box-bite-oreo-6" name="box-bite-oreo" value="6" checked><label class="chip" for="box-bite-oreo-6">6</label><input class="chip__input" type="radio" id="box-bite-oreo-12" name="box-bite-oreo" value="12"><label class="chip" for="box-bite-oreo-12">12</label></fieldset>
               <div class="card__cta">
                 <button type="button" class="btn btn--ghost-cream card__add"
                   data-id="bite-oreo" data-name="Oreo bites" data-price="25"
@@ -335,11 +358,11 @@
               <button type="button" class="card__heart" data-wish="bite-nutella" aria-pressed="false" aria-label="Save Nutella to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Nutella</h3>
               <p class="card__desc">Hazelnut spread, full centre</p>
               <p class="card__price">&#8377;30<span class="unit">per piece</span></p>
-              <fieldset class="chips"><legend class="sr-only">Box size for Nutella bites</legend><input class="chip__input" type="radio" id="box-bite-nutella-4" name="box-bite-nutella" value="4"><label class="chip" for="box-bite-nutella-4">4</label><input class="chip__input" type="radio" id="box-bite-nutella-6" name="box-bite-nutella" value="6" checked><label class="chip" for="box-bite-nutella-6">6</label><input class="chip__input" type="radio" id="box-bite-nutella-12" name="box-bite-nutella" value="12"><label class="chip" for="box-bite-nutella-12">12</label></fieldset>
+              <fieldset class="chips"><legend class="sr-only">Box size for Nutella bites</legend><span class="chips__cap" aria-hidden="true">Box</span><input class="chip__input" type="radio" id="box-bite-nutella-4" name="box-bite-nutella" value="4"><label class="chip" for="box-bite-nutella-4">4</label><input class="chip__input" type="radio" id="box-bite-nutella-6" name="box-bite-nutella" value="6" checked><label class="chip" for="box-bite-nutella-6">6</label><input class="chip__input" type="radio" id="box-bite-nutella-12" name="box-bite-nutella" value="12"><label class="chip" for="box-bite-nutella-12">12</label></fieldset>
               <div class="card__cta">
                 <button type="button" class="btn btn--ghost-cream card__add"
                   data-id="bite-nutella" data-name="Nutella bites" data-price="30"
@@ -358,11 +381,11 @@
               <button type="button" class="card__heart" data-wish="bite-coconut" aria-pressed="false" aria-label="Save Coconut to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Coconut</h3>
               <p class="card__desc">Toasted coconut truffle</p>
               <p class="card__price">&#8377;30<span class="unit">per piece</span></p>
-              <fieldset class="chips"><legend class="sr-only">Box size for Coconut bites</legend><input class="chip__input" type="radio" id="box-bite-coconut-4" name="box-bite-coconut" value="4"><label class="chip" for="box-bite-coconut-4">4</label><input class="chip__input" type="radio" id="box-bite-coconut-6" name="box-bite-coconut" value="6" checked><label class="chip" for="box-bite-coconut-6">6</label><input class="chip__input" type="radio" id="box-bite-coconut-12" name="box-bite-coconut" value="12"><label class="chip" for="box-bite-coconut-12">12</label></fieldset>
+              <fieldset class="chips"><legend class="sr-only">Box size for Coconut bites</legend><span class="chips__cap" aria-hidden="true">Box</span><input class="chip__input" type="radio" id="box-bite-coconut-4" name="box-bite-coconut" value="4"><label class="chip" for="box-bite-coconut-4">4</label><input class="chip__input" type="radio" id="box-bite-coconut-6" name="box-bite-coconut" value="6" checked><label class="chip" for="box-bite-coconut-6">6</label><input class="chip__input" type="radio" id="box-bite-coconut-12" name="box-bite-coconut" value="12"><label class="chip" for="box-bite-coconut-12">12</label></fieldset>
               <div class="card__cta">
                 <button type="button" class="btn btn--ghost-cream card__add"
                   data-id="bite-coconut" data-name="Coconut bites" data-price="30"
@@ -381,11 +404,11 @@
               <button type="button" class="card__heart" data-wish="bite-biscoff" aria-pressed="false" aria-label="Save Biscoff to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Biscoff</h3>
               <p class="card__desc">Speculoos crunch and spread</p>
               <p class="card__price">&#8377;35<span class="unit">per piece</span></p>
-              <fieldset class="chips"><legend class="sr-only">Box size for Biscoff bites</legend><input class="chip__input" type="radio" id="box-bite-biscoff-4" name="box-bite-biscoff" value="4"><label class="chip" for="box-bite-biscoff-4">4</label><input class="chip__input" type="radio" id="box-bite-biscoff-6" name="box-bite-biscoff" value="6" checked><label class="chip" for="box-bite-biscoff-6">6</label><input class="chip__input" type="radio" id="box-bite-biscoff-12" name="box-bite-biscoff" value="12"><label class="chip" for="box-bite-biscoff-12">12</label></fieldset>
+              <fieldset class="chips"><legend class="sr-only">Box size for Biscoff bites</legend><span class="chips__cap" aria-hidden="true">Box</span><input class="chip__input" type="radio" id="box-bite-biscoff-4" name="box-bite-biscoff" value="4"><label class="chip" for="box-bite-biscoff-4">4</label><input class="chip__input" type="radio" id="box-bite-biscoff-6" name="box-bite-biscoff" value="6" checked><label class="chip" for="box-bite-biscoff-6">6</label><input class="chip__input" type="radio" id="box-bite-biscoff-12" name="box-bite-biscoff" value="12"><label class="chip" for="box-bite-biscoff-12">12</label></fieldset>
               <div class="card__cta">
                 <button type="button" class="btn btn--ghost-cream card__add"
                   data-id="bite-biscoff" data-name="Biscoff bites" data-price="35"
@@ -404,11 +427,11 @@
               <button type="button" class="card__heart" data-wish="bite-kunafa" aria-pressed="false" aria-label="Save Kunafa to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Kunafa</h3>
               <p class="card__desc">Crisp kunafa and pistachio</p>
               <p class="card__price">&#8377;35<span class="unit">per piece</span></p>
-              <fieldset class="chips"><legend class="sr-only">Box size for Kunafa bites</legend><input class="chip__input" type="radio" id="box-bite-kunafa-4" name="box-bite-kunafa" value="4"><label class="chip" for="box-bite-kunafa-4">4</label><input class="chip__input" type="radio" id="box-bite-kunafa-6" name="box-bite-kunafa" value="6" checked><label class="chip" for="box-bite-kunafa-6">6</label><input class="chip__input" type="radio" id="box-bite-kunafa-12" name="box-bite-kunafa" value="12"><label class="chip" for="box-bite-kunafa-12">12</label></fieldset>
+              <fieldset class="chips"><legend class="sr-only">Box size for Kunafa bites</legend><span class="chips__cap" aria-hidden="true">Box</span><input class="chip__input" type="radio" id="box-bite-kunafa-4" name="box-bite-kunafa" value="4"><label class="chip" for="box-bite-kunafa-4">4</label><input class="chip__input" type="radio" id="box-bite-kunafa-6" name="box-bite-kunafa" value="6" checked><label class="chip" for="box-bite-kunafa-6">6</label><input class="chip__input" type="radio" id="box-bite-kunafa-12" name="box-bite-kunafa" value="12"><label class="chip" for="box-bite-kunafa-12">12</label></fieldset>
               <div class="card__cta">
                 <button type="button" class="btn btn--ghost-cream card__add"
                   data-id="bite-kunafa" data-name="Kunafa bites" data-price="35"
@@ -439,11 +462,11 @@
               <button type="button" class="card__heart" data-wish="plain-dark" aria-pressed="false" aria-label="Save Plain Dark Chocolate to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Plain Dark Chocolate</h3>
               <p class="card__desc">Single origin, nothing added</p>
               <p class="card__price">&#8377;20<span class="unit">per piece</span></p>
-              <fieldset class="chips"><legend class="sr-only">Box size for Plain Dark Chocolate</legend><input class="chip__input" type="radio" id="box-plain-dark-4" name="box-plain-dark" value="4"><label class="chip" for="box-plain-dark-4">4</label><input class="chip__input" type="radio" id="box-plain-dark-6" name="box-plain-dark" value="6" checked><label class="chip" for="box-plain-dark-6">6</label><input class="chip__input" type="radio" id="box-plain-dark-12" name="box-plain-dark" value="12"><label class="chip" for="box-plain-dark-12">12</label></fieldset>
+              <fieldset class="chips"><legend class="sr-only">Box size for Plain Dark Chocolate</legend><span class="chips__cap" aria-hidden="true">Box</span><input class="chip__input" type="radio" id="box-plain-dark-4" name="box-plain-dark" value="4"><label class="chip" for="box-plain-dark-4">4</label><input class="chip__input" type="radio" id="box-plain-dark-6" name="box-plain-dark" value="6" checked><label class="chip" for="box-plain-dark-6">6</label><input class="chip__input" type="radio" id="box-plain-dark-12" name="box-plain-dark" value="12"><label class="chip" for="box-plain-dark-12">12</label></fieldset>
               <div class="card__cta">
                 <button type="button" class="btn btn--ghost-cream card__add"
                   data-id="plain-dark" data-name="Plain Dark Chocolate" data-price="20"
@@ -462,11 +485,11 @@
               <button type="button" class="card__heart" data-wish="plain-milk" aria-pressed="false" aria-label="Save Plain Milk Chocolate to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Plain Milk Chocolate</h3>
               <p class="card__desc">Smooth and creamy, classic milk</p>
               <p class="card__price">&#8377;20<span class="unit">per piece</span></p>
-              <fieldset class="chips"><legend class="sr-only">Box size for Plain Milk Chocolate</legend><input class="chip__input" type="radio" id="box-plain-milk-4" name="box-plain-milk" value="4"><label class="chip" for="box-plain-milk-4">4</label><input class="chip__input" type="radio" id="box-plain-milk-6" name="box-plain-milk" value="6" checked><label class="chip" for="box-plain-milk-6">6</label><input class="chip__input" type="radio" id="box-plain-milk-12" name="box-plain-milk" value="12"><label class="chip" for="box-plain-milk-12">12</label></fieldset>
+              <fieldset class="chips"><legend class="sr-only">Box size for Plain Milk Chocolate</legend><span class="chips__cap" aria-hidden="true">Box</span><input class="chip__input" type="radio" id="box-plain-milk-4" name="box-plain-milk" value="4"><label class="chip" for="box-plain-milk-4">4</label><input class="chip__input" type="radio" id="box-plain-milk-6" name="box-plain-milk" value="6" checked><label class="chip" for="box-plain-milk-6">6</label><input class="chip__input" type="radio" id="box-plain-milk-12" name="box-plain-milk" value="12"><label class="chip" for="box-plain-milk-12">12</label></fieldset>
               <div class="card__cta">
                 <button type="button" class="btn btn--ghost-cream card__add"
                   data-id="plain-milk" data-name="Plain Milk Chocolate" data-price="20"
@@ -485,11 +508,11 @@
               <button type="button" class="card__heart" data-wish="plain-white" aria-pressed="false" aria-label="Save Plain White Chocolate to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Plain White Chocolate</h3>
               <p class="card__desc">Sweet and buttery white</p>
               <p class="card__price">&#8377;20<span class="unit">per piece</span></p>
-              <fieldset class="chips"><legend class="sr-only">Box size for Plain White Chocolate</legend><input class="chip__input" type="radio" id="box-plain-white-4" name="box-plain-white" value="4"><label class="chip" for="box-plain-white-4">4</label><input class="chip__input" type="radio" id="box-plain-white-6" name="box-plain-white" value="6" checked><label class="chip" for="box-plain-white-6">6</label><input class="chip__input" type="radio" id="box-plain-white-12" name="box-plain-white" value="12"><label class="chip" for="box-plain-white-12">12</label></fieldset>
+              <fieldset class="chips"><legend class="sr-only">Box size for Plain White Chocolate</legend><span class="chips__cap" aria-hidden="true">Box</span><input class="chip__input" type="radio" id="box-plain-white-4" name="box-plain-white" value="4"><label class="chip" for="box-plain-white-4">4</label><input class="chip__input" type="radio" id="box-plain-white-6" name="box-plain-white" value="6" checked><label class="chip" for="box-plain-white-6">6</label><input class="chip__input" type="radio" id="box-plain-white-12" name="box-plain-white" value="12"><label class="chip" for="box-plain-white-12">12</label></fieldset>
               <div class="card__cta">
                 <button type="button" class="btn btn--ghost-cream card__add"
                   data-id="plain-white" data-name="Plain White Chocolate" data-price="20"
@@ -521,7 +544,7 @@
       <div class="showcase__body">
         <p class="showcase__price">&#8377;40<span>per piece</span></p>
         <p>Pick a box of 4, 6 or 12, then tell us the toppings on WhatsApp after you send the order. Every piece is finished by hand, so no two boxes are quite the same.</p>
-        <fieldset class="chips"><legend class="sr-only">Box size for customised bites</legend><input class="chip__input" type="radio" id="box-custbite-4" name="box-custbite" value="4"><label class="chip" for="box-custbite-4">4</label><input class="chip__input" type="radio" id="box-custbite-6" name="box-custbite" value="6" checked><label class="chip" for="box-custbite-6">6</label><input class="chip__input" type="radio" id="box-custbite-12" name="box-custbite" value="12"><label class="chip" for="box-custbite-12">12</label></fieldset>
+        <fieldset class="chips"><legend class="sr-only">Box size for customised bites</legend><span class="chips__cap" aria-hidden="true">Box</span><input class="chip__input" type="radio" id="box-custbite-4" name="box-custbite" value="4"><label class="chip" for="box-custbite-4">4</label><input class="chip__input" type="radio" id="box-custbite-6" name="box-custbite" value="6" checked><label class="chip" for="box-custbite-6">6</label><input class="chip__input" type="radio" id="box-custbite-12" name="box-custbite" value="12"><label class="chip" for="box-custbite-12">12</label></fieldset>
         <div class="showcase__cta">
           <button type="button" class="btn btn--brown card__add"
             data-id="custbite" data-name="Customised bites" data-price="40"
@@ -556,7 +579,7 @@
               <button type="button" class="card__heart" data-wish="nut-almond" aria-pressed="false" aria-label="Save Almond Crush to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Almond Crush</h3>
               <p class="card__desc">A slab broken over roasted almonds</p>
               <p class="card__price">&#8377;219<span class="unit">per box</span></p>
@@ -579,7 +602,7 @@
               <button type="button" class="card__heart" data-wish="nut-mixed" aria-pressed="false" aria-label="Save Mixed Nut Crush to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Mixed Nut Crush</h3>
               <p class="card__desc">Almond, cashew, pistachio and more</p>
               <p class="card__price">&#8377;249<span class="unit">per box</span></p>
@@ -650,7 +673,7 @@
       <div class="showcase__body">
         <p class="showcase__price">&#8377;65<span>per piece</span></p>
         <p>Several times the size of a regular bite, so a box of four already looks like a present. Choose a box of 4, 6 or 12, and tell us the finish you would like on WhatsApp after you send the order.</p>
-        <fieldset class="chips"><legend class="sr-only">Box size for Big Bites</legend><input class="chip__input" type="radio" id="box-bigbite-4" name="box-bigbite" value="4"><label class="chip" for="box-bigbite-4">4</label><input class="chip__input" type="radio" id="box-bigbite-6" name="box-bigbite" value="6" checked><label class="chip" for="box-bigbite-6">6</label><input class="chip__input" type="radio" id="box-bigbite-12" name="box-bigbite" value="12"><label class="chip" for="box-bigbite-12">12</label></fieldset>
+        <fieldset class="chips"><legend class="sr-only">Box size for Big Bites</legend><span class="chips__cap" aria-hidden="true">Box</span><input class="chip__input" type="radio" id="box-bigbite-4" name="box-bigbite" value="4"><label class="chip" for="box-bigbite-4">4</label><input class="chip__input" type="radio" id="box-bigbite-6" name="box-bigbite" value="6" checked><label class="chip" for="box-bigbite-6">6</label><input class="chip__input" type="radio" id="box-bigbite-12" name="box-bigbite" value="12"><label class="chip" for="box-bigbite-12">12</label></fieldset>
         <div class="showcase__cta">
           <button type="button" class="btn btn--brown card__add"
             data-id="bigbite" data-name="Big Bites" data-price="65"
@@ -715,7 +738,7 @@
               <button type="button" class="card__heart" data-wish="bar-dryfruits" aria-pressed="false" aria-label="Save Dry Fruits to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Dry Fruits</h3>
               <p class="card__desc">A full bar packed with dry fruit</p>
               <p class="card__price">&#8377;399<span class="unit">per bar</span></p>
@@ -738,7 +761,7 @@
               <button type="button" class="card__heart" data-wish="bar-nutella" aria-pressed="false" aria-label="Save Nutella to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Nutella</h3>
               <p class="card__desc">Filled edge to edge with hazelnut</p>
               <p class="card__price">&#8377;399<span class="unit">per bar</span></p>
@@ -761,7 +784,7 @@
               <button type="button" class="card__heart" data-wish="bar-caramel" aria-pressed="false" aria-label="Save Caramel to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Caramel</h3>
               <p class="card__desc">Molten salted caramel inside</p>
               <p class="card__price">&#8377;399<span class="unit">per bar</span></p>
@@ -784,7 +807,7 @@
               <button type="button" class="card__heart" data-wish="bar-oreo" aria-pressed="false" aria-label="Save Oreo to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Oreo</h3>
               <p class="card__desc">Cookies and cream, whole bar</p>
               <p class="card__price">&#8377;399<span class="unit">per bar</span></p>
@@ -807,7 +830,7 @@
               <button type="button" class="card__heart" data-wish="bar-biscoff" aria-pressed="false" aria-label="Save Biscoff to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Biscoff</h3>
               <p class="card__desc">Biscoff spread and crumb</p>
               <p class="card__price">&#8377;499<span class="unit">per bar</span></p>
@@ -830,7 +853,7 @@
               <button type="button" class="card__heart" data-wish="bar-kunafa" aria-pressed="false" aria-label="Save Kunafa to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Kunafa</h3>
               <p class="card__desc">The Dubai style pistachio kunafa bar</p>
               <p class="card__price">&#8377;499<span class="unit">per bar</span></p>
@@ -941,5 +964,14 @@
 </footer>
 
 <button type="button" class="to-top" aria-label="Back to top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V6M6 11.5 12 5.5l6 6"/></svg></button>
+
+<!-- Bottom bar, phones only. The four things people actually came for, sitting
+     in the thumb zone rather than behind a menu at the top of the screen. -->
+<nav class="tabbar" aria-label="Main, mobile">
+  <a href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1Z"/></svg><span>Home</span></a>
+  <a href="menu.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6.5h12M8 12h12M8 17.5h12"/><circle cx="4.2" cy="6.5" r="1.1" fill="currentColor" stroke="none"/><circle cx="4.2" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4.2" cy="17.5" r="1.1" fill="currentColor" stroke="none"/></svg><span>Menu</span></a>
+  <a href="cart.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.4 7.6h13.2L19.6 20H4.4Z"/><path d="M8.8 7.6V6a3.2 3.2 0 0 1 6.4 0v1.6"/></svg><span class="tabbar__badge" data-cart-count>0</span><span>Box</span></a>
+  <a href="contact.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 11.6a7.9 7.9 0 0 1-11.7 6.9L4.2 20l1.5-4.6a7.9 7.9 0 1 1 14.9-3.8Z"/></svg><span>Contact</span></a>
+</nav>
 </body>
 </html>

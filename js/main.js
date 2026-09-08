@@ -49,7 +49,27 @@
   function $$(sel, root) {
     return Array.prototype.slice.call((root || document).querySelectorAll(sel));
   }
-  function money(n) { return RUPEE + n.toLocaleString("en-IN"); }
+  /* A price is always drawn as a number. A stored value that is not one would
+     otherwise be pasted into the page exactly as it was stored. */
+  function money(n) {
+    var v = Number(n);
+    if (!isFinite(v)) { v = 0; }
+    return RUPEE + v.toLocaleString("en-IN");
+  }
+
+  /* Cart lines are read back from browser storage and written into innerHTML.
+     Only this site's own pages can write that storage, so there is no way in
+     from outside, but a name holding an ampersand or a quote would still break
+     the markup it lands in, and a stored tag would be run as markup rather than
+     shown as text. Everything from storage goes through here first. */
+  function esc(v) {
+    return String(v === null || v === undefined ? "" : v)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
 
   /* Storage can throw in private browsing, so every call is wrapped. */
   function readStore(key, fallback) {
@@ -364,11 +384,11 @@
 
   function boxPicker(line) {
     return '<fieldset class="boxpick">' +
-      '<legend class="sr-only">Box size for ' + line.name + '</legend>' +
+      '<legend class="sr-only">Box size for ' + esc(line.name) + '</legend>' +
       BOX_SIZES.map(function (size) {
-        var fid = "cartbox-" + line.id + "-" + size;
+        var fid = "cartbox-" + esc(line.id) + "-" + size;
         return '<input class="chip__input" type="radio" id="' + fid +
-               '" name="cartbox-' + line.id + '" value="' + size + '"' +
+               '" name="cartbox-' + esc(line.id) + '" value="' + size + '"' +
                (line.qty === size ? " checked" : "") + '>' +
                '<label class="chip" for="' + fid + '">' + size + '</label>';
       }).join("") +
@@ -377,9 +397,9 @@
 
   function stepper(line) {
     return '<div class="qty">' +
-      '<button type="button" class="qty__btn" data-step="-1" aria-label="One less ' + line.name + '">&#8722;</button>' +
-      '<span class="qty__n" aria-label="Quantity">' + line.qty + '</span>' +
-      '<button type="button" class="qty__btn" data-step="1" aria-label="One more ' + line.name + '">&#43;</button>' +
+      '<button type="button" class="qty__btn" data-step="-1" aria-label="One less ' + esc(line.name) + '">&#8722;</button>' +
+      '<span class="qty__n" aria-label="Quantity">' + esc(line.qty) + '</span>' +
+      '<button type="button" class="qty__btn" data-step="1" aria-label="One more ' + esc(line.name) + '">&#43;</button>' +
       '</div>';
   }
 
@@ -391,6 +411,8 @@
     countEls.forEach(function (el) {
       var was = el.textContent;
       el.textContent = String(count);
+      /* An empty box needs no number on it. */
+      el.hidden = count === 0;
       if (was !== String(count) && !reduceMotion) {
         el.classList.remove("is-pop");
         void el.offsetWidth;
@@ -410,15 +432,15 @@
         li.className = "cart-line";
         li.style.setProperty("--i", index);
         li.innerHTML =
-          '<img class="cart-line__img" src="assets/img/' + line.img + '" alt="" width="80" height="80">' +
+          '<img class="cart-line__img" src="assets/img/' + esc(line.img) + '" alt="" width="80" height="80">' +
           '<div class="cart-line__body">' +
-            '<p class="cart-line__name">' + line.name + '</p>' +
-            '<p class="cart-line__meta">' + money(line.price) + ' ' + line.unit + '</p>' +
+            '<p class="cart-line__name">' + esc(line.name) + '</p>' +
+            '<p class="cart-line__meta">' + money(line.price) + ' ' + esc(line.unit) + '</p>' +
             (line.box ? boxPicker(line) : stepper(line)) +
           '</div>' +
           '<div class="cart-line__end">' +
             '<p class="cart-line__sum">' + money(line.qty * line.price) + '</p>' +
-            '<button type="button" class="cart-line__remove" data-remove aria-label="Remove ' + line.name + '">Remove</button>' +
+            '<button type="button" class="cart-line__remove" data-remove aria-label="Remove ' + esc(line.name) + '">Remove</button>' +
           '</div>';
 
         var picker = li.querySelector(".boxpick");
@@ -716,23 +738,32 @@
 
   var io = null;
 
-  /* Anything the visitor has already scrolled past, after a deep link or a
-     restored position, is shown at once. The observer alone cannot be trusted
-     for that: an element can travel from below the viewport to above it
-     without ever crossing a threshold, and would stay invisible. */
+  /* Anything the visitor can already see is shown, whether or not the observer
+     reported it. Two cases need this. A visitor arriving on a deep link, or
+     with a restored scroll position, has elements that travelled from below
+     the viewport to above it without ever crossing a threshold. And a callback
+     that never arrives at all, which happens when the page loads in a
+     background tab or an inactive view, would otherwise leave a section
+     invisible for good, because a reveal target starts at zero opacity. Content
+     must not depend on the observer firing to be readable.
+
+     The threshold matches the observer's own bottom margin, so an element
+     animates at the same moment whichever path reaches it first. */
   var pending = revealTargets.slice();
 
   function sweepPassed() {
+    var limit = (window.innerHeight || 0) * 0.92;
     for (var i = pending.length - 1; i >= 0; i--) {
       var el = pending[i];
-      if (el.classList.contains("is-in")) { pending.splice(i, 1); continue; }
-      if (el.getBoundingClientRect().bottom < 0) {
+      if (!el.classList.contains("is-in")) {
+        if (el.getBoundingClientRect().top >= limit) { continue; }
         el.classList.add("is-in");
         if (io) { io.unobserve(el); }
-        pending.splice(i, 1);
       }
+      pending.splice(i, 1);
     }
   }
+
 
   if (revealTargets.length) {
     if (reduceMotion || !("IntersectionObserver" in window)) {
@@ -753,6 +784,11 @@
       window.addEventListener("load", sweepPassed);
       window.addEventListener("hashchange", sweepPassed);
       window.addEventListener("scroll", sweepPassed, { passive: true });
+      window.addEventListener("resize", sweepPassed);
+      /* A tab that was loaded in the background gets its sweep on the way in. */
+      document.addEventListener("visibilitychange", function () {
+        if (!document.hidden) { sweepPassed(); }
+      });
       sweepPassed();
     }
   }

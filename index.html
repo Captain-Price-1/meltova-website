@@ -9,18 +9,23 @@
 <link rel="apple-touch-icon" href="assets/img/favicon.png">
 <meta name="theme-color" content="#15100b">
 
-<!-- Link previews. TODO owner: replace [https://your-domain.com] with the real
-     web address once the site is live. Both tags below need the full address,
-     starting with https, or the preview image will not load. -->
+<link rel="canonical" href="https://captain-price-1.github.io/meltova-website/index.html">
+
+<!-- Link previews, which is what a customer sees when this address is pasted
+     into WhatsApp or Instagram. Both tags need the full address, starting with
+     https, or the preview image does not load. TODO owner: if the site later
+     moves to its own web address, change SITE_URL in gen_chrome.py and rebuild. -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Meltova, The Chocolate Lane">
 <meta property="og:title" content="Meltova, The Chocolate Lane | Handmade Chocolate, Shipped Across India">
 <meta property="og:description" content="Handmade chocolate bites, exotic nut crush and filled bars, tempered by hand in small batches and shipped across India. Order on WhatsApp.">
-<meta property="og:url" content="[https://your-domain.com]/index.html">
-<meta property="og:image" content="[https://your-domain.com]/assets/img/og-image.jpg">
+<meta property="og:url" content="https://captain-price-1.github.io/meltova-website/index.html">
+<meta property="og:image" content="https://captain-price-1.github.io/meltova-website/assets/img/og-image.jpg">
+<meta property="og:image:alt" content="Handmade Meltova chocolates in a gift box">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Meltova, The Chocolate Lane | Handmade Chocolate, Shipped Across India">
 <meta name="twitter:description" content="Handmade chocolate bites, exotic nut crush and filled bars, tempered by hand in small batches and shipped across India. Order on WhatsApp.">
+<meta name="twitter:image" content="https://captain-price-1.github.io/meltova-website/assets/img/og-image.jpg">
 
 <script>document.documentElement.className += " js";</script>
 
@@ -160,11 +165,11 @@
               <button type="button" class="card__heart" data-wish="bite-kunafa" aria-pressed="false" aria-label="Save Kunafa to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Kunafa</h3>
               <p class="card__desc">Crisp kunafa and pistachio</p>
               <p class="card__price">&#8377;35<span class="unit">per piece</span></p>
-              <fieldset class="chips"><legend class="sr-only">Box size for Kunafa bites</legend><input class="chip__input" type="radio" id="box-bite-kunafa-4" name="box-bite-kunafa" value="4"><label class="chip" for="box-bite-kunafa-4">4</label><input class="chip__input" type="radio" id="box-bite-kunafa-6" name="box-bite-kunafa" value="6" checked><label class="chip" for="box-bite-kunafa-6">6</label><input class="chip__input" type="radio" id="box-bite-kunafa-12" name="box-bite-kunafa" value="12"><label class="chip" for="box-bite-kunafa-12">12</label></fieldset>
+              <fieldset class="chips"><legend class="sr-only">Box size for Kunafa bites</legend><span class="chips__cap" aria-hidden="true">Box</span><input class="chip__input" type="radio" id="box-bite-kunafa-4" name="box-bite-kunafa" value="4"><label class="chip" for="box-bite-kunafa-4">4</label><input class="chip__input" type="radio" id="box-bite-kunafa-6" name="box-bite-kunafa" value="6" checked><label class="chip" for="box-bite-kunafa-6">6</label><input class="chip__input" type="radio" id="box-bite-kunafa-12" name="box-bite-kunafa" value="12"><label class="chip" for="box-bite-kunafa-12">12</label></fieldset>
               <div class="card__cta">
                 <button type="button" class="btn btn--ghost-cream card__add"
                   data-id="bite-kunafa" data-name="Kunafa bites" data-price="35"
@@ -183,11 +188,11 @@
               <button type="button" class="card__heart" data-wish="bite-rasmalai" aria-pressed="false" aria-label="Save Rasmalai to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Rasmalai</h3>
               <p class="card__desc">Saffron and cardamom, white shell</p>
               <p class="card__price">&#8377;25<span class="unit">per piece</span></p>
-              <fieldset class="chips"><legend class="sr-only">Box size for Rasmalai bites</legend><input class="chip__input" type="radio" id="box-bite-rasmalai-4" name="box-bite-rasmalai" value="4"><label class="chip" for="box-bite-rasmalai-4">4</label><input class="chip__input" type="radio" id="box-bite-rasmalai-6" name="box-bite-rasmalai" value="6" checked><label class="chip" for="box-bite-rasmalai-6">6</label><input class="chip__input" type="radio" id="box-bite-rasmalai-12" name="box-bite-rasmalai" value="12"><label class="chip" for="box-bite-rasmalai-12">12</label></fieldset>
+              <fieldset class="chips"><legend class="sr-only">Box size for Rasmalai bites</legend><span class="chips__cap" aria-hidden="true">Box</span><input class="chip__input" type="radio" id="box-bite-rasmalai-4" name="box-bite-rasmalai" value="4"><label class="chip" for="box-bite-rasmalai-4">4</label><input class="chip__input" type="radio" id="box-bite-rasmalai-6" name="box-bite-rasmalai" value="6" checked><label class="chip" for="box-bite-rasmalai-6">6</label><input class="chip__input" type="radio" id="box-bite-rasmalai-12" name="box-bite-rasmalai" value="12"><label class="chip" for="box-bite-rasmalai-12">12</label></fieldset>
               <div class="card__cta">
                 <button type="button" class="btn btn--ghost-cream card__add"
                   data-id="bite-rasmalai" data-name="Rasmalai bites" data-price="25"
@@ -206,11 +211,11 @@
               <button type="button" class="card__heart" data-wish="bite-biscoff" aria-pressed="false" aria-label="Save Biscoff to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Biscoff</h3>
               <p class="card__desc">Speculoos crunch and spread</p>
               <p class="card__price">&#8377;35<span class="unit">per piece</span></p>
-              <fieldset class="chips"><legend class="sr-only">Box size for Biscoff bites</legend><input class="chip__input" type="radio" id="box-bite-biscoff-4" name="box-bite-biscoff" value="4"><label class="chip" for="box-bite-biscoff-4">4</label><input class="chip__input" type="radio" id="box-bite-biscoff-6" name="box-bite-biscoff" value="6" checked><label class="chip" for="box-bite-biscoff-6">6</label><input class="chip__input" type="radio" id="box-bite-biscoff-12" name="box-bite-biscoff" value="12"><label class="chip" for="box-bite-biscoff-12">12</label></fieldset>
+              <fieldset class="chips"><legend class="sr-only">Box size for Biscoff bites</legend><span class="chips__cap" aria-hidden="true">Box</span><input class="chip__input" type="radio" id="box-bite-biscoff-4" name="box-bite-biscoff" value="4"><label class="chip" for="box-bite-biscoff-4">4</label><input class="chip__input" type="radio" id="box-bite-biscoff-6" name="box-bite-biscoff" value="6" checked><label class="chip" for="box-bite-biscoff-6">6</label><input class="chip__input" type="radio" id="box-bite-biscoff-12" name="box-bite-biscoff" value="12"><label class="chip" for="box-bite-biscoff-12">12</label></fieldset>
               <div class="card__cta">
                 <button type="button" class="btn btn--ghost-cream card__add"
                   data-id="bite-biscoff" data-name="Biscoff bites" data-price="35"
@@ -229,7 +234,7 @@
               <button type="button" class="card__heart" data-wish="nut-almond" aria-pressed="false" aria-label="Save Almond Crush to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Almond Crush</h3>
               <p class="card__desc">A slab broken over roasted almonds</p>
               <p class="card__price">&#8377;219<span class="unit">per box</span></p>
@@ -309,7 +314,7 @@
               <button type="button" class="card__heart" data-wish="bar-dryfruits" aria-pressed="false" aria-label="Save Dry Fruits Bar to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Dry Fruits Bar</h3>
               <p class="card__desc">A full bar packed with dry fruit</p>
               <p class="card__price">&#8377;399<span class="unit">per bar</span></p>
@@ -332,7 +337,7 @@
               <button type="button" class="card__heart" data-wish="bar-nutella" aria-pressed="false" aria-label="Save Nutella Bar to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Nutella Bar</h3>
               <p class="card__desc">Filled edge to edge with hazelnut</p>
               <p class="card__price">&#8377;399<span class="unit">per bar</span></p>
@@ -355,7 +360,7 @@
               <button type="button" class="card__heart" data-wish="bar-biscoff" aria-pressed="false" aria-label="Save Biscoff Bar to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Biscoff Bar</h3>
               <p class="card__desc">Biscoff spread and crumb</p>
               <p class="card__price">&#8377;499<span class="unit">per bar</span></p>
@@ -378,7 +383,7 @@
               <button type="button" class="card__heart" data-wish="bar-kunafa" aria-pressed="false" aria-label="Save Kunafa Bar to your list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg></button>
             </div>
             <div class="card__body">
-              <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              
               <h3 class="card__name">Kunafa Bar</h3>
               <p class="card__desc">The Dubai style pistachio kunafa bar</p>
               <p class="card__price">&#8377;499<span class="unit">per bar</span></p>
@@ -399,16 +404,22 @@
   </div>
 </section>
 
-<!-- Testimonial. TODO owner: replace this sample with a real customer quote. -->
+<!-- Made by hand. This block used to carry a written out customer quote
+     with a name attached to it, which was invented. A shopper reads a name and
+     a city as a real review, so it was replaced with a statement about how the
+     kitchen actually works.
+     TODO owner: once a customer sends a message worth quoting, put it back as a
+     blockquote here with their real first name and city, and change the heading
+     to What our customers say. Quote only what was actually written. -->
 <section class="section testimonial" aria-labelledby="kind-h">
   <div class="shell">
     <div class="split">
       <div class="reveal">
-        <span class="head__script">Kind Words</span>
-        <h2 class="head__title" id="kind-h">What our customers say</h2>
+        <span class="head__script">Made by Hand</span>
+        <h2 class="head__title" id="kind-h">Every box is made after you order</h2>
         <blockquote>
-          <p>&#8220;Ordered a mixed box for my sister&#39;s wedding and every single guest asked where it was from. The kunafa bites disappeared first. You can taste that these are made by hand.&#8221;</p>
-          <cite><b>Nisha Verma</b><span>Lucknow &#183; Wedding order</span></cite>
+          <p>Nothing sits on a shelf waiting for a buyer. The chocolate is tempered on the day your order comes in, the fillings are made the same morning, and the box is packed and sent while it is still fresh.</p>
+          <p>That is why a box takes a day to reach you, and it is the reason it tastes the way it does.</p>
         </blockquote>
       </div>
       <div class="stack reveal">
@@ -553,5 +564,14 @@
 </footer>
 
 <button type="button" class="to-top" aria-label="Back to top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V6M6 11.5 12 5.5l6 6"/></svg></button>
+
+<!-- Bottom bar, phones only. The four things people actually came for, sitting
+     in the thumb zone rather than behind a menu at the top of the screen. -->
+<nav class="tabbar" aria-label="Main, mobile">
+  <a href="index.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1Z"/></svg><span>Home</span></a>
+  <a href="menu.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6.5h12M8 12h12M8 17.5h12"/><circle cx="4.2" cy="6.5" r="1.1" fill="currentColor" stroke="none"/><circle cx="4.2" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4.2" cy="17.5" r="1.1" fill="currentColor" stroke="none"/></svg><span>Menu</span></a>
+  <a href="cart.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.4 7.6h13.2L19.6 20H4.4Z"/><path d="M8.8 7.6V6a3.2 3.2 0 0 1 6.4 0v1.6"/></svg><span class="tabbar__badge" data-cart-count>0</span><span>Box</span></a>
+  <a href="contact.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 11.6a7.9 7.9 0 0 1-11.7 6.9L4.2 20l1.5-4.6a7.9 7.9 0 1 1 14.9-3.8Z"/></svg><span>Contact</span></a>
+</nav>
 </body>
 </html>

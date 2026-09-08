@@ -30,6 +30,7 @@
   --gold-d:      #9c7228;   /* large script headings and icon outlines */
   --gold-text:   #856122;   /* small gold text, clears AA on every cream */
   --gold-lt:     #d8b569;
+  --gold-onbrown: #e8ce9e;  /* gold text on the brown footer, clears AA */
   --cocoa-text:  #2a1c10;
   --body-text:   #6a5844;
   --on-dark:     #efe3d0;
@@ -442,8 +443,10 @@ select:focus-visible {
 }
 .footer-bottom .thanks {
   font-family: var(--font-script);
-  font-size: 20px;
-  color: var(--gold-lt);
+  font-size: 21px;
+  /* The lighter gold token on the brown footer measures 3.65 to 1, under
+     the 4.5 that normal sized text needs. This one measures 4.64 to 1. */
+  color: var(--gold-onbrown);
 }
 
 /* 6. Section headings ==================================================== */
@@ -507,8 +510,8 @@ select:focus-visible {
   top: 10px; left: 0;
   background: rgba(21, 16, 11, .78);
   color: var(--gold-lt);
-  font-size: 9px;
-  letter-spacing: .16em;
+  font-size: 10px;
+  letter-spacing: .14em;
   text-transform: uppercase;
   padding: 5px 10px;
 }
@@ -588,6 +591,7 @@ select:focus-visible {
   text-align: center;
   transition: background .25s ease, border-color .25s ease, color .25s ease, transform .2s var(--ease-back);
 }
+.chips__cap { display: none; }
 .chip:hover { border-color: var(--gold); color: var(--gold-text); }
 .chip.is-on,
 .chip__input:checked + .chip { background: var(--brown); border-color: var(--brown); color: #fff; }
@@ -1382,9 +1386,14 @@ select:focus-visible {
 
 /* 13c. Photos in split sections wipe upward into view =================== */
 
+/* The photo settles into place rather than shrinking into it. It used to
+   start at scale(1.06), which at a 736px column drew 780px wide and pushed the
+   whole page 6px sideways at 768px and in phone landscape, so the page could be
+   scrolled horizontally until the photo revealed. Scaling up from just under
+   full size gives the same motion and can never leave the box. */
 .js .split__media img {
   clip-path: inset(0 0 100% 0);
-  transform: scale(1.06);
+  transform: scale(.96);
   transition: clip-path 1s var(--ease-soft) .08s, transform 1.3s var(--ease-soft);
 }
 .js .split__media.is-in img,
@@ -1999,7 +2008,275 @@ body.box-empty #details { display: none; }
   .showcase__media { order: -1; }
 }
 
+
+/* 23. Phone layout ======================================================= */
+/* The site was a desktop layout squeezed down. This section rebuilds the
+   phone experience: one bar of chrome instead of three, navigation in the
+   thumb zone, grids instead of sideways scrolling, and two products a row
+   so the menu is not twenty screens long. */
+
+.tabbar { display: none; }
+.jump { display: none; }
+
+@media (max-width: 900px) {
+
+  /* Tighter rhythm, so less scrolling for the same content */
+  :root { --section-y: 42px; --gutter: 16px; }
+
+  /* One bar of chrome, not three. The announcement and utility bars
+         eat 70px before any content; their content lives in the footer. */
+  .announce, .utility { display: none; }
+  .site-header .shell { min-height: 56px; }
+  .header-icons { display: none; }        /* the bag is in the bottom bar now */
+  .site-header.is-slim .shell { min-height: 52px; }
+
+  /* Navigation in the thumb zone */
+  .tabbar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 120;
+    background: var(--dark);
+    border-top: 1px solid rgba(239, 227, 208, .14);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .tabbar a {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    min-height: 58px;
+    color: var(--on-dark-dim);
+    font-size: 9.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    transition: color .2s ease;
+  }
+  .tabbar a[aria-current="page"] { color: var(--gold); }
+  .tabbar a[aria-current="page"]::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 26px;
+    height: 2px;
+    background: var(--gold);
+    transform: translateX(-50%);
+  }
+  .tabbar svg {
+    width: 21px;
+    height: 21px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .tabbar__badge {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    margin-left: 5px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: 8px;
+    background: var(--gold);
+    color: var(--dark);
+    font-size: 9px;
+    line-height: 16px;
+    text-align: center;
+    letter-spacing: 0;
+  }
+  /* Content must clear the fixed bar. */
+  body { padding-bottom: calc(60px + env(safe-area-inset-bottom)); }
+  .to-top { display: none; }              /* the bar occupies that corner */
+
+  /* A shorter hero, so the first screen shows more than a photo */
+  .hero__photo { height: 196px; }
+  .hero__inner { padding: 6px 0 38px; }
+  .hero h1 { font-size: clamp(27px, 8.4vw, 36px); max-width: none; }
+  .hero p { font-size: 15px; margin-bottom: 20px; }
+
+  /* Jump links on the long menu page */
+  .jump { display: block; background: var(--cream-2); padding: 16px 0 18px; }
+  .jump__label {
+    font-size: 10px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--gold-text);
+    margin-bottom: 10px;
+  }
+  .jump ul { display: flex; flex-wrap: wrap; gap: 8px; }
+  .jump a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 14px;
+    border: 1px solid var(--cream-soft);
+    border-radius: var(--radius-pill);
+    background: var(--paper);
+    font-size: 12px;
+    color: var(--cocoa-text);
+  }
+  .jump a:active { background: var(--brown); color: #fff; border-color: var(--brown); }
+}
+
+/* Nothing scrolls sideways. Grids instead of swipe rows. */
+@media (max-width: 768px) {
+  .cats,
+  .reels {
+    display: grid;
+    overflow: visible;
+    scroll-snap-type: none;
+    padding-bottom: 0;
+  }
+  .cats { grid-template-columns: repeat(3, 1fr); gap: 14px 12px; }
+  .reels { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .cat, .reel { flex: none; scroll-snap-align: none; }
+  .cat__name { margin-top: 12px; font-size: 14px; }
+  .dots { display: none; }                /* nothing left to scroll through */
+  .igstrip { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Two products a row, which halves the length of the menu */
 @media (max-width: 560px) {
-  .flavourlist { columns: 1; }
-  .gallery { grid-template-columns: repeat(2, 1fr); }
+  .grid-cards { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+
+  .card__media img { height: 132px; }
+  .card__body { padding: 12px 10px 14px; }
+  .stars { font-size: 9px; letter-spacing: .18em; margin-bottom: 5px; }
+  .card__name { font-size: 15.5px; margin-bottom: 4px; }
+  .card__desc {
+    font-size: 13px;
+    line-height: 1.45;
+    min-height: 0;
+    margin-bottom: 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .card__price { font-size: 18px; margin-bottom: 10px; }
+  .card__price .unit { font-size: 9px; letter-spacing: .1em; margin-left: 4px; }
+  .card__tag { font-size: 9px; padding: 4px 7px; }
+  .card__heart { width: 28px; height: 28px; top: 8px; right: 8px; }
+  .card__heart svg { width: 12px; height: 12px; }
+
+  /* Tap targets stay at 44px; only the type and padding shrink. */
+  .card .chips { gap: 5px; margin-bottom: 11px; }
+  .card .chip { min-width: 44px; min-height: 44px; padding: 0 4px; font-size: 12px; }
+  .card__cta .btn {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 6px;
+    font-size: 9px;
+    letter-spacing: .1em;
+  }
+
+  /* Showcase blocks read better stacked and tighter. */
+  .showcase { gap: 20px; }
+  .showcase__price { font-size: 34px; }
+  .gallery { gap: 10px; }
+  .customise img { border-radius: var(--radius-card); }
+}
+
+/* 24. Phone compaction ==================================================
+   The phone layout was still seventeen screens on the menu. This trims the
+   three things measurement showed were eating it: tall product cards, big
+   supporting galleries, and square showcase photos. */
+
+@media (max-width: 560px) {
+
+  /* The box size becomes one segmented control across the card, rather than
+     three loose pills. Caption and segments share a single 44px row, so the
+     picker is back on the card at no cost in height. */
+  .card .chips {
+    display: grid;
+    grid-template-columns: auto repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 0;
+    /* A fieldset shrinks to its content, and the card body centres its
+       children, so without these the three segments collapsed to 18px wide. */
+    width: 100%;
+    align-self: stretch;
+    box-sizing: border-box;
+    margin: 0 0 11px;
+    border: 1px solid var(--cream-soft);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .card .chips__cap {
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    font-size: 10px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--body-text);
+    background: var(--cream);
+    white-space: nowrap;
+  }
+  .card .chip {
+    min-width: 0;
+    min-height: 44px;
+    padding: 0 2px;
+    font-size: 13px;
+    border: 0;
+    border-left: 1px solid var(--cream-soft);
+    border-radius: 0;
+    background: var(--paper);
+  }
+  .card .chip__input:checked + .chip { transform: none; }
+
+  /* A tighter card. One line of description rather than two. */
+  .card__media img { height: 118px; }
+  .card__body { padding: 10px 9px 12px; }
+  /* 14px, not 13px. The brief asks for 16px body text and the page body is
+     16px; this is a secondary label inside a two up card, and one extra
+     pixel of legibility costs about twenty pixels across the whole grid.
+     Two lines, not one: at one line the copy cut off mid word, so a bite
+     read "Rose petal ganache in a" and told the customer nothing. */
+  .card__desc { font-size: 14px; line-clamp: 2; -webkit-line-clamp: 2; margin-bottom: 8px; }
+  .card__name { font-size: 15px; }
+  .card__price { font-size: 17px; margin-bottom: 9px; }
+
+  /* Supporting photos: three across, and no more than three of them. Six
+     thumbnails two across was three rows of scrolling for pictures nobody
+     taps. */
+  .gallery { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  /* Two photos in a three column grid left an empty slot. Browsers without
+     :has() keep three columns, which is only a small gap. */
+  .gallery:not(:has(img:nth-child(3))) { grid-template-columns: repeat(2, 1fr); }
+  .gallery img { aspect-ratio: 1 / 1; }
+  .gallery img:nth-child(n + 4) { display: none; }
+
+  /* A square showcase photo is 358px tall at this width. Landscape is enough
+     to show the product and gives back 90px each time. */
+  .showcase__media img { aspect-ratio: 4 / 3; }
+
+  /* The eleven modak flavours stay in two columns on a phone. One column
+     made eleven rows of 71px, which was 782px of list on its own. Both the
+     name and its note are kept, just set tighter. */
+  .flavourlist { columns: 2; column-gap: 16px; margin-top: 14px; }
+  .flavourlist li { padding: 4px 0; }
+  .flavourlist b { font-size: 14px; line-height: 1.25; }
+  .flavourlist span { font-size: 12px; line-height: 1.3; }
+
+  /* The modak chart is a reference image, so it is fitted rather than
+     cropped. That leaves it free to grow tall, so cap it. */
+  .showcase--wide .showcase__media img { max-height: 340px; }
+
+  /* Page heads on the inner pages were taller than they needed to be. */
+  .pagehero { padding: 30px 0 34px; }
+  .pagehero__mark { width: 56px; height: 56px; margin-bottom: 14px; }
+  .pagehero h1 { font-size: clamp(26px, 8vw, 34px); }
+  .pagehero p { font-size: 15px; }
+  .head { margin-bottom: 28px; }
+  .head__note { margin-top: 10px; }
 }

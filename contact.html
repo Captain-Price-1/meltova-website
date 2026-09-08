@@ -9,18 +9,23 @@
 <link rel="apple-touch-icon" href="assets/img/favicon.png">
 <meta name="theme-color" content="#15100b">
 
-<!-- Link previews. TODO owner: replace [https://your-domain.com] with the real
-     web address once the site is live. Both tags below need the full address,
-     starting with https, or the preview image will not load. -->
+<link rel="canonical" href="https://captain-price-1.github.io/meltova-website/contact.html">
+
+<!-- Link previews, which is what a customer sees when this address is pasted
+     into WhatsApp or Instagram. Both tags need the full address, starting with
+     https, or the preview image does not load. TODO owner: if the site later
+     moves to its own web address, change SITE_URL in gen_chrome.py and rebuild. -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Meltova, The Chocolate Lane">
 <meta property="og:title" content="Contact and Enquiries | Meltova, The Chocolate Lane">
 <meta property="og:description" content="Contact Meltova, The Chocolate Lane. WhatsApp 7337070931 for orders, gift boxes, weddings and bulk. Send an enquiry and get a price and a date.">
-<meta property="og:url" content="[https://your-domain.com]/contact.html">
-<meta property="og:image" content="[https://your-domain.com]/assets/img/og-image.jpg">
+<meta property="og:url" content="https://captain-price-1.github.io/meltova-website/contact.html">
+<meta property="og:image" content="https://captain-price-1.github.io/meltova-website/assets/img/og-image.jpg">
+<meta property="og:image:alt" content="Handmade Meltova chocolates in a gift box">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Contact and Enquiries | Meltova, The Chocolate Lane">
 <meta name="twitter:description" content="Contact Meltova, The Chocolate Lane. WhatsApp 7337070931 for orders, gift boxes, weddings and bulk. Send an enquiry and get a price and a date.">
+<meta name="twitter:image" content="https://captain-price-1.github.io/meltova-website/assets/img/og-image.jpg">
 
 <script>document.documentElement.className += " js";</script>
 
@@ -266,5 +271,14 @@
 </footer>
 
 <button type="button" class="to-top" aria-label="Back to top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V6M6 11.5 12 5.5l6 6"/></svg></button>
+
+<!-- Bottom bar, phones only. The four things people actually came for, sitting
+     in the thumb zone rather than behind a menu at the top of the screen. -->
+<nav class="tabbar" aria-label="Main, mobile">
+  <a href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1Z"/></svg><span>Home</span></a>
+  <a href="menu.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6.5h12M8 12h12M8 17.5h12"/><circle cx="4.2" cy="6.5" r="1.1" fill="currentColor" stroke="none"/><circle cx="4.2" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4.2" cy="17.5" r="1.1" fill="currentColor" stroke="none"/></svg><span>Menu</span></a>
+  <a href="cart.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.4 7.6h13.2L19.6 20H4.4Z"/><path d="M8.8 7.6V6a3.2 3.2 0 0 1 6.4 0v1.6"/></svg><span class="tabbar__badge" data-cart-count>0</span><span>Box</span></a>
+  <a href="contact.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 11.6a7.9 7.9 0 0 1-11.7 6.9L4.2 20l1.5-4.6a7.9 7.9 0 1 1 14.9-3.8Z"/></svg><span>Contact</span></a>
+</nav>
 </body>
 </html>
