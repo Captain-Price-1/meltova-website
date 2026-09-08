@@ -183,7 +183,8 @@
     });
   }
 
-  $$(".card .chips").forEach(function (group) {
+  /* Product cards and the showcase blocks both carry box size chips. */
+  $$(".card .chips, .showcase .chips").forEach(function (group) {
     paintChips(group);
     group.addEventListener("change", function () { paintChips(group); });
   });
@@ -559,12 +560,17 @@
   /* 7. Add to cart ==================================================== */
 
   function flyToBag(button) {
-    if (reduceMotion || !openBtn) { return; }
-    var photo = button.closest(".card").querySelector(".card__media img");
+    if (reduceMotion || !cartLink) { return; }
+    /* Add to cart sits inside a product card on the grids, and inside a
+       showcase block on the Modak, Big Bite and Customised Bite sections.
+       Look in whichever one it is, and give up quietly if there is no photo
+       rather than throwing and losing the add. */
+    var holder = button.closest(".card") || button.closest(".showcase");
+    var photo = holder && holder.querySelector("img");
     if (!photo) { return; }
 
     var from = photo.getBoundingClientRect();
-    var to = openBtn.getBoundingClientRect();
+    var to = cartLink.getBoundingClientRect();
     var ghost = document.createElement("span");
     ghost.className = "fly";
     ghost.style.backgroundImage = "url(" + photo.currentSrc + ")";
@@ -591,7 +597,9 @@
 
       /* A box size chip, where the card has one, says how many pieces to add. */
       var isBox = button.getAttribute("data-box") === "1";
-      var holder = button.closest(".card");
+      /* The chips sit inside a product card on the grids, and inside a
+         showcase block on the Modak, Big Bite and Customised Bite sections. */
+      var holder = button.closest(".card") || button.closest(".showcase");
       var picked = holder ? holder.querySelector(".chip__input:checked") : null;
       var qty = picked ? (parseInt(picked.value, 10) || 1) : 1;
       if (isBox) { qty = nearestBoxSize(qty); }
