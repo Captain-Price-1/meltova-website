@@ -209,6 +209,37 @@
     group.addEventListener("change", function () { paintChips(group); });
   });
 
+  /* The Kunafa and Biscoff bars come in two sizes and share one card. The size
+     chips swap the Add to cart button between the two products, and the price
+     line and the WhatsApp link follow. Each chip carries its own id, name,
+     price and unit text, so the two sizes land in the box as separate lines. */
+  function applySize(group) {
+    var picked = group.querySelector(".chip__input:checked");
+    var holder = group.closest(".card") || group.closest(".showcase");
+    if (!picked || !holder) { return; }
+    var button = holder.querySelector(".card__add");
+    var price = holder.querySelector(".card__price, .showcase__price");
+    var wa = holder.querySelector(".card__wa");
+    var name = picked.getAttribute("data-name");
+    if (button) {
+      button.setAttribute("data-id", picked.getAttribute("data-id"));
+      button.setAttribute("data-name", name);
+      button.setAttribute("data-price", picked.getAttribute("data-price"));
+    }
+    if (price) {
+      price.innerHTML = money(picked.getAttribute("data-price")) +
+        '<span class="unit">' + esc(picked.getAttribute("data-unit")) + '</span>';
+    }
+    if (wa) {
+      wa.href = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" +
+        encodeURIComponent("Hi Meltova, I'd like to order the " + name);
+    }
+  }
+  $$(".chips--size").forEach(function (group) {
+    applySize(group);
+    group.addEventListener("change", function () { applySize(group); });
+  });
+
   /* 5. Store ========================================================== */
 
   var cart = readStore(CART_KEY, []);
@@ -226,8 +257,9 @@
   });
   /* Prices are written in the HTML, so a line saved before a price change would
      keep the old number until it was added again. Any page that shows the
-     product refreshes the saved line from its Add to cart button. */
-  $$(".card__add[data-id]").forEach(function (button) {
+     product refreshes the saved line from its Add to cart button, or from a
+     size chip on a bar card. */
+  $$(".card__add[data-id], .chips--size .chip__input[data-id]").forEach(function (button) {
     var id = button.getAttribute("data-id");
     var now = parseInt(button.getAttribute("data-price"), 10);
     if (!(now > 0)) { return; }
@@ -629,12 +661,13 @@
     button.addEventListener("click", function () {
       var id = button.getAttribute("data-id");
 
-      /* A box size chip, where the card has one, says how many pieces to add. */
+      /* A box size chip, where the card has one, says how many pieces to add.
+         The size chips on a bar card are not a count, so they are skipped. */
       var isBox = button.getAttribute("data-box") === "1";
       /* The chips sit inside a product card on the grids, and inside a
          showcase block on the Modak, Big Bite and Customised Bite sections. */
       var holder = button.closest(".card") || button.closest(".showcase");
-      var picked = holder ? holder.querySelector(".chip__input:checked") : null;
+      var picked = holder ? holder.querySelector(".chips:not(.chips--size) .chip__input:checked") : null;
       var qty = picked ? (parseInt(picked.value, 10) || 1) : 1;
       if (isBox) { qty = nearestBoxSize(qty); }
 

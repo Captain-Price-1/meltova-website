@@ -55,7 +55,7 @@ change. The names map to the menu like this:
 | `bite-rasmalai-box.jpg`, `bite-mango-hearts.jpg`, `bite-rose-flowers.jpg`, `bite-mango-mould.jpg` | The photo row under the flavoured bites on the menu page |
 | `plain-dark.jpg`, `plain-milk.jpg`, `plain-white.jpg` | Plain chocolate bites |
 | `nut-almond.jpg`, `nut-mixed.jpg` | Exotic nut crush |
-| `bar-<flavour>.jpg` | The 8 premium bar fills, for example `bar-nutella.jpg`. The small Kunafa bar shares `bar-kunafa.jpg`; the small Biscoff bar has `bar-biscoff-small.jpg` |
+| `bar-<flavour>.jpg` | The 6 premium bar fills, for example `bar-nutella.jpg`. The Kunafa and Biscoff bars come in two sizes and share one photo each |
 | `cat-plain.jpg`, `cat-flavoured.jpg`, `cat-nuts.jpg`, `cat-bars.jpg`, `cat-custom.jpg` | The five category circles on the home page |
 | `hero-right.jpg`, `hero-frame1.jpg`, `hero-frame2.jpg` | The home page hero |
 | `real-giftbox.jpg` | Your pink gift box photo. Hero, the Customise a Bar circle, the story page, the testimonial and the Instagram strip |
@@ -74,7 +74,7 @@ at around 70 to 80 percent quality so pages stay fast.
 Every photo is Meltova's own. The last stock image, a Pexels photo standing in for
 the Biscoff bar, was replaced in September 2026.
 
-**Ten photos are on the small side.** The Rasmalai, Mango, Rose, Strawberry and
+**Nine photos are on the small side.** The Rasmalai, Mango, Rose, Strawberry and
 Biscoff bar photos added in September 2026, and the four in the photo row under
 the flavoured bites, came from the owner's Pages document at 290 to 500 pixels
 wide. They are fine on a laptop and a little soft on a sharp phone screen. If
@@ -83,7 +83,7 @@ needs to change:
 
 `bite-rasmalai.jpg`, `bite-rasmalai-box.jpg`, `bite-mango.jpg`, `bite-mango-hearts.jpg`,
 `bite-mango-mould.jpg`, `bite-rose.jpg`, `bite-rose-flowers.jpg`, `bite-strawberry.jpg`,
-`bar-biscoff.jpg`, `bar-biscoff-small.jpg`
+`bar-biscoff.jpg`
 
 ## The videos
 
@@ -147,6 +147,20 @@ The sizes live in two places, and both must agree:
 Also update the wording in the menu page hero, the "Mix any of these" line above
 the flavoured bites, the Custom Gift Boxes card, and the "Can I mix flavours in one
 box?" answer on the contact page.
+
+## The bar sizes
+
+The Kunafa and Biscoff bars come in two sizes, a full bar at ₹599 (260 to 280 g)
+and a small bar at ₹269. Both sit on one card with a Full or Small switch, the
+same control as the 4, 6 and 12 on the bite cards. Each size goes into the box as
+its own line, so a customer can order one of each.
+
+The two prices live on the switch itself. On each bar card in `menu.html` and
+`index.html`, search for `chips--size`: every option carries `data-id`,
+`data-name`, `data-price` and `data-unit`. Change the number in `data-price`, and
+change the price written in the line just above the switch too, so the page reads
+right before the script runs. To add a third size, copy one option and give it a
+new `id`, `for` and `data-id`.
 
 ## Changing a price
 

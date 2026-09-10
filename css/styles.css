@@ -2233,6 +2233,8 @@ body.box-empty #details { display: none; }
     background: var(--paper);
   }
   .card .chip__input:checked + .chip { transform: none; }
+  /* A bar has two sizes, not three, so its picker is caption plus two segments. */
+  .card .chips--size { grid-template-columns: auto repeat(2, minmax(0, 1fr)); }
 
   /* A tighter card. One line of description rather than two. */
   .card__media img { height: 118px; }
