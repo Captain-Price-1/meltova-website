@@ -224,6 +224,17 @@
     line.qty = line.box ? nearestBoxSize(line.qty) : Math.max(1, line.qty | 0);
     if (line.qty !== was) { tidied = true; }
   });
+  /* Prices are written in the HTML, so a line saved before a price change would
+     keep the old number until it was added again. Any page that shows the
+     product refreshes the saved line from its Add to cart button. */
+  $$(".card__add[data-id]").forEach(function (button) {
+    var id = button.getAttribute("data-id");
+    var now = parseInt(button.getAttribute("data-price"), 10);
+    if (!(now > 0)) { return; }
+    cart.forEach(function (line) {
+      if (line.id === id && line.price !== now) { line.price = now; tidied = true; }
+    });
+  });
   if (tidied) { writeStore(CART_KEY, cart); }
 
   var wishlist = readStore(WISH_KEY, []);
@@ -247,7 +258,8 @@
      OWNER SETTINGS. Change a price here and the whole box follows.
      ================================================================== */
   var MIN_ORDER = 399;   /* nothing smaller than this can be sent */
-  var SHIP_FEE  = 140;   /* flat, the same anywhere in India */
+  var SHIP_FEE  = 140;   /* flat, the same anywhere in India, for parcels up to
+                            2 kg. Heavier and bulk parcels are quoted by hand. */
   var FREE_OVER = null;  /* null means there is no free delivery tier, so the
                             flat SHIP_FEE is added to every order. Set a number
                             here to bring one back, e.g. 1499. */
@@ -492,7 +504,7 @@
 
     if (noteEl) {
       if (!cart.length) {
-        noteEl.textContent = "Delivery is " + money(SHIP_FEE) + " anywhere in India" +
+        noteEl.textContent = "Delivery is " + money(SHIP_FEE) + " anywhere in India, for parcels up to 2 kg" +
           (FREE_OVER === null ? "." : ", and free above " + money(FREE_OVER) + ".");
       } else if (short > 0) {
         noteEl.textContent = "Add " + money(short) + " more of chocolate. The " +
@@ -502,7 +514,7 @@
           (coldWanted ? " The cold pack is charged separately." : "");
       } else {
         noteEl.textContent = FREE_OVER === null
-          ? "Delivery is " + money(SHIP_FEE) + ", the same anywhere in India."
+          ? "Delivery is " + money(SHIP_FEE) + ", the same anywhere in India, for parcels up to 2 kg."
           : "Add " + money(FREE_OVER - goodsTotal()) + " more and delivery is free.";
       }
       noteEl.classList.toggle("is-warning", short > 0);

@@ -52,9 +52,10 @@ change. The names map to the menu like this:
 | File name | Where it appears |
 |---|---|
 | `bite-<flavour>.jpg` | The 14 flavoured bites, for example `bite-kunafa.jpg` |
+| `bite-rasmalai-box.jpg`, `bite-mango-hearts.jpg`, `bite-rose-flowers.jpg`, `bite-mango-mould.jpg` | The photo row under the flavoured bites on the menu page |
 | `plain-dark.jpg`, `plain-milk.jpg`, `plain-white.jpg` | Plain chocolate bites |
 | `nut-almond.jpg`, `nut-mixed.jpg` | Exotic nut crush |
-| `bar-<flavour>.jpg` | The 6 premium bar fills, for example `bar-nutella.jpg` |
+| `bar-<flavour>.jpg` | The 8 premium bar fills, for example `bar-nutella.jpg`. The small Kunafa bar shares `bar-kunafa.jpg`; the small Biscoff bar has `bar-biscoff-small.jpg` |
 | `cat-plain.jpg`, `cat-flavoured.jpg`, `cat-nuts.jpg`, `cat-bars.jpg`, `cat-custom.jpg` | The five category circles on the home page |
 | `hero-right.jpg`, `hero-frame1.jpg`, `hero-frame2.jpg` | The home page hero |
 | `real-giftbox.jpg` | Your pink gift box photo. Hero, the Customise a Bar circle, the story page, the testimonial and the Instagram strip |
@@ -68,19 +69,21 @@ change. The names map to the menu like this:
 Photos work best as square or landscape JPEGs about 800 to 1200 pixels wide, saved
 at around 70 to 80 percent quality so pages stay fast.
 
-### Where the stock photos come from
+### Where the photos come from
 
-Most photos are Meltova's own. The ones that are not are free licence stock, free
-to use commercially with no attribution required:
+Every photo is Meltova's own. The last stock image, a Pexels photo standing in for
+the Biscoff bar, was replaced in September 2026.
 
-* `bar-biscoff.jpg` from Pexels, photo 29066517, https://www.pexels.com/photo/29066517/
+**Ten photos are small and worth replacing.** The Rasmalai, Mango, Rose,
+Strawberry and Biscoff bar photos added in September 2026, and the four in the
+photo row under the flavoured bites, were cut out of a single reference sheet
+rather than saved from the originals. They are about 250 to 400 pixels wide, so
+they look soft on a sharp phone screen. Save the original photos over them, same
+file names, and they sharpen up with no other change:
 
-Replace it with your own Biscoff bar photo when you have one. Keep the file name
-and it will appear everywhere at once.
-
-**Important:** the photos supplied with this build are free licence stock images
-used so the design looks real. Replace them with the owner's own product photos
-before the site goes live.
+`bite-rasmalai.jpg`, `bite-rasmalai-box.jpg`, `bite-mango.jpg`, `bite-mango-hearts.jpg`,
+`bite-mango-mould.jpg`, `bite-rose.jpg`, `bite-rose-flowers.jpg`, `bite-strawberry.jpg`,
+`bar-biscoff.jpg`, `bar-biscoff-small.jpg`
 
 ## The videos
 
@@ -125,7 +128,6 @@ comment next to it. Search the file for the text in the first column.
 | `[courier]` | `contact.html` | The courier used for shipping |
 | `[2 to 4 days]` | `contact.html` | Usual delivery time |
 | `[Which cities you pause for in peak summer]` | `contact.html` | The zones you stop shipping to in the hottest weeks |
-| `[Month, year]` | `menu.html` | When prices were last changed |
 | `[Facebook URL]` | every page | The Facebook page address |
 | `[YouTube URL]` | every page | The YouTube channel address |
 | `[https://your-domain.com]` | every page | The live web address, used in the link preview tags |
@@ -151,7 +153,8 @@ box?" answer on the contact page.
 Prices are written directly in `menu.html` and on the home page. Search for the
 chocolate's name and edit the number next to `&#8377;`, which is the rupee symbol.
 If you change a price, update the "Prices last updated" line at the bottom of
-`menu.html` too.
+`menu.html` too. A visitor who saved a box before the change sees the new price
+the next time they open a page that shows that chocolate.
 
 ## The WhatsApp links
 
@@ -198,7 +201,7 @@ tick the cold pack, and see the full total with delivery.
 | Rule | Value |
 |---|---|
 | Minimum order | ₹399 |
-| Delivery | ₹140 flat, anywhere in India |
+| Delivery | ₹140 flat, anywhere in India, for parcels up to 2 kg. Heavier and bulk parcels are quoted by hand |
 | Free delivery | none, ₹140 is added to every order |
 | Cold pack | ₹99, optional, ticked by the customer |
 
@@ -237,12 +240,12 @@ WhatsApp with the whole order already written out, like this:
 Hi Meltova, I'd like to order:
 
 Box of 12 Kunafa bites (₹35 per piece) = ₹420
-2 x Biscoff bar (₹499 per bar) = ₹998
+2 x Biscoff bar (₹599 per bar) = ₹1,198
 
-Subtotal: ₹1,418
-Delivery: ₹99
+Subtotal: ₹1,618
+Delivery: ₹140
 Cold pack: ₹99
-Total: ₹1,616
+Total: ₹1,857
 
 Deliver to:
 Anita Sharma
