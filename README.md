@@ -74,12 +74,12 @@ at around 70 to 80 percent quality so pages stay fast.
 Every photo is Meltova's own. The last stock image, a Pexels photo standing in for
 the Biscoff bar, was replaced in September 2026.
 
-**Ten photos are small and worth replacing.** The Rasmalai, Mango, Rose,
-Strawberry and Biscoff bar photos added in September 2026, and the four in the
-photo row under the flavoured bites, were cut out of a single reference sheet
-rather than saved from the originals. They are about 250 to 400 pixels wide, so
-they look soft on a sharp phone screen. Save the original photos over them, same
-file names, and they sharpen up with no other change:
+**Ten photos are on the small side.** The Rasmalai, Mango, Rose, Strawberry and
+Biscoff bar photos added in September 2026, and the four in the photo row under
+the flavoured bites, came from the owner's Pages document at 290 to 500 pixels
+wide. They are fine on a laptop and a little soft on a sharp phone screen. If
+larger versions turn up, save them over these, same file names, and nothing else
+needs to change:
 
 `bite-rasmalai.jpg`, `bite-rasmalai-box.jpg`, `bite-mango.jpg`, `bite-mango-hearts.jpg`,
 `bite-mango-mould.jpg`, `bite-rose.jpg`, `bite-rose-flowers.jpg`, `bite-strawberry.jpg`,
