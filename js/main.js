@@ -250,10 +250,19 @@
   });
   var tidied = false;
   cart.forEach(function (line) {
-    var was = line.qty;
+    var wasQty = line.qty, wasSize = line.size;
     if (typeof line.box !== "boolean") { line.box = line.unit === "per piece"; tidied = true; }
-    line.qty = line.box ? nearestBoxSize(line.qty) : Math.max(1, line.qty | 0);
-    if (line.qty !== was) { tidied = true; }
+    if (line.box) {
+      /* A box line carries the pieces per box in size and the number of boxes
+         in qty. A line saved before boxes could be counted kept the pieces in
+         qty and had no size: that becomes one box of the nearest real size. */
+      if (typeof line.size !== "number") { line.size = nearestBoxSize(line.qty); line.qty = 1; }
+      else { line.size = nearestBoxSize(line.size); line.qty = Math.max(1, line.qty | 0); }
+    } else {
+      delete line.size;
+      line.qty = Math.max(1, line.qty | 0);
+    }
+    if (line.qty !== wasQty || line.size !== wasSize) { tidied = true; }
   });
   /* Prices are written in the HTML, so a line saved before a price change would
      keep the old number until it was added again. Any page that shows the
@@ -272,16 +281,35 @@
   var wishlist = readStore(WISH_KEY, []);
   if (!Array.isArray(wishlist)) { wishlist = []; }
 
+  /* A box line holds boxes in qty and pieces per box in size. Everything else
+     is counted one at a time. */
+  function pieces(line) { return line.box ? line.size * line.qty : line.qty; }
+  function lineTotal(line) { return pieces(line) * line.price; }
+  function sameLine(line, id, size) {
+    return line.id === id && (!line.box || line.size === size);
+  }
+  function findLine(id, size) {
+    for (var i = 0; i < cart.length; i++) {
+      if (sameLine(cart[i], id, size)) { return cart[i]; }
+    }
+    return null;
+  }
+  /* "2 x Box of 12 Kunafa bites", "Box of 6 Rose bites", "3 x Kunafa bar". */
+  function describe(line) {
+    var count = line.qty > 1 ? line.qty + " x " : "";
+    return count + (line.box ? "Box of " + line.size + " " : "") + line.name;
+  }
   function cartCount() {
-    return cart.reduce(function (n, line) { return n + line.qty; }, 0);
+    return cart.reduce(function (n, line) { return n + pieces(line); }, 0);
   }
   function cartTotal() {
-    return cart.reduce(function (n, line) { return n + line.qty * line.price; }, 0);
+    return cart.reduce(function (n, line) { return n + lineTotal(line); }, 0);
   }
 
   function saveCart() {
     writeStore(CART_KEY, cart);
     paintCart();
+    paintAddButtons();
   }
 
   /* 6. Your box: totals, the minimum, and the two steps ================ */
@@ -399,9 +427,8 @@
 
     var lines = ["Hi Meltova, I'd like to order:", ""];
     cart.forEach(function (line) {
-      lines.push((line.box ? "Box of " + line.qty + " " : line.qty + " x ") +
-                 line.name + " (" + money(line.price) + " " + line.unit + ") = " +
-                 money(line.qty * line.price));
+      lines.push(describe(line) + " (" + money(line.price) + " " + line.unit + ") = " +
+                 money(lineTotal(line)));
     });
 
     lines.push("");
@@ -430,20 +457,27 @@
     return '<fieldset class="boxpick">' +
       '<legend class="sr-only">Box size for ' + esc(line.name) + '</legend>' +
       BOX_SIZES.map(function (size) {
-        var fid = "cartbox-" + esc(line.id) + "-" + size;
+        /* The same flavour can sit in the box twice at two sizes, so the
+           radio group is named by size as well as flavour. */
+        var group = "cartbox-" + esc(line.id) + "-" + line.size;
+        var fid = group + "-" + size;
         return '<input class="chip__input" type="radio" id="' + fid +
-               '" name="cartbox-' + esc(line.id) + '" value="' + size + '"' +
-               (line.qty === size ? " checked" : "") + '>' +
+               '" name="' + group + '" value="' + size + '"' +
+               (line.size === size ? " checked" : "") + '>' +
                '<label class="chip" for="' + fid + '">' + size + '</label>';
       }).join("") +
       '</fieldset>';
   }
 
+  function countLabel(line) {
+    return line.qty + (line.box ? (line.qty === 1 ? " box" : " boxes") : "");
+  }
   function stepper(line) {
+    var what = (line.box ? "box of " : "") + esc(line.name);
     return '<div class="qty">' +
-      '<button type="button" class="qty__btn" data-step="-1" aria-label="One less ' + esc(line.name) + '">&#8722;</button>' +
-      '<span class="qty__n" aria-label="Quantity">' + esc(line.qty) + '</span>' +
-      '<button type="button" class="qty__btn" data-step="1" aria-label="One more ' + esc(line.name) + '">&#43;</button>' +
+      '<button type="button" class="qty__btn" data-step="-1" aria-label="One less ' + what + '">&#8722;</button>' +
+      '<span class="qty__n" aria-label="Quantity">' + esc(countLabel(line)) + '</span>' +
+      '<button type="button" class="qty__btn" data-step="1" aria-label="One more ' + what + '">&#43;</button>' +
       '</div>';
   }
 
@@ -480,10 +514,10 @@
           '<div class="cart-line__body">' +
             '<p class="cart-line__name">' + esc(line.name) + '</p>' +
             '<p class="cart-line__meta">' + money(line.price) + ' ' + esc(line.unit) + '</p>' +
-            (line.box ? boxPicker(line) : stepper(line)) +
+            (line.box ? boxPicker(line) : "") + stepper(line) +
           '</div>' +
           '<div class="cart-line__end">' +
-            '<p class="cart-line__sum">' + money(line.qty * line.price) + '</p>' +
+            '<p class="cart-line__sum">' + money(lineTotal(line)) + '</p>' +
             '<button type="button" class="cart-line__remove" data-remove aria-label="Remove ' + esc(line.name) + '">Remove</button>' +
           '</div>';
 
@@ -491,7 +525,16 @@
         if (picker) {
           paintChips(picker);
           picker.addEventListener("change", function (e) {
-            line.qty = parseInt(e.target.value, 10) || BOX_SIZES[0];
+            var size = nearestBoxSize(parseInt(e.target.value, 10) || BOX_SIZES[0]);
+            /* Moving to a size that is already in the box folds the two lines
+               into one rather than showing the same flavour and size twice. */
+            var other = findLine(line.id, size);
+            if (other && other !== line) {
+              other.qty += line.qty;
+              cart.splice(cart.indexOf(line), 1);
+            } else {
+              line.size = size;
+            }
             saveCart();
           });
         }
@@ -668,36 +711,89 @@
          showcase block on the Modak, Big Bite and Customised Bite sections. */
       var holder = button.closest(".card") || button.closest(".showcase");
       var picked = holder ? holder.querySelector(".chips:not(.chips--size) .chip__input:checked") : null;
-      var qty = picked ? (parseInt(picked.value, 10) || 1) : 1;
-      if (isBox) { qty = nearestBoxSize(qty); }
+      var size = isBox ? pickedSize(holder) : undefined;
 
-      var line = null;
-      for (var i = 0; i < cart.length; i++) {
-        if (cart[i].id === id) { line = cart[i]; break; }
-      }
+      /* Every press adds one more: one more box of this size, or one more bar.
+         A flavour can sit in the box at two sizes, each on its own line. */
+      var line = findLine(id, size);
       if (line) {
-        /* A box is one size, so choosing a size sets it rather than piling up.
-           A bar or a nut crush box is counted, so those add up. */
-        if (isBox) { line.qty = qty; } else { line.qty += qty; }
+        line.qty += 1;
       } else {
-        cart.push({
+        line = {
           id: id,
           name: button.getAttribute("data-name"),
           price: parseInt(button.getAttribute("data-price"), 10),
           unit: button.getAttribute("data-unit"),
           img: button.getAttribute("data-img"),
           box: isBox,
-          qty: qty
-        });
+          qty: 1
+        };
+        if (isBox) { line.size = size; }
+        cart.push(line);
       }
       flyToBag(button);
       saveCart();
 
       button.classList.add("is-added");
       window.setTimeout(function () { button.classList.remove("is-added"); }, 1400);
-      toast((isBox ? "Box of " + qty + " " : (qty > 1 ? qty + " x " : "")) +
-            button.getAttribute("data-name") + " added to your box.");
+      toast((isBox ? "Box of " + size + " " : "") + button.getAttribute("data-name") + " added." +
+            (line.qty > 1 ? " " + countLabel(line) + " in your box." : ""));
     });
+  });
+
+  /* The box size the card is set to right now. */
+  function pickedSize(holder) {
+    var picked = holder ? holder.querySelector(".chips:not(.chips--size) .chip__input:checked") : null;
+    return nearestBoxSize(picked ? parseInt(picked.value, 10) || BOX_SIZES[0] : BOX_SIZES[0]);
+  }
+
+  /* Once something is in the box, the card shows how many and lets the
+     visitor count up or down right there, in place of Add to cart. Minus on
+     the last one takes it out and the Add button comes back. The card always
+     describes the size that is picked, so a box of 12 in the cart does not
+     show on a card that is set to 4. */
+  function paintAddButtons() {
+    $$(".card__add").forEach(function (button) {
+      var holder = button.closest(".card") || button.closest(".showcase");
+      if (!holder) { return; }
+      var isBox = button.getAttribute("data-box") === "1";
+      var lineFor = function () {
+        return findLine(button.getAttribute("data-id"), isBox ? pickedSize(holder) : undefined);
+      };
+      var ctl = button.parentNode.querySelector(".qty--card");
+      if (!ctl) {
+        ctl = document.createElement("div");
+        ctl.className = "qty qty--card";
+        ctl.innerHTML =
+          '<button type="button" class="qty__btn" data-step="-1">&#8722;</button>' +
+          '<span class="qty__n"></span>' +
+          '<button type="button" class="qty__btn" data-step="1">&#43;</button>';
+        button.parentNode.insertBefore(ctl, button.nextSibling);
+        $$("[data-step]", ctl).forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var target = lineFor();
+            if (!target) { return; }
+            target.qty += parseInt(btn.getAttribute("data-step"), 10);
+            if (target.qty < 1) { cart.splice(cart.indexOf(target), 1); }
+            saveCart();
+          });
+        });
+      }
+      var line = lineFor();
+      var what = (isBox ? "box of " : "") + button.getAttribute("data-name");
+      ctl.hidden = !line;
+      button.hidden = !!line;
+      if (line) {
+        ctl.querySelector(".qty__n").textContent = countLabel(line);
+        ctl.querySelector('[data-step="-1"]').setAttribute("aria-label", "One less " + what);
+        ctl.querySelector('[data-step="1"]').setAttribute("aria-label", "One more " + what);
+      }
+    });
+  }
+  paintAddButtons();
+  /* The chips change which line the card is looking at. */
+  $$(".card .chips, .showcase .chips").forEach(function (group) {
+    group.addEventListener("change", paintAddButtons);
   });
 
   /* 8. Saved list ===================================================== */
@@ -980,8 +1076,7 @@
         lines.push("");
         lines.push("In my box:");
         cart.forEach(function (line) {
-          lines.push((line.box ? "Box of " + line.qty + " " : line.qty + " x ") +
-                     line.name + " = " + money(line.qty * line.price));
+          lines.push(describe(line) + " = " + money(lineTotal(line)));
         });
         lines.push("Estimated total: " + money(cartTotal()));
       }

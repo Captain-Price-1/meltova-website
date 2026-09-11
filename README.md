@@ -195,20 +195,22 @@ on a card that follows you down the screen.
 
 **Bites are sold in boxes of 4, 6 or 12. Those are the only sizes.** Every bite
 card, on the menu and on the home page, carries that choice as a small row of
-three buttons. Pick a size, press Add to cart, and that many pieces go in. They
-are radio buttons underneath, so they work with a keyboard and a screen reader.
+three buttons. Pick a size, press Add to cart, and one box of that size goes in.
+They are radio buttons underneath, so they work with a keyboard and a screen reader.
 
-Because a box is one size rather than a running count, adding the same flavour
-again **replaces** the size instead of piling up. Choosing 12 and then 4 for the
-same chocolate leaves you with a box of 4, not 16 loose pieces. The size can also
-be changed from inside the panel later.
+Press Add to cart again and a second box of the same size goes in. Once a
+chocolate is in the box, its Add to cart button turns into a small counter, minus
+and plus, showing how many are in the box at the size that is picked. Minus on
+the last one takes it out and the button comes back. The same flavour can sit in
+the box at two sizes, a box of 12 and a box of 4 say, each on its own line.
 
-Bars and nut crush boxes work differently, because they are sold one at a time,
-not by the piece. Those have no size buttons, and their line in the panel has a
-plain plus and minus counter.
+Bars, nut crush boxes and the stick box are sold one at a time, not by the piece.
+Those have no size buttons, and their counter counts single items.
 
-Inside the panel they can change a box size, count bars up or down, remove a line,
-tick the cold pack, and see the full total with delivery.
+In the cart every line has the same minus and plus counter. A bite line also has
+the size picker, and moving a line to a size that is already in the box folds the
+two lines into one. From there they can remove a line, tick the cold pack, and
+see the full total with delivery.
 
 ### The ordering rules
 
@@ -253,13 +255,13 @@ WhatsApp with the whole order already written out, like this:
 ```
 Hi Meltova, I'd like to order:
 
-Box of 12 Kunafa bites (₹40 per piece) = ₹480
+2 x Box of 12 Kunafa bites (₹40 per piece) = ₹960
 2 x Biscoff bar (₹599 per bar) = ₹1,198
 
-Subtotal: ₹1,678
+Subtotal: ₹2,158
 Delivery: ₹140
 Cold pack: ₹99
-Total: ₹1,917
+Total: ₹2,397
 
 Deliver to:
 Anita Sharma
@@ -277,7 +279,8 @@ A few things worth knowing:
 * Nothing is charged on the site. You confirm the date and take payment in the
   WhatsApp conversation.
 * A box saved before the sizes changed is tidied up on the next visit. Anything
-  that is no longer a real size is moved to the nearest one that is.
+  that is no longer a real size is moved to the nearest one that is, and a line
+  saved before boxes could be counted becomes one box of that size.
 * The heart on each card saves a chocolate to a private list, also in that
   visitor's browser. The count shows on the heart icon in the header.
 * The account icon is still decoration and says "coming soon" when tapped.

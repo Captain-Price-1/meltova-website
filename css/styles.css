@@ -2282,3 +2282,66 @@ body.box-empty #details { display: none; }
   .head { margin-bottom: 28px; }
   .head__note { margin-top: 10px; }
 }
+
+/* 25. Counters ============================================================
+   One control for "how many": the minus and plus on a cart line, and the same
+   control that takes the place of Add to cart on a card once the item is in
+   the box. Buttons keep a 44px hit area from section 16. */
+.qty {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  border: 1px solid var(--cream-soft);
+  border-radius: var(--radius-pill);
+  background: var(--paper);
+}
+.qty__btn {
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--brown);
+  font-family: var(--font-body);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+.qty__btn:hover { background: var(--cream); }
+.qty__btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.qty__n {
+  min-width: 54px;
+  padding: 0 4px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--brown);
+}
+/* In a cart line the counter sits under the size picker. */
+.cart-line .boxpick + .qty { margin-top: 10px; }
+
+/* On a card it stands where Add to cart stood: same height, same pill, brown
+   like the primary button so it reads as "already in your box". */
+.qty--card {
+  min-height: 40px;
+  border-color: var(--brown);
+  background: var(--brown);
+}
+.qty--card .qty__btn { color: #fff; }
+.qty--card .qty__btn:hover { background: rgba(255, 255, 255, .14); }
+.qty--card .qty__n {
+  color: #fff;
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.showcase__cta .qty--card { min-height: 48px; }
+/* The script hides whichever of the two is not in use. The Add button has a
+   display rule of its own under .js, so hidden needs saying again here. */
+.js .card__add[hidden],
+.qty--card[hidden] { display: none; }
+
+@media (max-width: 560px) {
+  .card__cta .qty--card { width: 100%; justify-content: space-between; min-height: 44px; }
+  .qty__btn { width: 44px; height: 44px; }
+}
