@@ -299,8 +299,9 @@
     var count = line.qty > 1 ? line.qty + " x " : "";
     return count + (line.box ? "Box of " + line.size + " " : "") + line.name;
   }
+  /* The badge counts the things a person chose: boxes and bars, not pieces. */
   function cartCount() {
-    return cart.reduce(function (n, line) { return n + pieces(line); }, 0);
+    return cart.reduce(function (n, line) { return n + line.qty; }, 0);
   }
   function cartTotal() {
     return cart.reduce(function (n, line) { return n + lineTotal(line); }, 0);
@@ -453,22 +454,6 @@
 
   /* 6c. Painting ======================================================= */
 
-  function boxPicker(line) {
-    return '<fieldset class="boxpick">' +
-      '<legend class="sr-only">Box size for ' + esc(line.name) + '</legend>' +
-      BOX_SIZES.map(function (size) {
-        /* The same flavour can sit in the box twice at two sizes, so the
-           radio group is named by size as well as flavour. */
-        var group = "cartbox-" + esc(line.id) + "-" + line.size;
-        var fid = group + "-" + size;
-        return '<input class="chip__input" type="radio" id="' + fid +
-               '" name="' + group + '" value="' + size + '"' +
-               (line.size === size ? " checked" : "") + '>' +
-               '<label class="chip" for="' + fid + '">' + size + '</label>';
-      }).join("") +
-      '</fieldset>';
-  }
-
   function countLabel(line) {
     return line.qty + (line.box ? (line.qty === 1 ? " box" : " boxes") : "");
   }
@@ -513,31 +498,14 @@
           '<img class="cart-line__img" src="assets/img/' + esc(line.img) + '" alt="" width="80" height="80">' +
           '<div class="cart-line__body">' +
             '<p class="cart-line__name">' + esc(line.name) + '</p>' +
-            '<p class="cart-line__meta">' + money(line.price) + ' ' + esc(line.unit) + '</p>' +
-            (line.box ? boxPicker(line) : "") + stepper(line) +
+            '<p class="cart-line__meta">' + (line.box ? "Box of " + esc(line.size) + " &middot; " : "") +
+              money(line.price) + ' ' + esc(line.unit) + '</p>' +
+            stepper(line) +
           '</div>' +
           '<div class="cart-line__end">' +
             '<p class="cart-line__sum">' + money(lineTotal(line)) + '</p>' +
             '<button type="button" class="cart-line__remove" data-remove aria-label="Remove ' + esc(line.name) + '">Remove</button>' +
           '</div>';
-
-        var picker = li.querySelector(".boxpick");
-        if (picker) {
-          paintChips(picker);
-          picker.addEventListener("change", function (e) {
-            var size = nearestBoxSize(parseInt(e.target.value, 10) || BOX_SIZES[0]);
-            /* Moving to a size that is already in the box folds the two lines
-               into one rather than showing the same flavour and size twice. */
-            var other = findLine(line.id, size);
-            if (other && other !== line) {
-              other.qty += line.qty;
-              cart.splice(cart.indexOf(line), 1);
-            } else {
-              line.size = size;
-            }
-            saveCart();
-          });
-        }
 
         li.querySelectorAll("[data-step]").forEach(function (btn) {
           btn.addEventListener("click", function () {
@@ -781,6 +749,15 @@
       }
       var line = lineFor();
       var what = (isBox ? "box of " : "") + button.getAttribute("data-name");
+      if (isBox) {
+        /* A dot on a size chip says a box of that size is already in the box,
+           so a card set to 6 still shows that the 12 was ordered. */
+        $$(".chips:not(.chips--size) .chip__input", holder).forEach(function (input) {
+          var label = holder.querySelector('label[for="' + input.id + '"]');
+          var has = !!findLine(button.getAttribute("data-id"), nearestBoxSize(parseInt(input.value, 10) || BOX_SIZES[0]));
+          if (label) { label.classList.toggle("has-line", has); }
+        });
+      }
       ctl.hidden = !line;
       button.hidden = !!line;
       if (line) {
@@ -795,6 +772,147 @@
   $$(".card .chips, .showcase .chips").forEach(function (group) {
     group.addEventListener("change", paintAddButtons);
   });
+
+  /* 7b. Header height, for anything that sticks beneath it ============ */
+
+  var headerEl = $(".site-header");
+  function syncHeaderHeight() {
+    if (headerEl) {
+      document.documentElement.style.setProperty("--header-h", headerEl.offsetHeight + "px");
+    }
+  }
+  syncHeaderHeight();
+  if (headerEl && "ResizeObserver" in window) {
+    new ResizeObserver(syncHeaderHeight).observe(headerEl);
+  }
+  window.addEventListener("resize", syncHeaderHeight);
+
+  /* 7c. Menu tabs ====================================================== */
+
+  /* The menu shows one category at a time. Each tab is a link to a section
+     id, so without this script the page is the whole menu with jump links.
+     With it, the section named in the address opens, the others hide, and
+     the address follows the tab so links and the back button keep working. */
+  var tabList = $(".tabs__list");
+  if (tabList) {
+    var tabs = $$('[role="tab"]', tabList);
+    var panelFor = function (tab) { return document.getElementById(tab.getAttribute("aria-controls")); };
+    var tabsBar = $(".tabs");
+    var mini = $(".tabs-mini");
+    var miniBtn = mini && $(".tabs-mini__btn", mini);
+    var miniCurrent = mini && $(".tabs-mini__current", mini);
+    var miniSheet = mini && $(".tabs-mini__sheet", mini);
+    var miniLinks = [];
+
+    function syncTabsHeight() {
+      if (tabsBar) {
+        document.documentElement.style.setProperty("--tabs-h", tabsBar.offsetHeight + "px");
+      }
+    }
+    syncTabsHeight();
+    if (tabsBar && "ResizeObserver" in window) { new ResizeObserver(syncTabsHeight).observe(tabsBar); }
+
+    function openSheet(open) {
+      if (!miniSheet) { return; }
+      miniSheet.hidden = !open;
+      miniBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+
+    function showTab(tab, scroll) {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.setAttribute("aria-selected", on ? "true" : "false");
+        t.setAttribute("tabindex", on ? "0" : "-1");
+        t.classList.toggle("is-on", on);
+        var panel = panelFor(t);
+        if (panel) { panel.hidden = !on; }
+      });
+      miniLinks.forEach(function (link) {
+        link.classList.toggle("is-on", link.getAttribute("href") === tab.getAttribute("href"));
+        link.setAttribute("aria-current", link.getAttribute("href") === tab.getAttribute("href") ? "true" : "false");
+      });
+      if (miniCurrent) { miniCurrent.textContent = tab.textContent; }
+      openSheet(false);
+      var id = tab.getAttribute("aria-controls");
+      if (window.history && history.replaceState && location.hash !== "#" + id) {
+        history.replaceState(null, "", "#" + id);
+      }
+      if (scroll) {
+        var target = panelFor(tab);
+        if (target) {
+          target.scrollIntoView({ block: "start", behavior: reduceMotion ? "auto" : "smooth" });
+        }
+      }
+    }
+
+    function tabForHash(hash) {
+      for (var i = 0; i < tabs.length; i++) {
+        if (tabs[i].getAttribute("href") === hash) { return tabs[i]; }
+      }
+      return null;
+    }
+
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener("click", function (e) {
+        e.preventDefault();
+        showTab(tab, true);
+        tab.focus();
+      });
+      /* Left and right move between tabs, as they do in any tab strip. */
+      tab.addEventListener("keydown", function (e) {
+        var step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+        if (e.key === "Home") { step = -i; }
+        if (e.key === "End") { step = tabs.length - 1 - i; }
+        if (!step) { return; }
+        e.preventDefault();
+        var next = tabs[(i + step + tabs.length) % tabs.length];
+        showTab(next, false);
+        next.focus();
+      });
+    });
+
+    /* The phone bar: a copy of the list inside a drop down sheet. */
+    if (mini && miniSheet) {
+      var list = document.createElement("ul");
+      list.className = "tabs__list";
+      tabs.forEach(function (tab) {
+        var li = document.createElement("li");
+        var link = document.createElement("a");
+        link.className = "tabs__tab";
+        link.href = tab.getAttribute("href");
+        link.textContent = tab.textContent;
+        link.addEventListener("click", function (e) {
+          e.preventDefault();
+          showTab(tab, true);
+        });
+        li.appendChild(link);
+        list.appendChild(li);
+        miniLinks.push(link);
+      });
+      miniSheet.appendChild(list);
+      miniBtn.addEventListener("click", function () { openSheet(miniSheet.hidden); });
+      document.addEventListener("click", function (e) {
+        if (!miniSheet.hidden && !mini.contains(e.target)) { openSheet(false); }
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && !miniSheet.hidden) { openSheet(false); miniBtn.focus(); }
+      });
+      /* The bar only earns its place once the grid of tabs has scrolled away. */
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) { mini.classList.toggle("is-away", !entry.isIntersecting); });
+        }, { rootMargin: "-56px 0px 0px 0px" }).observe(tabList);
+      } else {
+        mini.classList.add("is-away");
+      }
+    }
+
+    showTab(tabForHash(location.hash) || tabs[0], !!tabForHash(location.hash));
+    window.addEventListener("hashchange", function () {
+      var tab = tabForHash(location.hash);
+      if (tab) { showTab(tab, true); }
+    });
+  }
 
   /* 8. Saved list ===================================================== */
 

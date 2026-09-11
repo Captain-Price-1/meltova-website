@@ -95,25 +95,37 @@
 </section>
 
 <!-- Jump to a section, phones only -->
-<nav class="jump" aria-label="Jump to a section">
+<!-- Menu categories. One shows at a time; the script does the switching and
+     these links still jump to the sections when it is not running. -->
+<nav class="tabs" aria-label="Menu categories">
   <div class="shell">
-    <p class="jump__label">Jump to</p>
-    <ul>
-      <li><a href="#flavoured-bites">Flavoured</a></li>
-      <li><a href="#plain-bites">Plain</a></li>
-      <li><a href="#custom-bites">Customised</a></li>
-      <li><a href="#nut-crush">Nut Crush</a></li>
-      <li><a href="#modaks">Modaks</a></li>
-      <li><a href="#big-bites">Big Bites</a></li>
-      <li><a href="#customise">Custom Bar</a></li>
-      <li><a href="#bar-fills">Bar Fills</a></li>
-      <li><a href="#gift-boxes">Gifting</a></li>
+    <ul class="tabs__list" role="tablist">
+      <li role="presentation"><a class="tabs__tab is-on" role="tab" id="tab-flavoured-bites" href="#flavoured-bites" aria-controls="flavoured-bites" aria-selected="true">Flavoured Bites</a></li>
+      <li role="presentation"><a class="tabs__tab" role="tab" id="tab-plain-bites" href="#plain-bites" aria-controls="plain-bites" aria-selected="false">Plain Bites</a></li>
+      <li role="presentation"><a class="tabs__tab" role="tab" id="tab-custom-bites" href="#custom-bites" aria-controls="custom-bites" aria-selected="false">Customised Bites</a></li>
+      <li role="presentation"><a class="tabs__tab" role="tab" id="tab-nut-crush" href="#nut-crush" aria-controls="nut-crush" aria-selected="false">Nut Crush</a></li>
+      <li role="presentation"><a class="tabs__tab" role="tab" id="tab-modaks" href="#modaks" aria-controls="modaks" aria-selected="false">Modaks</a></li>
+      <li role="presentation"><a class="tabs__tab" role="tab" id="tab-big-bites" href="#big-bites" aria-controls="big-bites" aria-selected="false">Big Bites</a></li>
+      <li role="presentation"><a class="tabs__tab" role="tab" id="tab-customise" href="#customise" aria-controls="customise" aria-selected="false">Custom Bar</a></li>
+      <li role="presentation"><a class="tabs__tab" role="tab" id="tab-bar-fills" href="#bar-fills" aria-controls="bar-fills" aria-selected="false">Bar Fills</a></li>
+      <li role="presentation"><a class="tabs__tab" role="tab" id="tab-gift-boxes" href="#gift-boxes" aria-controls="gift-boxes" aria-selected="false">Gifting</a></li>
     </ul>
   </div>
 </nav>
+<!-- Phones only. Sticks under the header once the grid above has scrolled
+     away, names the category on screen, and opens the full list on a tap. -->
+<div class="tabs-mini">
+  <button type="button" class="tabs-mini__btn" aria-expanded="false" aria-controls="tabs-mini-sheet">
+    <span class="tabs-mini__label">Menu</span>
+    <b class="tabs-mini__current">Flavoured Bites</b>
+    <svg class="tabs-mini__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.5 12 15.5 18 9.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <div class="tabs-mini__sheet" id="tabs-mini-sheet" hidden></div>
+</div>
+<div class="tabs__panels">
 
 <!-- Flavoured bites -->
-<section class="section" id="flavoured-bites" aria-labelledby="flav-h">
+<section class="section" id="flavoured-bites" role="tabpanel" aria-labelledby="tab-flavoured-bites">
   <div class="shell">
     <div class="head reveal">
       <span class="head__script">Sold by the piece</span>
@@ -454,7 +466,7 @@
 </section>
 
 <!-- Plain bites -->
-<section class="section section--cream2" id="plain-bites" aria-labelledby="plain-h">
+<section class="section section--cream2" id="plain-bites" role="tabpanel" aria-labelledby="tab-plain-bites">
   <div class="shell">
     <div class="head reveal">
       <span class="head__script">Simple and pure</span>
@@ -535,7 +547,7 @@
 </section>
 
 <!-- Customised bites -->
-<section class="section" id="custom-bites" aria-labelledby="cbite-h">
+<section class="section" id="custom-bites" role="tabpanel" aria-labelledby="tab-custom-bites">
   <div class="shell">
     <div class="head reveal">
       <span class="head__script">Choose your own</span>
@@ -571,7 +583,7 @@
 </section>
 
 <!-- Exotic nut crush -->
-<section class="section" id="nut-crush" aria-labelledby="nuts-h">
+<section class="section" id="nut-crush" role="tabpanel" aria-labelledby="tab-nut-crush">
   <div class="shell">
     <div class="head reveal">
       <span class="head__script">Sold by the box</span>
@@ -659,7 +671,7 @@
 </section>
 
 <!-- Chocolate Modaks -->
-<section class="section section--cream2" id="modaks" aria-labelledby="modak-h">
+<section class="section section--cream2" id="modaks" role="tabpanel" aria-labelledby="tab-modaks">
   <div class="shell">
     <div class="head reveal">
       <span class="head__script">Small bites, bigger happiness</span>
@@ -694,7 +706,7 @@
 </section>
 
 <!-- Big Bites -->
-<section class="section" id="big-bites" aria-labelledby="big-h">
+<section class="section" id="big-bites" role="tabpanel" aria-labelledby="tab-big-bites">
   <div class="shell">
     <div class="head reveal">
       <span class="head__script">Made to be gifted</span>
@@ -732,7 +744,7 @@
 </section>
 
 <!-- Customise a bar -->
-<section class="section section--cream2" id="customise" aria-labelledby="custom-h">
+<section class="section section--cream2" id="customise" role="tabpanel" aria-labelledby="tab-customise">
   <div class="shell">
     <div class="head reveal">
       <span class="head__script">Make it yours</span>
@@ -750,17 +762,16 @@
       <a class="btn btn--ghost-cream" href="https://wa.me/917337070931?text=Hi%20Meltova%2C%20I%27d%20like%20to%20order" target="_blank" rel="noopener">Ask on WhatsApp</a>
     </div>
   </div>
-</section>
-
   <div class="shell">
     <div class="gallery" data-stagger>
           <img src="assets/img/custbar-floral.jpg" alt="A customised bar decorated with sugar roses, pecans and pistachio" width="881" height="1100" loading="lazy" decoding="async">
           <img src="assets/img/custbar-floral2.jpg" alt="A pair of customised bars in a gift box, one white and one dark" width="892" height="1100" loading="lazy" decoding="async">
         </div>
   </div>
+</section>
 
 <!-- Premium bar fills -->
-<section class="section section--cream2" id="bar-fills" aria-labelledby="bars-h">
+<section class="section section--cream2" id="bar-fills" role="tabpanel" aria-labelledby="tab-bar-fills">
   <div class="shell">
     <div class="head reveal">
       <span class="head__script">Sold by the bar</span>
@@ -910,7 +921,7 @@
 </section>
 
 <!-- Gift boxes and bulk -->
-<section class="section" id="gift-boxes" aria-labelledby="gift-h">
+<section class="section" id="gift-boxes" role="tabpanel" aria-labelledby="tab-gift-boxes">
   <div class="shell">
     <div class="head reveal">
       <span class="head__script">Made for occasions</span>
@@ -935,10 +946,13 @@
       </article>
     </div>
     <div class="btn-row" style="margin-top:40px"><a class="btn btn--brown" href="https://wa.me/917337070931?text=Hi%20Meltova%2C%20I%27d%20like%20to%20plan%20a%20bulk%20order" target="_blank" rel="noopener">Plan a bulk order</a></div>
-    <p class="pricenote">Prices last updated <b>September 2026</b></p>
   </div>
 </section>
 
+</div>
+<div class="shell tabs__foot">
+  <p class="pricenote">Prices last updated <b>September 2026</b></p>
+</div>
 </main>
 
 <footer class="site-footer">

@@ -136,6 +136,22 @@ One more item is not in brackets but still needs replacing: the customer quote f
 **Nisha Verma** on the home page is a sample. Swap it for a real review, and change
 the two photos beside it if you like. It is marked with a comment in `index.html`.
 
+## The menu tabs
+
+The menu shows one category at a time. The row of tabs under the menu hero lists
+every category. On a desktop it wraps onto a second row when the window is
+narrow rather than scrolling sideways, and it stays pinned under the header. On
+a phone the same list is a grid at the top of the menu, and once that scrolls
+away a slim bar sticks under the header naming the category on screen; a tap on
+it opens the full list.
+
+Each tab is an `<a role="tab">` pointing at a section id, and each category is a
+`<section role="tabpanel">` inside `<div class="tabs__panels">` in `menu.html`.
+Links from the rest of the site, `menu.html#modaks` for example, open straight
+onto that tab. To add a category, add a tab and a section with matching ids and
+the script picks it up. Without JavaScript every section shows, one under the
+other, and the tabs work as plain jump links.
+
 ## Changing the box sizes
 
 The sizes live in two places, and both must agree:
@@ -207,10 +223,12 @@ the box at two sizes, a box of 12 and a box of 4 say, each on its own line.
 Bars, nut crush boxes and the stick box are sold one at a time, not by the piece.
 Those have no size buttons, and their counter counts single items.
 
-In the cart every line has the same minus and plus counter. A bite line also has
-the size picker, and moving a line to a size that is already in the box folds the
-two lines into one. From there they can remove a line, tick the cold pack, and
-see the full total with delivery.
+In the cart every line has the same minus and plus counter and a Remove link.
+The box size is not changed in the cart: a box of 4 and a box of 12 are two
+different things to choose, so that choice stays on the menu and the cart line
+just says which size it is. On a menu card, a small gold dot on a size button
+marks a size that is already in the box. From the cart they can tick the cold
+pack and see the full total with delivery.
 
 ### The ordering rules
 

@@ -1855,26 +1855,6 @@ body.box-empty #details { display: none; }
   .card .chips { gap: 7px; }
 }
 
-/* 18. The box size picker in a cart line =============================== */
-
-.boxpick {
-  display: flex;
-  gap: 6px;
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-.boxpick .chip {
-  min-width: 38px;
-  min-height: 34px;
-  padding: 6px 8px;
-  font-size: 12px;
-}
-
-@media (max-width: 768px) {
-  .boxpick .chip { min-width: 44px; min-height: 44px; }
-}
-
 /* 19. Readable labels on a phone ======================================== */
 
 @media (max-width: 768px) {
@@ -2016,7 +1996,6 @@ body.box-empty #details { display: none; }
    so the menu is not twenty screens long. */
 
 .tabbar { display: none; }
-.jump { display: none; }
 
 @media (max-width: 900px) {
 
@@ -2103,28 +2082,6 @@ body.box-empty #details { display: none; }
   .hero h1 { font-size: clamp(27px, 8.4vw, 36px); max-width: none; }
   .hero p { font-size: 15px; margin-bottom: 20px; }
 
-  /* Jump links on the long menu page */
-  .jump { display: block; background: var(--cream-2); padding: 16px 0 18px; }
-  .jump__label {
-    font-size: 10px;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    color: var(--gold-text);
-    margin-bottom: 10px;
-  }
-  .jump ul { display: flex; flex-wrap: wrap; gap: 8px; }
-  .jump a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    padding: 0 14px;
-    border: 1px solid var(--cream-soft);
-    border-radius: var(--radius-pill);
-    background: var(--paper);
-    font-size: 12px;
-    color: var(--cocoa-text);
-  }
-  .jump a:active { background: var(--brown); color: #fff; border-color: var(--brown); }
 }
 
 /* Nothing scrolls sideways. Grids instead of swipe rows. */
@@ -2317,9 +2274,6 @@ body.box-empty #details { display: none; }
   font-weight: 500;
   color: var(--brown);
 }
-/* In a cart line the counter sits under the size picker. */
-.cart-line .boxpick + .qty { margin-top: 10px; }
-
 /* On a card it stands where Add to cart stood: same height, same pill, brown
    like the primary button so it reads as "already in your box". */
 .qty--card {
@@ -2345,3 +2299,144 @@ body.box-empty #details { display: none; }
   .card__cta .qty--card { width: 100%; justify-content: space-between; min-height: 44px; }
   .qty__btn { width: 44px; height: 44px; }
 }
+
+/* 26. Menu tabs ============================================================
+   The menu shows one category at a time. On a desktop the row of tabs wraps
+   onto a second line when the window is narrow rather than scrolling sideways,
+   and it stays pinned under the header. On a phone the same list is a grid at
+   the top of the menu, and once that has scrolled away a slim bar sticks under
+   the header naming the category on screen; a tap opens the full list. */
+.tabs {
+  background: var(--cream-2);
+  border-bottom: 1px solid var(--cream-soft);
+}
+.tabs__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 0;
+  padding: 14px 0;
+  list-style: none;
+}
+.tabs__tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 18px;
+  border: 1px solid var(--cream-soft);
+  border-radius: var(--radius-pill);
+  background: var(--paper);
+  color: var(--cocoa-text);
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background .2s ease, color .2s ease, border-color .2s ease;
+}
+.tabs__tab:hover { border-color: var(--gold); color: var(--gold-text); }
+.tabs__tab.is-on { background: var(--brown); border-color: var(--brown); color: #fff; }
+.tabs__tab:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.js .tabs__panels > [role="tabpanel"][hidden] { display: none; }
+/* A tab click scrolls to the top of its panel, just under whatever is pinned. */
+.tabs__panels > .section { scroll-margin-top: calc(var(--header-h, 72px) + var(--tabs-h, 68px) + 8px); }
+.tabs__foot { padding-bottom: 36px; }
+.tabs-mini { display: none; }
+
+@media (min-width: 901px) {
+  .tabs {
+    position: sticky;
+    top: var(--header-h, 72px);
+    z-index: 90;
+    box-shadow: 0 10px 22px -16px rgba(0, 0, 0, .3);
+  }
+}
+
+@media (max-width: 900px) {
+  .tabs { padding: 14px 0 12px; }
+  .tabs__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
+    gap: 8px;
+    padding: 0;
+  }
+  .tabs__tab {
+    min-height: 44px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    letter-spacing: .06em;
+    line-height: 1.25;
+    text-align: center;
+  }
+  .tabs__panels > .section { scroll-margin-top: calc(var(--header-h, 56px) + 54px); }
+
+  /* The slim bar. It takes no room in the flow; the button and the sheet hang
+     from a zero height sticky box, so it lies over the content when pinned. */
+  .tabs-mini {
+    display: block;
+    position: sticky;
+    top: var(--header-h, 52px);
+    height: 0;
+    z-index: 90;
+    visibility: hidden;
+  }
+  .tabs-mini.is-away { visibility: visible; }
+  .tabs-mini__btn {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 0 var(--gutter, 16px);
+    border: 0;
+    border-bottom: 1px solid var(--cream-soft);
+    background: var(--paper);
+    color: var(--cocoa-text);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    box-shadow: 0 10px 22px -16px rgba(0, 0, 0, .35);
+  }
+  .tabs-mini__label {
+    font-size: 10px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--gold-text);
+  }
+  .tabs-mini__current {
+    flex: 1 1 auto;
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--brown);
+  }
+  .tabs-mini__chev { width: 18px; height: 18px; color: var(--brown); transition: transform .2s ease; }
+  .tabs-mini__btn[aria-expanded="true"] .tabs-mini__chev { transform: rotate(180deg); }
+  .tabs-mini__sheet {
+    position: absolute;
+    top: 48px; left: 0; right: 0;
+    padding: 12px var(--gutter, 16px) 16px;
+    background: var(--paper);
+    border-bottom: 1px solid var(--cream-soft);
+    box-shadow: 0 22px 34px -18px rgba(0, 0, 0, .4);
+  }
+  .tabs-mini__sheet[hidden] { display: none; }
+}
+
+/* 27. A dot on a size chip that is already in the box ===================== */
+.chip { position: relative; }
+.chip.has-line::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+/* The picked size shows its count on the card, so the dot is not needed there. */
+.chip__input:checked + .chip.has-line::after { display: none; }
