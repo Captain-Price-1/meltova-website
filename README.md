@@ -141,9 +141,10 @@ the two photos beside it if you like. It is marked with a comment in `index.html
 The menu shows one category at a time. The row of tabs under the menu hero lists
 every category. On a desktop it wraps onto a second row when the window is
 narrow rather than scrolling sideways, and it stays pinned under the header. On
-a phone the same list is a grid at the top of the menu, and once that scrolls
-away a slim bar sticks under the header naming the category on screen; a tap on
-it opens the full list.
+a phone it is the strip of chips that food apps use: one row pinned under the
+header that scrolls sideways, with the open category filled in and slid to the
+middle, and an All button at the end that lifts every category in a sheet from
+the bottom of the screen.
 
 Each tab is an `<a role="tab">` pointing at a section id, and each category is a
 `<section role="tabpanel">` inside `<div class="tabs__panels">` in `menu.html`.

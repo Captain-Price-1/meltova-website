@@ -98,7 +98,7 @@
 <!-- Menu categories. One shows at a time; the script does the switching and
      these links still jump to the sections when it is not running. -->
 <nav class="tabs" aria-label="Menu categories">
-  <div class="shell">
+  <div class="shell tabs__row">
     <ul class="tabs__list" role="tablist">
       <li role="presentation"><a class="tabs__tab is-on" role="tab" id="tab-flavoured-bites" href="#flavoured-bites" aria-controls="flavoured-bites" aria-selected="true">Flavoured Bites</a></li>
       <li role="presentation"><a class="tabs__tab" role="tab" id="tab-plain-bites" href="#plain-bites" aria-controls="plain-bites" aria-selected="false">Plain Bites</a></li>
@@ -110,17 +110,20 @@
       <li role="presentation"><a class="tabs__tab" role="tab" id="tab-bar-fills" href="#bar-fills" aria-controls="bar-fills" aria-selected="false">Bar Fills</a></li>
       <li role="presentation"><a class="tabs__tab" role="tab" id="tab-gift-boxes" href="#gift-boxes" aria-controls="gift-boxes" aria-selected="false">Gifting</a></li>
     </ul>
+    <!-- Phones only. Lifts every category in a sheet from the bottom of the screen. -->
+    <button type="button" class="tabs__all" aria-haspopup="dialog" aria-expanded="false" aria-controls="tabs-sheet"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>All</button>
   </div>
 </nav>
-<!-- Phones only. Sticks under the header once the grid above has scrolled
-     away, names the category on screen, and opens the full list on a tap. -->
-<div class="tabs-mini">
-  <button type="button" class="tabs-mini__btn" aria-expanded="false" aria-controls="tabs-mini-sheet">
-    <span class="tabs-mini__label">Menu</span>
-    <b class="tabs-mini__current">Flavoured Bites</b>
-    <svg class="tabs-mini__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.5 12 15.5 18 9.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </button>
-  <div class="tabs-mini__sheet" id="tabs-mini-sheet" hidden></div>
+<div class="tabs-sheet" id="tabs-sheet" role="dialog" aria-modal="true" aria-labelledby="tabs-sheet-h" hidden>
+  <div class="tabs-sheet__scrim" data-sheet-close></div>
+  <div class="tabs-sheet__panel">
+    <div class="tabs-sheet__grip" aria-hidden="true"></div>
+    <div class="tabs-sheet__head">
+      <h2 class="tabs-sheet__h" id="tabs-sheet-h">The Menu</h2>
+      <button type="button" class="tabs-sheet__close" data-sheet-close aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    </div>
+    <ul class="tabs-sheet__list"></ul>
+  </div>
 </div>
 <div class="tabs__panels">
 

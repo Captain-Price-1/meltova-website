@@ -792,17 +792,18 @@
   /* The menu shows one category at a time. Each tab is a link to a section
      id, so without this script the page is the whole menu with jump links.
      With it, the section named in the address opens, the others hide, and
-     the address follows the tab so links and the back button keep working. */
+     the address follows the tab so links and the back button keep working.
+     On a phone the tab row scrolls sideways; the open tab slides to the
+     middle, and an All button lifts every category in a sheet. */
   var tabList = $(".tabs__list");
   if (tabList) {
     var tabs = $$('[role="tab"]', tabList);
     var panelFor = function (tab) { return document.getElementById(tab.getAttribute("aria-controls")); };
     var tabsBar = $(".tabs");
-    var mini = $(".tabs-mini");
-    var miniBtn = mini && $(".tabs-mini__btn", mini);
-    var miniCurrent = mini && $(".tabs-mini__current", mini);
-    var miniSheet = mini && $(".tabs-mini__sheet", mini);
-    var miniLinks = [];
+    var allBtn = $(".tabs__all");
+    var sheet = $(".tabs-sheet");
+    var sheetList = sheet && $(".tabs-sheet__list", sheet);
+    var sheetLinks = [];
 
     function syncTabsHeight() {
       if (tabsBar) {
@@ -812,10 +813,24 @@
     syncTabsHeight();
     if (tabsBar && "ResizeObserver" in window) { new ResizeObserver(syncTabsHeight).observe(tabsBar); }
 
-    function openSheet(open) {
-      if (!miniSheet) { return; }
-      miniSheet.hidden = !open;
-      miniBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    function centreTab(tab) {
+      if (tabList.scrollWidth <= tabList.clientWidth + 1) { return; }
+      var r = tab.getBoundingClientRect(), l = tabList.getBoundingClientRect();
+      var left = tabList.scrollLeft + (r.left - l.left) - (l.width - r.width) / 2;
+      tabList.scrollTo({ left: Math.max(0, left), behavior: reduceMotion ? "auto" : "smooth" });
+    }
+
+    function openSheet(open, returnFocus) {
+      if (!sheet) { return; }
+      sheet.hidden = !open;
+      if (allBtn) { allBtn.setAttribute("aria-expanded", open ? "true" : "false"); }
+      document.body.classList.toggle("sheet-open", open);
+      if (open) {
+        var on = $(".tabs__tab.is-on", sheet) || $(".tabs__tab", sheet);
+        if (on) { on.focus(); }
+      } else if (returnFocus && allBtn) {
+        allBtn.focus();
+      }
     }
 
     function showTab(tab, scroll) {
@@ -827,12 +842,13 @@
         var panel = panelFor(t);
         if (panel) { panel.hidden = !on; }
       });
-      miniLinks.forEach(function (link) {
-        link.classList.toggle("is-on", link.getAttribute("href") === tab.getAttribute("href"));
-        link.setAttribute("aria-current", link.getAttribute("href") === tab.getAttribute("href") ? "true" : "false");
+      sheetLinks.forEach(function (link) {
+        var on = link.getAttribute("href") === tab.getAttribute("href");
+        link.classList.toggle("is-on", on);
+        link.setAttribute("aria-current", on ? "true" : "false");
       });
-      if (miniCurrent) { miniCurrent.textContent = tab.textContent; }
       openSheet(false);
+      centreTab(tab);
       var id = tab.getAttribute("aria-controls");
       if (window.history && history.replaceState && location.hash !== "#" + id) {
         history.replaceState(null, "", "#" + id);
@@ -871,10 +887,8 @@
       });
     });
 
-    /* The phone bar: a copy of the list inside a drop down sheet. */
-    if (mini && miniSheet) {
-      var list = document.createElement("ul");
-      list.className = "tabs__list";
+    /* The sheet: a copy of the list, two to a row, from the bottom of the screen. */
+    if (sheet && sheetList && allBtn) {
       tabs.forEach(function (tab) {
         var li = document.createElement("li");
         var link = document.createElement("a");
@@ -886,25 +900,16 @@
           showTab(tab, true);
         });
         li.appendChild(link);
-        list.appendChild(li);
-        miniLinks.push(link);
+        sheetList.appendChild(li);
+        sheetLinks.push(link);
       });
-      miniSheet.appendChild(list);
-      miniBtn.addEventListener("click", function () { openSheet(miniSheet.hidden); });
-      document.addEventListener("click", function (e) {
-        if (!miniSheet.hidden && !mini.contains(e.target)) { openSheet(false); }
+      allBtn.addEventListener("click", function () { openSheet(sheet.hidden, false); });
+      $$("[data-sheet-close]", sheet).forEach(function (el) {
+        el.addEventListener("click", function () { openSheet(false, true); });
       });
       document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape" && !miniSheet.hidden) { openSheet(false); miniBtn.focus(); }
+        if (e.key === "Escape" && !sheet.hidden) { openSheet(false, true); }
       });
-      /* The bar only earns its place once the grid of tabs has scrolled away. */
-      if ("IntersectionObserver" in window) {
-        new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) { mini.classList.toggle("is-away", !entry.isIntersecting); });
-        }, { rootMargin: "-56px 0px 0px 0px" }).observe(tabList);
-      } else {
-        mini.classList.add("is-away");
-      }
     }
 
     showTab(tabForHash(location.hash) || tabs[0], !!tabForHash(location.hash));
