@@ -24,7 +24,7 @@
 
   /* 1. Settings and helpers =========================================== */
 
-  var INSTAGRAM_URL = "https://www.instagram.com/meltova_thechocolatelane";
+  var INSTAGRAM_URL = "https://www.instagram.com/meltova.thechocolatelane";
   var WHATSAPP_NUMBER = "917337070931";
   var CART_KEY = "meltova.cart.v1";
   var WISH_KEY = "meltova.wishlist.v1";
