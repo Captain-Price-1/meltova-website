@@ -253,13 +253,13 @@ WhatsApp with the whole order already written out, like this:
 ```
 Hi Meltova, I'd like to order:
 
-Box of 12 Kunafa bites (₹35 per piece) = ₹420
+Box of 12 Kunafa bites (₹40 per piece) = ₹480
 2 x Biscoff bar (₹599 per bar) = ₹1,198
 
-Subtotal: ₹1,618
+Subtotal: ₹1,678
 Delivery: ₹140
 Cold pack: ₹99
-Total: ₹1,857
+Total: ₹1,917
 
 Deliver to:
 Anita Sharma
