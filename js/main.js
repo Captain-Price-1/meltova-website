@@ -801,6 +801,8 @@
     var panelFor = function (tab) { return document.getElementById(tab.getAttribute("aria-controls")); };
     var tabsBar = $(".tabs");
     var allBtn = $(".tabs__all");
+    var prevBtn = $(".tabs__arrow--prev");
+    var nextBtn2 = $(".tabs__arrow--next");
     var sheet = $(".tabs-sheet");
     var sheetList = sheet && $(".tabs-sheet__list", sheet);
     var sheetLinks = [];
@@ -813,11 +815,61 @@
     syncTabsHeight();
     if (tabsBar && "ResizeObserver" in window) { new ResizeObserver(syncTabsHeight).observe(tabsBar); }
 
+    function stripScrolls() { return tabList.scrollWidth > tabList.clientWidth + 1; }
+
     function centreTab(tab) {
-      if (tabList.scrollWidth <= tabList.clientWidth + 1) { return; }
+      if (!stripScrolls()) { return; }
       var r = tab.getBoundingClientRect(), l = tabList.getBoundingClientRect();
       var left = tabList.scrollLeft + (r.left - l.left) - (l.width - r.width) / 2;
       tabList.scrollTo({ left: Math.max(0, left), behavior: reduceMotion ? "auto" : "smooth" });
+      window.setTimeout(paintArrows, 450);
+    }
+
+    /* Sideways scrolling is easy to miss, so the strip says so three ways:
+       an arrow at whichever end has more, which pages the strip along; a
+       count on the All button; and, the first time the strip comes into
+       view, a small slide to the right and back so it is seen to move. */
+    function paintArrows() {
+      var max = tabList.scrollWidth - tabList.clientWidth;
+      if (prevBtn) { prevBtn.hidden = !stripScrolls() || tabList.scrollLeft <= 2; }
+      if (nextBtn2) { nextBtn2.hidden = !stripScrolls() || tabList.scrollLeft >= max - 2; }
+    }
+    function pageStrip(dir) {
+      tabList.scrollBy({ left: dir * tabList.clientWidth * 0.7, behavior: reduceMotion ? "auto" : "smooth" });
+      window.setTimeout(paintArrows, 450);
+    }
+    if (prevBtn) { prevBtn.addEventListener("click", function () { pageStrip(-1); }); }
+    if (nextBtn2) { nextBtn2.addEventListener("click", function () { pageStrip(1); }); }
+    tabList.addEventListener("scroll", paintArrows, { passive: true });
+    window.addEventListener("resize", paintArrows);
+    paintArrows();
+    if (allBtn) {
+      var allText = $(".tabs__all-text", allBtn);
+      if (allText) { allText.textContent = "All " + tabs.length; }
+    }
+
+    var NUDGE_KEY = "meltova.tabsNudged";
+    var nudged = false;
+    try { nudged = window.sessionStorage.getItem(NUDGE_KEY) === "1"; } catch (e) { /* fine */ }
+    if (!nudged && !reduceMotion && "IntersectionObserver" in window) {
+      var nudgeIo = new IntersectionObserver(function (entries, obs) {
+        if (!entries.some(function (e) { return e.isIntersecting; })) { return; }
+        obs.disconnect();
+        if (!stripScrolls() || tabList.scrollLeft > 0) { return; }
+        var touched = false;
+        var stop = function () { touched = true; };
+        tabList.addEventListener("touchstart", stop, { passive: true, once: true });
+        tabList.addEventListener("pointerdown", stop, { once: true });
+        window.setTimeout(function () {
+          if (touched) { return; }
+          tabList.scrollTo({ left: 64, behavior: "smooth" });
+          window.setTimeout(function () {
+            if (!touched) { tabList.scrollTo({ left: 0, behavior: "smooth" }); }
+          }, 700);
+        }, 500);
+        try { window.sessionStorage.setItem(NUDGE_KEY, "1"); } catch (e) { /* fine */ }
+      }, { threshold: 0.9 });
+      nudgeIo.observe(tabList);
     }
 
     function openSheet(open, returnFocus) {
@@ -918,6 +970,83 @@
       if (tab) { showTab(tab, true); }
     });
   }
+
+  /* 7d. Photo carousels on a phone ==================================== */
+
+  /* On a phone a section's photos stacked up: the big showcase photo, then
+     the text, then a row of small squares with the rest cut off. Each
+     section with a photo row now gets one swipeable strip of all its photos,
+     showcase photo first, one large photo at a time with the next peeking
+     in, a count in the corner and dots underneath. The originals stay for
+     wider screens; the stylesheet decides which one shows. */
+  $$(".tabs__panels .gallery").forEach(function (gallery) {
+    var section = gallery.closest("section");
+    var media = section ? section.querySelector(".showcase__media") : null;
+    var sources = [];
+    if (media && media.querySelector("img")) { sources.push(media.querySelector("img")); }
+    sources = sources.concat($$("img", gallery));
+    if (sources.length < 2) { return; }
+
+    var wrap = document.createElement("div");
+    wrap.className = "carousel" + (section.querySelector(".showcase--wide") ? " carousel--contain" : "");
+    wrap.setAttribute("role", "group");
+    wrap.setAttribute("aria-label", "Photos, swipe to see more");
+    var track = document.createElement("div");
+    track.className = "carousel__track";
+    var dots = document.createElement("div");
+    dots.className = "carousel__dots";
+    var count = document.createElement("span");
+    count.className = "carousel__count";
+    count.setAttribute("aria-hidden", "true");
+    var slides = [];
+
+    sources.forEach(function (img, i) {
+      var slide = document.createElement("figure");
+      slide.className = "carousel__slide";
+      var copy = img.cloneNode(false);
+      copy.removeAttribute("class");
+      copy.setAttribute("loading", i === 0 ? "eager" : "lazy");
+      copy.setAttribute("decoding", "async");
+      slide.appendChild(copy);
+      track.appendChild(slide);
+      slides.push(slide);
+
+      var dot = document.createElement("button");
+      dot.type = "button";
+      dot.className = "carousel__dot";
+      dot.setAttribute("aria-label", "Photo " + (i + 1) + " of " + sources.length);
+      dot.addEventListener("click", function () {
+        track.scrollTo({ left: slide.offsetLeft, behavior: reduceMotion ? "auto" : "smooth" });
+      });
+      dots.appendChild(dot);
+    });
+
+    function paintDots() {
+      var at = 0, best = Infinity;
+      slides.forEach(function (slide, k) {
+        var d = Math.abs(slide.offsetLeft - track.scrollLeft);
+        if (d < best) { best = d; at = k; }
+      });
+      $$(".carousel__dot", dots).forEach(function (dot, k) {
+        dot.classList.toggle("is-on", k === at);
+        dot.setAttribute("aria-current", k === at ? "true" : "false");
+      });
+      count.textContent = (at + 1) + " / " + slides.length;
+    }
+    track.addEventListener("scroll", paintDots, { passive: true });
+    paintDots();
+
+    wrap.appendChild(track);
+    wrap.appendChild(count);
+    wrap.appendChild(dots);
+    if (media) {
+      media.classList.add("has-carousel");
+      media.appendChild(wrap);
+    } else {
+      gallery.parentNode.insertBefore(wrap, gallery);
+    }
+    gallery.classList.add("has-carousel");
+  });
 
   /* 8. Saved list ===================================================== */
 

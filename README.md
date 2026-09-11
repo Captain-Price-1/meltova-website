@@ -143,8 +143,10 @@ every category. On a desktop it wraps onto a second row when the window is
 narrow rather than scrolling sideways, and it stays pinned under the header. On
 a phone it is the strip of chips that food apps use: one row pinned under the
 header that scrolls sideways, with the open category filled in and slid to the
-middle, and an All button at the end that lifts every category in a sheet from
-the bottom of the screen.
+middle. Because sideways scrolling is easy to miss, an arrow at the end of the
+row pages it along, the All button carries the count of categories, and the
+first time the row comes into view it slides a little and back. The All button
+lifts every category in a sheet from the bottom of the screen.
 
 Each tab is an `<a role="tab">` pointing at a section id, and each category is a
 `<section role="tabpanel">` inside `<div class="tabs__panels">` in `menu.html`.
@@ -152,6 +154,15 @@ Links from the rest of the site, `menu.html#modaks` for example, open straight
 onto that tab. To add a category, add a tab and a section with matching ids and
 the script picks it up. Without JavaScript every section shows, one under the
 other, and the tabs work as plain jump links.
+
+## Photos on a phone
+
+On a phone, every menu section that has a row of extra photos shows them as one
+swipeable strip instead, built by the script from the showcase photo and the
+row: one large photo at a time with the next one peeking in, a count in the
+corner and dots underneath. On wider screens the showcase photo and the row
+show as before. To add a photo to a section, add it to that section's
+`<div class="gallery">` and the strip picks it up.
 
 ## Changing the box sizes
 

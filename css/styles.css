@@ -2343,7 +2343,7 @@ body.box-empty #details { display: none; }
 .tabs__tab:hover { border-color: var(--gold); color: var(--gold-text); }
 .tabs__tab.is-on { background: var(--brown); border-color: var(--brown); color: #fff; }
 .tabs__tab:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-.tabs__all { display: none; }
+.tabs__all, .tabs__arrow { display: none; }
 .tabs-sheet { display: none; }
 .js .tabs__panels > [role="tabpanel"][hidden] { display: none; }
 /* A tab click scrolls to the top of its panel, just under whatever is pinned. */
@@ -2374,7 +2374,6 @@ body.box-empty #details { display: none; }
     padding: 10px var(--gutter);
     overflow-x: auto;
     overscroll-behavior-x: contain;
-    scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     /* The edges fade over the gutter, so the first chip is whole at rest and
@@ -2385,7 +2384,6 @@ body.box-empty #details { display: none; }
   .tabs__list::-webkit-scrollbar { display: none; }
   .tabs__tab {
     flex: 0 0 auto;
-    scroll-snap-align: center;
     min-height: 38px;
     padding: 0 14px;
     font-size: 11.5px;
@@ -2397,7 +2395,7 @@ body.box-empty #details { display: none; }
     gap: 6px;
     flex: 0 0 auto;
     min-height: 38px;
-    margin: 10px var(--gutter) 10px 2px;
+    margin: 10px var(--gutter) 10px 0;
     padding: 0 12px 0 10px;
     border: 1px solid var(--brown);
     border-radius: var(--radius-pill);
@@ -2410,6 +2408,27 @@ body.box-empty #details { display: none; }
     cursor: pointer;
   }
   .tabs__all svg { width: 16px; height: 16px; }
+  .tabs__all-text { white-space: nowrap; }
+  /* The paging arrows. The one on the left only appears once the strip has
+     moved; the one on the right goes once the end is reached. */
+  .tabs__arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--cream-soft);
+    border-radius: 50%;
+    background: var(--cream-2);
+    color: var(--brown);
+    cursor: pointer;
+  }
+  .tabs__arrow[hidden] { display: none; }
+  .tabs__arrow svg { width: 18px; height: 18px; }
+  .tabs__arrow--prev { margin-left: var(--gutter); }
+  .tabs__arrow--prev + .tabs__list { padding-left: 8px; }
+  .tabs__arrow--next { margin-right: 8px; }
   .tabs__panels > .section { scroll-margin-top: calc(var(--header-h, 52px) + var(--tabs-h, 58px) + 6px); }
 
   .tabs-sheet { display: block; position: fixed; inset: 0; z-index: 500; }
@@ -2468,3 +2487,59 @@ body.box-empty #details { display: none; }
 }
 /* The picked size shows its count on the card, so the dot is not needed there. */
 .chip__input:checked + .chip.has-line::after { display: none; }
+
+/* 28. Photo carousels on a phone ==========================================
+   Built by the script from each section's showcase photo and photo row. Off
+   on wider screens, where the originals show as before. */
+.carousel { display: none; }
+
+@media (max-width: 900px) {
+  .carousel { display: block; position: relative; }
+  .carousel__track {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .carousel__track::-webkit-scrollbar { display: none; }
+  /* One large photo at a time, with the edge of the next one showing so the
+     strip is seen to move. */
+  .carousel__slide { flex: 0 0 86%; margin: 0; scroll-snap-align: start; }
+  .carousel__slide img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sm);
+  }
+  /* The modak chart is a tall poster, so that strip fits photos in whole. */
+  .carousel--contain .carousel__slide img { aspect-ratio: 1 / 1; object-fit: contain; background: var(--paper); }
+  .carousel__count {
+    position: absolute;
+    top: 10px; left: 10px;
+    padding: 3px 9px;
+    border-radius: 12px;
+    background: rgba(30, 20, 12, .55);
+    color: #fff;
+    font-size: 11px;
+    letter-spacing: .06em;
+    pointer-events: none;
+  }
+  .carousel__dots { display: flex; justify-content: center; gap: 6px; margin-top: 10px; }
+  .carousel__dot {
+    width: 7px; height: 7px;
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    background: var(--cream-soft);
+    transition: width .2s ease, background .2s ease;
+  }
+  .carousel__dot.is-on { width: 20px; background: var(--brown); }
+  .showcase__media.has-carousel > img { display: none; }
+  .gallery.has-carousel { display: none; }
+}
