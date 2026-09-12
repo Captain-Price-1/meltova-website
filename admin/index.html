@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Billing Desk | Meltova</title>
+
+<!-- This page is private. It is reached by typing the address, nothing on the
+     public site links to it, and these two lines keep it out of search results
+     and out of link previews. Do not add it to any nav, footer or sitemap. -->
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="referrer" content="no-referrer">
+
+<link rel="icon" type="image/png" href="../assets/img/favicon.png">
+<link rel="apple-touch-icon" href="../assets/img/favicon.png">
+<meta name="theme-color" content="#15100b">
+
+<script>document.documentElement.className += " js";</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&amp;family=Great+Vibes&amp;family=Jost:wght@300;400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="../css/admin.css">
+<script src="../js/admin.js" defer></script>
+</head>
+<body class="adminbody">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- Top bar. The brand mark links back to the shop, which is a link out of the
+     admin page, never into it. -->
+<header class="adminbar">
+  <div class="shell">
+    <a class="brand" href="../index.html">
+      <img src="../assets/img/meltova-logo.jpg" alt="Meltova, The Chocolate Lane" width="539" height="540" class="brand__mark" decoding="async">
+      <span>
+        <span class="brand__name">MELTOVA</span>
+        <span class="brand__sub">The Chocolate Lane</span>
+      </span>
+    </a>
+    <p class="adminbar__tag">Billing Desk</p>
+    <button type="button" class="adminbar__lock" data-lock hidden>Lock</button>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- 1. The gate ========================================================== -->
+<section class="gate" data-gate aria-labelledby="gate-h">
+  <div class="gate__card">
+    <img src="../assets/img/meltova-logo.jpg" alt="" width="539" height="540" class="gate__mark" decoding="async">
+    <span class="gate__script">Private</span>
+    <h1 class="gate__h" id="gate-h">Admin Sign In</h1>
+    <p class="gate__note">Enter the passcode to open the billing desk.</p>
+
+    <form class="gate__form" data-login novalidate>
+      <div class="field">
+        <label for="admin-pass">Passcode</label>
+        <input id="admin-pass" name="adminpass" type="password" autocomplete="current-password" autocapitalize="off" spellcheck="false" required aria-required="true">
+        <p class="err" data-login-err role="alert"></p>
+      </div>
+      <button type="submit" class="btn btn--gold gate__btn">Unlock</button>
+    </form>
+  </div>
+</section>
+
+<!-- 2. The desk ========================================================== -->
+<section class="workspace" data-workspace hidden aria-labelledby="desk-h">
+  <div class="shell">
+
+    <div class="head head--left desk-head">
+      <span class="head__script">Order bill</span>
+      <h2 class="head__title" id="desk-h">Build the Bill</h2>
+      <p class="head__note">Fill in the products and the delivery charge. The bill redraws as you type, and Download saves it as an image you can send on WhatsApp.</p>
+    </div>
+
+    <div class="deskgrid">
+
+      <!-- 2a. The form -->
+      <form class="desk" data-bill novalidate>
+
+        <fieldset class="deskblock">
+          <legend class="deskblock__h">Order details</legend>
+          <p class="deskblock__note">A star marks a box the bill cannot go out without. The bill number counts up on its own through the day.</p>
+          <div class="fields">
+            <div class="field">
+              <label for="b-no">Bill number <span class="req" aria-hidden="true">*</span></label>
+              <input id="b-no" type="text" data-meta="no" placeholder="MLT-1209-01" autocomplete="off" required aria-required="true">
+              <p class="err"></p>
+            </div>
+            <div class="field">
+              <label for="b-date">Date <span class="req" aria-hidden="true">*</span></label>
+              <input id="b-date" type="text" data-meta="date" placeholder="12 September 2026" autocomplete="off" required aria-required="true">
+              <p class="err"></p>
+            </div>
+            <div class="field">
+              <label for="b-name">Customer name</label>
+              <input id="b-name" type="text" data-meta="customer" placeholder="Anita Sharma" autocomplete="off">
+            </div>
+            <div class="field">
+              <label for="b-phone">Customer phone</label>
+              <input id="b-phone" type="text" data-meta="phone" placeholder="98xxxxxxxx" inputmode="numeric" autocomplete="off">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="deskblock">
+          <legend class="deskblock__h">Products</legend>
+          <p class="deskblock__note">Pick a chocolate from the list and the rate fills itself. Anything not on the list can be typed in by hand. Product, quantity and rate are needed on every line. The unit is optional.</p>
+
+          <ul class="lines" data-lines></ul>
+
+          <button type="button" class="btn btn--ghost-cream lines__add" data-add>
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="plusicon"><path d="M12 5v14M5 12h14"/></svg>
+            Add another product
+          </button>
+        </fieldset>
+
+        <fieldset class="deskblock">
+          <legend class="deskblock__h">Charges</legend>
+          <div class="fields">
+            <div class="field">
+              <label for="b-ship">Delivery charge <span class="req" aria-hidden="true">*</span></label>
+              <input id="b-ship" type="number" min="0" step="1" data-meta="shipping" placeholder="140" inputmode="numeric" required aria-required="true">
+              <p class="err"></p>
+            </div>
+            <div class="field">
+              <label for="b-thanks">Closing line</label>
+              <input id="b-thanks" type="text" data-meta="thanks" placeholder="You just made our day sweeter!" autocomplete="off">
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="desk__foot">
+          <p class="desk__total">Total <b data-live-total>&#8377;0</b></p>
+          <button type="button" class="deskbtn deskbtn--quiet" data-clear>Clear the form</button>
+        </div>
+
+      </form>
+
+      <!-- 2b. The live bill -->
+      <aside class="preview" aria-labelledby="prev-h">
+        <div class="preview__inner">
+          <h3 class="preview__h" id="prev-h">The bill</h3>
+
+          <div class="preview__frame">
+            <canvas data-canvas role="img" aria-label="Live preview of the order bill"></canvas>
+          </div>
+
+          <!-- A plain reading of the same numbers, for screen readers and for a
+               quick check that the picture matches the maths. -->
+          <p class="sr-only" data-a11y aria-live="polite"></p>
+
+          <div class="preview__actions">
+            <button type="button" class="btn btn--gold" data-download>
+              <svg viewBox="0 0 24 24" aria-hidden="true" class="dlicon"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19h14"/></svg>
+              Download image
+            </button>
+            <button type="button" class="deskbtn" data-copy>Copy image</button>
+          </div>
+
+          <p class="preview__note" data-status role="status">Download saves the bill as an image sized for WhatsApp and Instagram. Copy puts it on the clipboard, ready to paste into a chat.</p>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- The product list the rate boxes read from. Keep it in step with menu.html. -->
+<datalist id="product-list"></datalist>
+
+</body>
+</html>

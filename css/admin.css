@@ -1,0 +1,343 @@
+/* ==========================================================================
+   Meltova, The Chocolate Lane
+   Billing desk (admin.html only). Loads after styles.css and borrows every
+   colour, font and shadow from the tokens declared there.
+   Order of this file:
+     1. Page and top bar
+     2. The sign in gate
+     3. The desk layout
+     4. Form blocks and product lines
+     5. The live bill panel
+     6. Responsive
+   ========================================================================== */
+
+/* 1. Page and top bar ==================================================== */
+
+.adminbody { background: var(--cream-2); }
+
+.adminbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--dark);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .28);
+}
+.adminbar .shell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 68px;
+}
+.adminbar__tag {
+  margin: 0;
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+}
+.adminbar__lock {
+  color: var(--on-dark-dim);
+  border: 1px solid rgba(198, 154, 76, .5);
+  border-radius: var(--radius-pill);
+  padding: 8px 20px;
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  transition: color .2s ease, border-color .2s ease, background .2s ease;
+}
+.adminbar__lock:hover { color: var(--gold); border-color: var(--gold); background: rgba(198, 154, 76, .1); }
+
+/* 2. The sign in gate ==================================================== */
+
+.gate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 68px);
+  padding: clamp(40px, 8vw, 90px) var(--gutter);
+}
+
+.gate__card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--paper);
+  border: 1px solid var(--cream-soft);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-lg);
+  padding: clamp(30px, 5vw, 46px);
+  text-align: center;
+}
+.gate__mark {
+  width: 66px; height: 66px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 18px;
+}
+.gate__script {
+  font-family: var(--font-script);
+  font-size: 32px;
+  color: var(--gold-d);
+  line-height: 1.2;
+  display: block;
+}
+.gate__h {
+  font-size: 26px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin: 4px 0 12px;
+}
+.gate__note { font-size: 14px; margin-bottom: 26px; }
+.gate__form { text-align: left; }
+.gate__form .field input { text-align: center; letter-spacing: .3em; }
+.gate__btn { width: 100%; margin-top: 18px; }
+
+/* The card gives a small shake when the passcode is wrong, which reads faster
+   than the message alone. Anyone who has asked for less motion sees the
+   message only. */
+.gate__card.is-wrong { animation: gateshake .4s ease; }
+@keyframes gateshake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-9px); }
+  45% { transform: translateX(7px); }
+  70% { transform: translateX(-4px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gate__card.is-wrong { animation: none; }
+}
+
+/* 3. The desk layout ===================================================== */
+
+.workspace { padding: clamp(34px, 5vw, 60px) 0 clamp(56px, 7vw, 90px); }
+.desk-head { margin-bottom: 34px; }
+
+.deskgrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+  gap: 34px;
+  align-items: start;
+}
+
+/* 4. Form blocks and product lines ======================================= */
+
+.desk { min-width: 0; }
+
+.deskblock {
+  background: var(--paper);
+  border: 1px solid var(--cream-soft);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  padding: 24px clamp(18px, 3vw, 28px) 28px;
+  margin: 0 0 20px;
+}
+.deskblock__h {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--gold-text);
+  padding: 0 10px;
+  margin-left: -10px;
+}
+.deskblock__note { font-size: 13px; margin: 10px 0 0; }
+.deskblock .fields { margin-top: 18px; }
+
+.lines { margin: 18px 0 0; display: grid; gap: 14px; }
+
+.lineitem {
+  position: relative;
+  background: var(--cream);
+  border: 1px solid var(--cream-soft);
+  border-radius: var(--radius-card);
+  padding: 16px 52px 16px 16px;
+}
+
+.lineitem__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2.4fr) minmax(0, .8fr) minmax(0, .9fr) minmax(0, 1.4fr);
+  gap: 12px;
+  align-items: start;
+}
+.lineitem .field input { background: var(--paper); }
+.lineitem .field label { font-size: 9px; letter-spacing: .18em; }
+
+/* A star marks a box the bill cannot go out without. */
+.req { color: #a4432c; font-weight: 500; }
+
+/* styles.css already paints a box the admin has left wrong, but the line above
+   sets the same background at the same weight and would win on file order. */
+.lineitem .field input[aria-invalid="true"] {
+  background: #fdf4f1;
+  border-color: #a4432c;
+}
+.lineitem.is-bad { border-color: #d9a99b; }
+
+/* One message for the whole line. The Qty and Rate columns are too narrow to
+   hold a sentence of their own, so the boxes carry the red and this says what
+   is missing. */
+.lineitem__err {
+  grid-column: 1 / -1;
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: #a4432c;
+}
+.lineitem__err:empty { display: none; }
+
+/* The amount is worked out, never typed, so it sits as text rather than a box
+   and lines up with the bottom of the inputs beside it. */
+.lineitem__amt {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 10px;
+  margin: 4px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--cream-soft);
+}
+.lineitem__amt span {
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold-text);
+}
+.lineitem__amt b {
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--cocoa-text);
+}
+
+.lineitem__del {
+  position: absolute;
+  top: 14px; right: 12px;
+  width: 30px; height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--brown);
+  border: 1px solid var(--cream-soft);
+  background: var(--paper);
+  font-size: 17px;
+  line-height: 1;
+  transition: color .2s ease, border-color .2s ease, background .2s ease;
+}
+.lineitem__del:hover { color: #a4432c; border-color: #d9a99b; background: #fdf4f1; }
+.lineitem__del[disabled] { opacity: .35; cursor: not-allowed; }
+
+.lines__add { margin-top: 18px; }
+.plusicon, .dlicon {
+  width: 16px; height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.desk__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 4px 2px 0;
+}
+.desk__total {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold-text);
+}
+.desk__total b {
+  font-family: var(--font-body);
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: .02em;
+  text-transform: none;
+  color: var(--cocoa-text);
+  margin-left: 10px;
+}
+
+.deskbtn {
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--gold-text);
+  border: 1px solid var(--gold);
+  border-radius: var(--radius-pill);
+  padding: 11px 22px;
+  min-height: 42px;
+  transition: background .2s ease, color .2s ease;
+}
+.deskbtn:hover { background: rgba(198, 154, 76, .12); }
+.deskbtn--quiet { border-color: var(--cream-soft); color: var(--body-text); }
+.deskbtn--quiet:hover { border-color: var(--brown); color: var(--brown-d); background: transparent; }
+
+/* 5. The live bill panel ================================================= */
+
+.preview { min-width: 0; }
+.preview__inner {
+  position: sticky;
+  top: 92px;
+  background: var(--paper);
+  border: 1px solid var(--cream-soft);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-md);
+  padding: 22px clamp(16px, 2.4vw, 24px) 24px;
+}
+.preview__h {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--gold-text);
+  margin: 0 0 16px;
+}
+
+/* The canvas is the bill. What is drawn here is exactly what the PNG holds,
+   so there is no second layout to keep in step. */
+.preview__frame {
+  background: var(--dark);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+.preview__frame canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.preview__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+.preview__actions .btn { flex: 1 1 190px; }
+.preview__actions .deskbtn { flex: 0 1 auto; }
+
+.preview__note { font-size: 12px; margin: 14px 0 0; }
+.preview__note.is-good { color: var(--gold-text); }
+.preview__note.is-bad { color: #a4432c; }
+
+/* 6. Responsive ========================================================== */
+
+@media (max-width: 1000px) {
+  .deskgrid { grid-template-columns: 1fr; gap: 28px; }
+  .preview__inner { position: static; }
+}
+
+@media (max-width: 700px) {
+  .adminbar .shell { min-height: 60px; gap: 10px; }
+  .adminbar__tag { display: none; }
+  .lineitem__grid { grid-template-columns: 1fr 1fr; }
+  .lineitem__grid .field--name { grid-column: 1 / -1; }
+  .deskblock .fields { grid-template-columns: 1fr; }
+}
